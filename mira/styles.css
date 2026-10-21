@@ -167,6 +167,7 @@ h3 { font-size: 20px; line-height: 28px; }
 .price-table b:last-child { font-weight: 600; }
 .prices__foot { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 40px; }
 .prices__foot .muted { max-width: 432px; }
+.prices__foot .btn { flex: none; white-space: nowrap; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 
 /* Отзывы — без карточек, только линии */
@@ -183,12 +184,18 @@ h3 { font-size: 20px; line-height: 28px; }
 .offer p { margin-top: 16px; color: var(--on-dark-muted); }
 .offer b { color: var(--on-dark); font-weight: 600; letter-spacing: .08em; }
 
-.booking { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; padding: 80px 0 120px; }
+/* Компьютер: слева текст и фото, справа форма. Телефон: текст → форма → фото */
+.booking {
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-areas: "text form" "photo form";
+  grid-template-rows: auto 1fr; gap: 0 80px; align-items: start; padding: 80px 0 120px;
+}
+.booking__text { grid-area: text; }
+.booking .form { grid-area: form; }
+.booking__photo { grid-area: photo; width: 100%; aspect-ratio: 4 / 3; }
 .booking__lead { margin: 16px 0 32px; max-width: 448px; color: var(--on-dark-muted); }
 .messengers { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
 .messenger { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 20px; border: 1px solid var(--stroke-dark); border-radius: 100px; font: 500 12px/16px var(--head); letter-spacing: .12em; text-transform: uppercase; transition: background .2s, color .2s, border-color .2s; }
 .messenger:hover { background: var(--on-dark); border-color: var(--on-dark); color: var(--ink); }
-.booking__text .photo { width: 100%; aspect-ratio: 4 / 3; }
 
 /* Форма на тёмном фоне: поля — линии */
 .form { position: relative; display: grid; gap: 24px; }
@@ -229,6 +236,21 @@ h3 { font-size: 20px; line-height: 28px; }
 /* Плавающая кнопка «Написать» — только на телефоне */
 .chat { display: none; }
 
+/* Подсказка «Это демо-сайт» для ссылок на мессенджеры */
+.toast {
+  position: fixed; left: 50%; bottom: 24px; z-index: 70; width: max-content; max-width: calc(100vw - 32px);
+  padding: 12px 20px; background: var(--ink); color: var(--on-dark); border: 1px solid var(--stroke-dark); border-radius: 100px;
+  font-size: 12px; line-height: 16px; text-align: center;
+  opacity: 0; transform: translate(-50%, 16px); pointer-events: none; transition: opacity .25s, transform .25s;
+}
+.toast.is-shown { opacity: 1; transform: translate(-50%, 0); }
+
+/* ===== Режим для переноса в Figma (адрес с ?figma) ===== */
+.figma .reveal { opacity: 1; transform: none; transition: none; }
+.figma .chat, .figma .toast { display: none; }
+.figma .header { position: static; }
+.figma html, html.figma { scroll-behavior: auto; }
+
 /* ===== Анимация появления ===== */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
@@ -242,11 +264,10 @@ h3 { font-size: 20px; line-height: 28px; }
   h1, .offer h2 { font-size: 40px; line-height: 48px; }
   .topbar__hours { display: none; }
   .hero__inner { min-height: 560px; gap: 40px; }
-  .services, .features { grid-template-columns: repeat(2, 1fr); }
-  .services { gap: 48px 32px; }
-  .features { gap: 40px 32px; }
+  .services { gap: 24px; }
+  .features { grid-template-columns: repeat(2, 1fr); gap: 40px 32px; }
   .masters { gap: 48px; }
-  .booking { gap: 48px; }
+  .booking { gap: 0 48px; }
 }
 
 /* ===== Телефон и узкий планшет ===== */
@@ -272,7 +293,9 @@ h3 { font-size: 20px; line-height: 28px; }
   .hero__inner { grid-template-columns: 1fr; min-height: 0; gap: 0; }
   .hero__media { order: -1; height: 360px; }
   .hero__text { padding: 40px 0 64px; }
-  .masters, .booking { grid-template-columns: 1fr; }
+  .masters { grid-template-columns: 1fr; }
+  .booking { grid-template-columns: 1fr; grid-template-areas: "text" "form" "photo"; grid-template-rows: auto; gap: 40px; }
+  .services { grid-template-columns: repeat(2, 1fr); gap: 48px 32px; }
   .masters__media .photo { height: auto; min-height: 0; aspect-ratio: 4 / 3; }
   .section { padding: 80px 0; }
   .dark { padding-top: 80px; }
@@ -282,7 +305,11 @@ h3 { font-size: 20px; line-height: 28px; }
   .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
   .footer__inner { grid-template-columns: 1fr 1fr; }
 
-  .chat { display: block; position: fixed; right: 16px; bottom: 16px; z-index: 60; }
+  .booking .messengers { margin-bottom: 0; }
+  .toast { bottom: 80px; }  /* над кнопкой «Написать» */
+  /* Кнопка «Написать» появляется только после первого экрана, чтобы не закрывать «Записаться» */
+  .chat { display: block; position: fixed; right: 16px; bottom: 16px; z-index: 60; opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity .3s, transform .3s; }
+  .chat.is-shown { opacity: 1; transform: none; pointer-events: auto; }
   .chat__btn { height: 48px; padding: 0 24px; border: 1px solid var(--stroke-dark); border-radius: 100px; background: var(--ink); color: var(--on-dark); font: 500 12px/16px var(--head); letter-spacing: .16em; text-transform: uppercase; box-shadow: 0 8px 32px -8px rgba(8, 11, 22, .6); cursor: pointer; }
   .chat__menu { position: absolute; right: 0; bottom: 56px; display: grid; gap: 4px; padding: 8px; min-width: 192px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 20px 40px -20px rgba(8, 11, 22, .5); opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .2s, transform .2s; }
   .chat.is-open .chat__menu { opacity: 1; transform: none; pointer-events: auto; }

@@ -28,13 +28,30 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
-// Вкладки с ценами
-const tabs = document.querySelectorAll('.tab');
+// Вкладки с ценами (стрелки ← → переключают вкладки с клавиатуры)
+const tabs = [...document.querySelectorAll('.tab')];
 function showTab(name) {
-  tabs.forEach((tab) => tab.classList.toggle('is-active', tab.dataset.tab === name));
-  document.querySelectorAll('.price-table').forEach((panel) => panel.classList.toggle('is-active', panel.dataset.panel === name));
+  tabs.forEach((tab) => {
+    const active = tab.dataset.tab === name;
+    tab.classList.toggle('is-active', active);
+    tab.setAttribute('aria-selected', active);
+    tab.tabIndex = active ? 0 : -1;
+  });
+  document.querySelectorAll('.price-table').forEach((panel) => {
+    const active = panel.dataset.panel === name;
+    panel.classList.toggle('is-active', active);
+    panel.hidden = !active;
+  });
 }
-tabs.forEach((tab) => tab.addEventListener('click', () => showTab(tab.dataset.tab)));
+tabs.forEach((tab, i) => {
+  tab.addEventListener('click', () => showTab(tab.dataset.tab));
+  tab.addEventListener('keydown', (event) => {
+    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+    const next = tabs[(i + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
+    showTab(next.dataset.tab);
+    next.focus();
+  });
+});
 // Клик по карточке услуги открывает нужную вкладку цен
 document.querySelectorAll('.service').forEach((card) => card.addEventListener('click', () => showTab(card.dataset.tab)));
 
@@ -80,8 +97,36 @@ form.addEventListener('submit', (event) => {
 // Плавающая кнопка «Написать»
 const chat = document.getElementById('chat');
 const chatBtn = document.getElementById('chat-btn');
-chatBtn.addEventListener('click', () => {
-  const open = !chat.classList.contains('is-open');
+function toggleChat(open) {
   chat.classList.toggle('is-open', open);
   chatBtn.setAttribute('aria-expanded', open);
+}
+chatBtn.addEventListener('click', () => toggleChat(!chat.classList.contains('is-open')));
+// закрывается кликом мимо меню
+document.addEventListener('click', (event) => {
+  if (!chat.contains(event.target)) toggleChat(false);
 });
+// появляется только после первого экрана, чтобы не закрывать кнопку «Записаться»
+new IntersectionObserver(([entry]) => {
+  chat.classList.toggle('is-shown', !entry.isIntersecting);
+  if (entry.isIntersecting) toggleChat(false);
+}).observe(document.querySelector('.hero'));
+
+// Esc закрывает меню и список мессенджеров
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  toggleMenu(false);
+  toggleChat(false);
+});
+
+// Демо-ссылки на мессенджеры: в концепте показываем подсказку вместо перехода
+const toast = document.getElementById('toast');
+let toastTimer;
+document.querySelectorAll('[data-demo]').forEach((link) => link.addEventListener('click', (event) => {
+  event.preventDefault();
+  toggleChat(false);
+  toast.textContent = `Это демо-сайт: здесь будет ссылка на ${link.dataset.demo} салона`;
+  toast.classList.add('is-shown');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('is-shown'), 2800);
+}));

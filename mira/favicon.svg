@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#080B16"/>
+  <!-- Буква «М» тонкими линиями, в стиле логотипа -->
+  <path d="M16 46V18l16 20 16-20v28" fill="none" stroke="#F7F6F3" stroke-width="4" stroke-linejoin="miter"/>
+</svg>

@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Салон красоты «Мира» — Казань, ул. Баумана, 1</title>
   <meta name="description" content="Стрижки, окрашивание, маникюр, брови и уход за лицом в центре Казани. Запись онлайн или в мессенджере.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <!-- Превью ссылки в мессенджерах и соцсетях -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Мира beauty studio — салон красоты в Казани">
+  <meta property="og:description" content="Концепт сайта салона красоты для портфолио веб-дизайнера.">
+  <meta property="og:image" content="https://katrinavelichko-dotcom.github.io/portfolio/mira/images/og-preview.jpg">
+  <meta property="og:url" content="https://katrinavelichko-dotcom.github.io/portfolio/mira/">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Режим для переноса в Figma: адрес с ?figma выключает анимации и плавающую кнопку -->
+  <script>if (location.search.includes('figma')) document.documentElement.classList.add('figma');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
@@ -33,9 +43,9 @@
       <div class="topbar__right">
         <a href="tel:+79000000000" class="topbar__item">+7 (900) 000-00-00</a>
         <div class="socials">
-          <a href="https://t.me/" target="_blank" rel="noopener" aria-label="Telegram"><svg class="icon icon--s"><use href="#i-tg"/></svg></a>
-          <a href="https://wa.me/79000000000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg class="icon icon--s"><use href="#i-wa"/></svg></a>
-          <a href="https://vk.com/" target="_blank" rel="noopener" aria-label="ВКонтакте"><svg class="icon icon--s"><use href="#i-vk"/></svg></a>
+          <a href="#" data-demo="Telegram" aria-label="Telegram"><svg class="icon icon--s"><use href="#i-tg"/></svg></a>
+          <a href="#" data-demo="WhatsApp" aria-label="WhatsApp"><svg class="icon icon--s"><use href="#i-wa"/></svg></a>
+          <a href="#" data-demo="ВКонтакте" aria-label="ВКонтакте"><svg class="icon icon--s"><use href="#i-vk"/></svg></a>
         </div>
       </div>
     </div>
@@ -75,7 +85,7 @@
         <a href="#booking" class="btn">Записаться</a>
       </div>
       <div class="hero__media">
-        <img class="photo" src="https://images.pexels.com/photos/7750130/pexels-photo-7750130.jpeg?auto=compress&w=1600" alt="Светлый интерьер салона: зона ожидания с диванами">
+        <img class="photo" src="images/hero-interior.jpg" alt="Светлый интерьер салона: зона ожидания с диванами">
         <div class="hero__rating">
           <b>4,9</b>
           <span>Яндекс Карты<br>320 отзывов</span>
@@ -93,22 +103,22 @@
         </div>
         <div class="services">
           <a href="#prices" class="service reveal" data-tab="hair">
-            <img class="photo" src="https://images.pexels.com/photos/5368632/pexels-photo-5368632.jpeg?auto=compress&w=800" alt="Мастер работает с клиенткой у зеркала">
+            <img class="photo" src="images/service-hair.jpg" alt="Мастер работает с клиенткой у зеркала">
             <div class="service__row"><h3>Волосы</h3><span>от 1 800 ₽</span></div>
             <p>Стрижки, окрашивание, укладки, уход</p>
           </a>
           <a href="#prices" class="service reveal" data-tab="nails">
-            <img class="photo" src="https://images.pexels.com/photos/3738369/pexels-photo-3738369.jpeg?auto=compress&w=800" alt="Маникюр с тёмным покрытием">
+            <img class="photo" src="images/service-nails.jpg" alt="Маникюр с тёмным покрытием">
             <div class="service__row"><h3>Ногти</h3><span>от 1 300 ₽</span></div>
             <p>Маникюр, педикюр, покрытие, дизайн</p>
           </a>
           <a href="#prices" class="service reveal" data-tab="brows">
-            <img class="photo" src="https://images.pexels.com/photos/5178023/pexels-photo-5178023.jpeg?auto=compress&w=800" alt="Мастер оформляет брови">
+            <img class="photo" src="images/service-brows.jpg" alt="Мастер оформляет брови">
             <div class="service__row"><h3>Брови и ресницы</h3><span>от 600 ₽</span></div>
             <p>Коррекция, окрашивание, ламинирование</p>
           </a>
           <a href="#prices" class="service reveal" data-tab="face">
-            <img class="photo" src="https://images.pexels.com/photos/3738349/pexels-photo-3738349.jpeg?auto=compress&w=1000" alt="Косметолог делает массаж лица">
+            <img class="photo" src="images/service-face.jpg" alt="Косметолог делает массаж лица">
             <div class="service__row"><h3>Уход за лицом</h3><span>от 2 500 ₽</span></div>
             <p>Чистки, пилинги, уход, массаж</p>
           </a>
@@ -151,7 +161,7 @@
     <section class="section" id="masters">
       <div class="container masters">
         <div class="masters__media reveal">
-          <img class="photo" src="https://images.pexels.com/photos/5368629/pexels-photo-5368629.jpeg?auto=compress&w=1200" alt="Мастер-стилист работает с клиенткой">
+          <img class="photo" src="images/master.jpg" alt="Мастер-стилист работает с клиенткой">
         </div>
         <div class="masters__content reveal">
           <h2>Мастера</h2>
@@ -185,11 +195,11 @@
           <h2>Атмосфера и работы</h2>
         </div>
         <div class="gallery reveal">
-          <img class="photo gallery__big" src="https://images.pexels.com/photos/5178004/pexels-photo-5178004.jpeg?auto=compress&w=1200" alt="Мастер и клиентка у зеркала с подсветкой">
-          <img class="photo" src="https://images.pexels.com/photos/4981460/pexels-photo-4981460.jpeg?auto=compress&w=700" alt="Окрашивание волос">
-          <img class="photo" src="https://images.pexels.com/photos/7446905/pexels-photo-7446905.jpeg?auto=compress&w=700" alt="Маникюр">
-          <img class="photo" src="https://images.pexels.com/photos/7446918/pexels-photo-7446918.jpeg?auto=compress&w=700" alt="Мастер маникюра за работой">
-          <img class="photo" src="https://images.pexels.com/photos/3736313/pexels-photo-3736313.jpeg?auto=compress&w=700" alt="Подбор цвета покрытия">
+          <img class="photo gallery__big" src="images/gallery-1.jpg" alt="Мастер и клиентка у зеркала с подсветкой">
+          <img class="photo" src="images/gallery-2.jpg" alt="Окрашивание волос">
+          <img class="photo" src="images/gallery-3.jpg" alt="Маникюр">
+          <img class="photo" src="images/gallery-4.jpg" alt="Мастер маникюра за работой">
+          <img class="photo" src="images/gallery-5.jpg" alt="Подбор цвета покрытия">
         </div>
       </div>
     </section>
@@ -203,16 +213,16 @@
         </div>
 
         <div class="prices reveal">
-          <div class="tabs" role="tablist">
-            <button class="tab is-active" data-tab="hair" role="tab">Волосы</button>
-            <button class="tab" data-tab="nails" role="tab">Ногти</button>
-            <button class="tab" data-tab="brows" role="tab">Брови и ресницы</button>
-            <button class="tab" data-tab="face" role="tab">Лицо</button>
+          <div class="tabs" role="tablist" aria-label="Категории услуг">
+            <button class="tab is-active" data-tab="hair" role="tab" id="tab-hair" aria-controls="panel-hair" aria-selected="true">Волосы</button>
+            <button class="tab" data-tab="nails" role="tab" id="tab-nails" aria-controls="panel-nails" aria-selected="false" tabindex="-1">Ногти</button>
+            <button class="tab" data-tab="brows" role="tab" id="tab-brows" aria-controls="panel-brows" aria-selected="false" tabindex="-1">Брови и ресницы</button>
+            <button class="tab" data-tab="face" role="tab" id="tab-face" aria-controls="panel-face" aria-selected="false" tabindex="-1">Лицо</button>
           </div>
 
           <div class="price-head"><span>Услуга</span><span>Мастер</span><span>Топ-мастер</span></div>
 
-          <ul class="price-table is-active" data-panel="hair">
+          <ul class="price-table is-active" data-panel="hair" id="panel-hair" role="tabpanel" aria-labelledby="tab-hair">
             <li><span>Женская стрижка</span><b>2 200 ₽</b><b>3 500 ₽</b></li>
             <li><span>Стрижка чёлки</span><b>600 ₽</b><b>900 ₽</b></li>
             <li><span>Укладка</span><b>1 800 ₽</b><b>2 500 ₽</b></li>
@@ -220,7 +230,7 @@
             <li><span>Сложное окрашивание (AirTouch, балаяж)</span><b>от 9 000 ₽</b><b>от 13 000 ₽</b></li>
             <li><span>Восстанавливающий уход</span><b>от 2 500 ₽</b><b>от 3 500 ₽</b></li>
           </ul>
-          <ul class="price-table" data-panel="nails">
+          <ul class="price-table" data-panel="nails" id="panel-nails" role="tabpanel" aria-labelledby="tab-nails" hidden>
             <li><span>Маникюр без покрытия</span><b>1 300 ₽</b><b>1 800 ₽</b></li>
             <li><span>Маникюр с покрытием гель-лак</span><b>2 300 ₽</b><b>3 000 ₽</b></li>
             <li><span>Укрепление ногтей</span><b>+ 500 ₽</b><b>+ 700 ₽</b></li>
@@ -228,14 +238,14 @@
             <li><span>Дизайн, 1 ноготь</span><b>от 100 ₽</b><b>от 150 ₽</b></li>
             <li><span>Педикюр с покрытием</span><b>2 800 ₽</b><b>3 500 ₽</b></li>
           </ul>
-          <ul class="price-table" data-panel="brows">
+          <ul class="price-table" data-panel="brows" id="panel-brows" role="tabpanel" aria-labelledby="tab-brows" hidden>
             <li><span>Коррекция бровей</span><b>900 ₽</b><b>1 300 ₽</b></li>
             <li><span>Коррекция и окрашивание бровей</span><b>1 400 ₽</b><b>1 900 ₽</b></li>
             <li><span>Долговременная укладка бровей</span><b>2 200 ₽</b><b>2 800 ₽</b></li>
             <li><span>Ламинирование ресниц</span><b>2 400 ₽</b><b>3 000 ₽</b></li>
             <li><span>Окрашивание ресниц</span><b>600 ₽</b><b>800 ₽</b></li>
           </ul>
-          <ul class="price-table" data-panel="face">
+          <ul class="price-table" data-panel="face" id="panel-face" role="tabpanel" aria-labelledby="tab-face" hidden>
             <li><span>Ультразвуковая чистка</span><b>2 800 ₽</b><b>3 800 ₽</b></li>
             <li><span>Комбинированная чистка</span><b>3 500 ₽</b><b>4 800 ₽</b></li>
             <li><span>Уход по типу кожи</span><b>3 200 ₽</b><b>4 300 ₽</b></li>
@@ -245,7 +255,7 @@
 
           <div class="prices__foot">
             <p class="muted">Итоговую стоимость мастер назовёт до начала процедуры. Полный прайс — в мессенджере.</p>
-            <a href="https://t.me/" target="_blank" rel="noopener" class="btn btn--ghost">Получить полный прайс</a>
+            <a href="#" data-demo="полный прайс в Telegram" class="btn btn--ghost">Получить полный прайс</a>
           </div>
         </div>
       </div>
@@ -292,11 +302,10 @@
             <h3>Запись</h3>
             <p class="booking__lead">Напишите нам сами в мессенджер или оставьте заявку — мы перезвоним или напишем вам, как удобнее. Отвечаем ежедневно с 9:00 до 21:00.</p>
             <div class="messengers">
-              <a href="https://t.me/" target="_blank" rel="noopener" class="messenger"><svg class="icon"><use href="#i-tg"/></svg>Telegram</a>
-              <a href="https://wa.me/79000000000" target="_blank" rel="noopener" class="messenger"><svg class="icon"><use href="#i-wa"/></svg>WhatsApp</a>
-              <a href="https://vk.com/" target="_blank" rel="noopener" class="messenger"><svg class="icon"><use href="#i-vk"/></svg>ВКонтакте</a>
+              <a href="#" data-demo="Telegram" class="messenger"><svg class="icon"><use href="#i-tg"/></svg>Telegram</a>
+              <a href="#" data-demo="WhatsApp" class="messenger"><svg class="icon"><use href="#i-wa"/></svg>WhatsApp</a>
+              <a href="#" data-demo="ВКонтакте" class="messenger"><svg class="icon"><use href="#i-vk"/></svg>ВКонтакте</a>
             </div>
-            <img class="photo" src="https://images.pexels.com/photos/3993124/pexels-photo-3993124.jpeg?auto=compress&w=1000" alt="Полки с профессиональной косметикой в салоне">
           </div>
 
           <form class="form reveal" id="form" novalidate>
@@ -329,6 +338,8 @@
               <p id="success-text">Администратор перезвонит вам в течение 15 минут.</p>
             </div>
           </form>
+
+          <img class="photo booking__photo reveal" src="images/booking-shelves.jpg" alt="Полки с профессиональной косметикой в салоне">
         </div>
       </div>
     </section>
@@ -354,20 +365,23 @@
       </div>
       <div>
         <h4>Мессенджеры</h4>
-        <p><a href="https://t.me/" target="_blank" rel="noopener">Telegram</a></p>
-        <p><a href="https://wa.me/79000000000" target="_blank" rel="noopener">WhatsApp</a></p>
-        <p><a href="https://vk.com/" target="_blank" rel="noopener">ВКонтакте</a></p>
+        <p><a href="#" data-demo="Telegram">Telegram</a></p>
+        <p><a href="#" data-demo="WhatsApp">WhatsApp</a></p>
+        <p><a href="#" data-demo="ВКонтакте">ВКонтакте</a></p>
       </div>
     </div>
     <div class="container"><div class="footer__bottom">© 2026 Мира beauty studio · Учебный проект для портфолио · Фото: Pexels</div></div>
   </footer>
 
+  <!-- Подсказка для демо-ссылок на мессенджеры -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
   <!-- Плавающая кнопка «Написать» (на телефоне) -->
   <div class="chat" id="chat">
     <div class="chat__menu">
-      <a href="https://t.me/" target="_blank" rel="noopener"><svg class="icon"><use href="#i-tg"/></svg>Telegram</a>
-      <a href="https://wa.me/79000000000" target="_blank" rel="noopener"><svg class="icon"><use href="#i-wa"/></svg>WhatsApp</a>
-      <a href="https://vk.com/" target="_blank" rel="noopener"><svg class="icon"><use href="#i-vk"/></svg>ВКонтакте</a>
+      <a href="#" data-demo="Telegram"><svg class="icon"><use href="#i-tg"/></svg>Telegram</a>
+      <a href="#" data-demo="WhatsApp"><svg class="icon"><use href="#i-wa"/></svg>WhatsApp</a>
+      <a href="#" data-demo="ВКонтакте"><svg class="icon"><use href="#i-vk"/></svg>ВКонтакте</a>
     </div>
     <button class="chat__btn" id="chat-btn" aria-expanded="false">Написать</button>
   </div>
