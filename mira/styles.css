@@ -5,10 +5,10 @@
   --bg: #F7F6F3;          /* почти белый фон */
   --bg-soft: #EFEEEA;     /* чуть темнее — для чередования секций */
   --white: #FFFFFF;
-  --ink: #172440;         /* очень тёмный синий: текст и тёмные блоки */
+  --ink: #04060C;         /* очень тёмный синий: текст и тёмные блоки */
   --muted: #5E6470;
-  --line: rgba(23, 36, 64, .12);
-  --stroke: rgba(23, 36, 64, .32);
+  --line: rgba(4, 6, 12, .12);
+  --stroke: rgba(4, 6, 12, .32);
   --on-dark: #F7F6F3;
   --on-dark-muted: rgba(247, 246, 243, .64);
   --line-dark: rgba(247, 246, 243, .16);
@@ -281,8 +281,8 @@ h3 { font-size: 20px; line-height: 28px; }
   .footer__inner { grid-template-columns: 1fr 1fr; }
 
   .chat { display: block; position: fixed; right: 16px; bottom: 16px; z-index: 60; }
-  .chat__btn { height: 48px; padding: 0 24px; border: 1px solid var(--stroke-dark); border-radius: 100px; background: var(--ink); color: var(--on-dark); font: 500 12px/16px var(--head); letter-spacing: .16em; text-transform: uppercase; box-shadow: 0 8px 32px -8px rgba(23, 36, 64, .6); cursor: pointer; }
-  .chat__menu { position: absolute; right: 0; bottom: 56px; display: grid; gap: 4px; padding: 8px; min-width: 192px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 20px 40px -20px rgba(23, 36, 64, .5); opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .2s, transform .2s; }
+  .chat__btn { height: 48px; padding: 0 24px; border: 1px solid var(--stroke-dark); border-radius: 100px; background: var(--ink); color: var(--on-dark); font: 500 12px/16px var(--head); letter-spacing: .16em; text-transform: uppercase; box-shadow: 0 8px 32px -8px rgba(4, 6, 12, .6); cursor: pointer; }
+  .chat__menu { position: absolute; right: 0; bottom: 56px; display: grid; gap: 4px; padding: 8px; min-width: 192px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 20px 40px -20px rgba(4, 6, 12, .5); opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .2s, transform .2s; }
   .chat.is-open .chat__menu { opacity: 1; transform: none; pointer-events: auto; }
   .chat__menu a { display: flex; align-items: center; gap: 12px; padding: 12px; font-weight: 500; }
   .chat__menu a:hover { background: var(--bg); }
