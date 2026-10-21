@@ -38,18 +38,10 @@ tabs.forEach((tab) => tab.addEventListener('click', () => showTab(tab.dataset.ta
 // Клик по карточке услуги открывает нужную вкладку цен
 document.querySelectorAll('.service').forEach((card) => card.addEventListener('click', () => showTab(card.dataset.tab)));
 
-// Кнопка «Записаться» у мастера выбирает в форме услугу с его именем,
-// например «Брови и ресницы — к Камиле»
+// Кнопка «Записаться» у мастера выбирает в форме его направление (например, «Ногти»)
 const form = document.getElementById('form');
-document.querySelectorAll('[data-to]').forEach((link) => link.addEventListener('click', () => {
-  const text = `${link.dataset.service} — ${link.dataset.to}`;
-  const select = form.elements.service;
-  let option = [...select.options].find((o) => o.text === text);
-  if (!option) {
-    option = new Option(text);
-    select.add(option, 0);
-  }
-  select.value = text;
+document.querySelectorAll('[data-service]').forEach((link) => link.addEventListener('click', () => {
+  form.elements.service.value = link.dataset.service;
 }));
 
 // Маска телефона
