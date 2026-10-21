@@ -7,7 +7,7 @@
   <meta name="description" content="Стрижки, окрашивание, маникюр, брови и уход за лицом в центре Казани. Запись онлайн или в мессенджере.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -57,7 +57,7 @@
           <a href="#booking" class="btn">Записаться</a>
         </div>
       </nav>
-      <a href="#booking" class="btn btn--small header__btn">Записаться</a>
+      <a href="#booking" class="btn header__btn">Записаться</a>
       <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -65,21 +65,19 @@
   </header>
 
   <main>
-    <!-- Первый экран -->
+    <!-- Первый экран: текст слева, фото справа до края экрана -->
     <section class="hero">
-      <div class="container hero__inner">
-        <div class="hero__text reveal">
-          <h1>Красота, в которой вам спокойно</h1>
-          <p class="hero__lead">Стрижки, окрашивание, маникюр, брови и уход за лицом. Опытные мастера, профессиональная косметика и никакой спешки.</p>
-          <p class="hero__address"><svg class="icon"><use href="#i-pin"/></svg>Казань, ул. Баумана, 1 — 5 минут пешком от м. «Кремлёвская»</p>
-          <a href="#booking" class="btn">Записаться</a>
-        </div>
-        <div class="hero__media reveal">
-          <img class="photo" src="https://images.pexels.com/photos/7750130/pexels-photo-7750130.jpeg?auto=compress&w=1400" alt="Светлый интерьер салона: зона ожидания с диванами">
-          <div class="hero__rating">
-            <b>4,9</b>
-            <span>Рейтинг на Яндекс Картах<br>320 отзывов</span>
-          </div>
+      <div class="hero__text reveal">
+        <h1>Красота, в которой вам спокойно</h1>
+        <p class="hero__lead">Стрижки, окрашивание, маникюр, брови и уход за лицом. Опытные мастера и никакой спешки.</p>
+        <p class="hero__address"><svg class="icon"><use href="#i-pin"/></svg>Казань, ул. Баумана, 1 — 5 минут от м. «Кремлёвская»</p>
+        <a href="#booking" class="btn">Записаться</a>
+      </div>
+      <div class="hero__media">
+        <img class="photo" src="https://images.pexels.com/photos/7750130/pexels-photo-7750130.jpeg?auto=compress&w=1600" alt="Светлый интерьер салона: зона ожидания с диванами">
+        <div class="hero__rating">
+          <b>4,9</b>
+          <span>Яндекс Карты<br>320 отзывов</span>
         </div>
       </div>
     </section>
@@ -89,32 +87,28 @@
       <div class="container">
         <div class="section__head reveal">
           <h2>Услуги</h2>
-          <p class="muted">Всё, чтобы чувствовать себя ухоженной, в одном месте и у мастеров, которым доверяют.</p>
+          <p class="muted">Всё, чтобы чувствовать себя ухоженной, — в одном месте.</p>
         </div>
         <div class="services">
           <a href="#prices" class="service reveal" data-tab="hair">
             <img class="photo" src="https://images.pexels.com/photos/5368632/pexels-photo-5368632.jpeg?auto=compress&w=800" alt="Мастер работает с клиенткой у зеркала">
-            <h3>Волосы</h3>
-            <p>Стрижки, окрашивание, укладки и уход</p>
-            <span class="service__price">от 1 800 ₽</span>
+            <div class="service__row"><h3>Волосы</h3><span>от 1 800 ₽</span></div>
+            <p>Стрижки, окрашивание, укладки, уход</p>
           </a>
           <a href="#prices" class="service reveal" data-tab="nails">
             <div class="photo ph" aria-hidden="true"><b>фото-03</b><span>Ногти · вертикальное</span></div>
-            <h3>Ногти</h3>
-            <p>Маникюр, педикюр, покрытие и дизайн</p>
-            <span class="service__price">от 1 300 ₽</span>
+            <div class="service__row"><h3>Ногти</h3><span>от 1 300 ₽</span></div>
+            <p>Маникюр, педикюр, покрытие, дизайн</p>
           </a>
           <a href="#prices" class="service reveal" data-tab="brows">
             <img class="photo" src="https://images.pexels.com/photos/5178023/pexels-photo-5178023.jpeg?auto=compress&w=800" alt="Мастер оформляет брови">
-            <h3>Брови и ресницы</h3>
+            <div class="service__row"><h3>Брови и ресницы</h3><span>от 600 ₽</span></div>
             <p>Коррекция, окрашивание, ламинирование</p>
-            <span class="service__price">от 600 ₽</span>
           </a>
           <a href="#prices" class="service reveal" data-tab="face">
             <div class="photo ph" aria-hidden="true"><b>фото-05</b><span>Уход за лицом · вертикальное</span></div>
-            <h3>Уход за лицом</h3>
-            <p>Чистки, пилинги, уход и массаж</p>
-            <span class="service__price">от 2 500 ₽</span>
+            <div class="service__row"><h3>Уход за лицом</h3><span>от 2 500 ₽</span></div>
+            <p>Чистки, пилинги, уход, массаж</p>
           </a>
         </div>
       </div>
@@ -130,22 +124,22 @@
           <div class="feature reveal">
             <div class="feature__icon"><svg><use href="#i-star"/></svg></div>
             <h3>Мастера с опытом</h3>
-            <p>Стаж от 2 лет, регулярное обучение и внутренние стандарты качества.</p>
+            <p>Стаж от 2 лет и регулярное обучение.</p>
           </div>
           <div class="feature reveal">
             <div class="feature__icon"><svg><use href="#i-bottle"/></svg></div>
             <h3>Профессиональная косметика</h3>
-            <p>Работаем только на проверенных брендах и честно говорим, что вам нужно, а что нет.</p>
+            <p>Только проверенные бренды, без навязывания.</p>
           </div>
           <div class="feature reveal">
             <div class="feature__icon"><svg><use href="#i-shield"/></svg></div>
             <h3>Стерильность</h3>
-            <p>Инструменты проходят 3 этапа обработки, крафт-пакет вскрываем при вас.</p>
+            <p>3 этапа обработки, крафт-пакет вскрываем при вас.</p>
           </div>
           <div class="feature reveal">
             <div class="feature__icon"><svg><use href="#i-cup"/></svg></div>
             <h3>Без спешки</h3>
-            <p>Между записями есть время, а для вас — кофе, чай и тихая музыка.</p>
+            <p>Время между записями, кофе и тишина.</p>
           </div>
         </div>
       </div>
@@ -159,7 +153,7 @@
         </div>
         <div class="masters__content reveal">
           <h2>Мастера</h2>
-          <p class="muted">Все мастера работают по единым стандартам. Категория зависит от опыта и сложности техник, с которыми работает мастер.</p>
+          <p class="muted">Все мастера работают по единым стандартам. Категория зависит от опыта и сложности техник.</p>
 
           <div class="levels">
             <div><b>Топ-мастер</b><span>Стаж от 5 лет, сложные техники, обучает команду</span></div>
@@ -203,7 +197,7 @@
       <div class="container">
         <div class="section__head reveal">
           <h2>Цены</h2>
-          <p class="muted">Самые популярные услуги. Цена зависит от категории мастера и указана с материалами.</p>
+          <p class="muted">Популярные услуги. Цена зависит от категории мастера и указана с материалами.</p>
         </div>
 
         <div class="prices reveal">
@@ -249,7 +243,7 @@
 
           <div class="prices__foot">
             <p class="muted">Итоговую стоимость мастер назовёт до начала процедуры. Полный прайс — в мессенджере.</p>
-            <a href="https://t.me/" target="_blank" rel="noopener" class="btn btn--ghost"><svg class="icon"><use href="#i-tg"/></svg>Получить полный прайс</a>
+            <a href="https://t.me/" target="_blank" rel="noopener" class="btn btn--ghost">Получить полный прайс</a>
           </div>
         </div>
       </div>
@@ -265,90 +259,84 @@
         <div class="reviews">
           <figure class="review reveal">
             <blockquote>Шла с опаской: до этого два раза неудачно красилась в других местах, и в итоге желтизна. Алина сначала минут пятнадцать просто со мной разговаривала, смотрела фото и честно сказала, что в холодный блонд за один раз не выйдем. Сделали в два этапа, волосы живые, результатом очень довольна. Отдельное спасибо за кофе с овсяным молоком.</blockquote>
-            <figcaption><b>Марина К.</b><span>Окрашивание · Алина, топ-мастер</span><span>Яндекс Карты · 14 сентября 2026</span></figcaption>
+            <figcaption><b>Марина К.</b><span>Окрашивание · Алина, топ-мастер · Яндекс Карты, 14 сентября 2026</span></figcaption>
           </figure>
           <figure class="review reveal">
             <blockquote>Хожу к Дарье уже полгода. Покрытие стабильно носится три недели, ничего не отслаивается. Нравится, что ничего не надо объяснять заново: она помнит, какую форму я люблю. Минус один — к ней сложно попасть на вечер, записываюсь заранее.</blockquote>
-            <figcaption><b>Ольга</b><span>Маникюр · Дарья, мастер</span><span>Яндекс Карты · 2 октября 2026</span></figcaption>
+            <figcaption><b>Ольга</b><span>Маникюр · Дарья, мастер · Яндекс Карты, 2 октября 2026</span></figcaption>
           </figure>
           <figure class="review reveal">
             <blockquote>Написала в Telegram в одиннадцать вечера, утром уже ответили и нашли окно на субботу. Брови сделали очень естественно, без «нарисованного» эффекта, как я и просила.</blockquote>
-            <figcaption><b>Анастасия Р.</b><span>Брови · Камила, мастер</span><span>Яндекс Карты · 28 августа 2026</span></figcaption>
+            <figcaption><b>Анастасия Р.</b><span>Брови · Камила, мастер · Яндекс Карты, 28 августа 2026</span></figcaption>
           </figure>
           <figure class="review reveal">
             <blockquote>Косметолога я выбираю очень придирчиво. Понравилось, что сначала внимательно посмотрели кожу и объяснили, чего делать не нужно. Никакого навязывания баночек. Теперь хожу на уход раз в месяц.</blockquote>
-            <figcaption><b>Елена Викторовна</b><span>Уход за лицом · Елена, топ-мастер</span><span>Яндекс Карты · 9 октября 2026</span></figcaption>
+            <figcaption><b>Елена Викторовна</b><span>Уход за лицом · Елена, топ-мастер · Яндекс Карты, 9 октября 2026</span></figcaption>
           </figure>
         </div>
       </div>
     </section>
 
-    <!-- Акция -->
-    <section class="section section--tight">
+    <!-- Тёмный блок: акция + запись -->
+    <section class="dark" id="booking">
       <div class="container">
-        <div class="promo reveal">
-          <div>
-            <h2>−15% на первый визит</h2>
-            <p>Запишитесь онлайн или в мессенджере и назовите промокод <b>MIRA15</b>.</p>
-          </div>
-          <a href="#booking" class="btn btn--light">Получить скидку</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Запись и связь -->
-    <section class="section section--soft" id="booking">
-      <div class="container booking">
-        <div class="booking__text reveal">
-          <h2>Запись</h2>
-          <p class="muted">Напишите нам сами в мессенджер или оставьте заявку — мы перезвоним или напишем вам, как удобнее. Отвечаем ежедневно с 9:00 до 21:00.</p>
-          <div class="messengers">
-            <a href="https://t.me/" target="_blank" rel="noopener" class="messenger"><svg class="icon"><use href="#i-tg"/></svg>Telegram</a>
-            <a href="https://wa.me/79000000000" target="_blank" rel="noopener" class="messenger"><svg class="icon"><use href="#i-wa"/></svg>WhatsApp</a>
-            <a href="https://vk.com/" target="_blank" rel="noopener" class="messenger"><svg class="icon"><use href="#i-vk"/></svg>ВКонтакте</a>
-          </div>
-          <img class="photo" src="https://images.pexels.com/photos/3993124/pexels-photo-3993124.jpeg?auto=compress&w=1000" alt="Полки с профессиональной косметикой в салоне">
+        <div class="offer reveal">
+          <h2>−15% на первый визит</h2>
+          <p>Запишитесь онлайн или в мессенджере и назовите промокод <b>MIRA15</b>.</p>
         </div>
 
-        <form class="form reveal" id="form" novalidate>
-          <label>Ваше имя
-            <input type="text" name="name" placeholder="Анна" autocomplete="given-name" required>
-          </label>
-          <label>Телефон
-            <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" required>
-          </label>
-          <label>Услуга
-            <select name="service">
-              <option>Волосы</option>
-              <option>Ногти</option>
-              <option>Брови и ресницы</option>
-              <option>Уход за лицом</option>
-              <option>Пока не знаю, нужна консультация</option>
-            </select>
-          </label>
-          <fieldset class="contact-way">
-            <legend>Как с вами связаться</legend>
-            <label><input type="radio" name="way" value="call" checked><span>Позвонить</span></label>
-            <label><input type="radio" name="way" value="tg"><span>Telegram</span></label>
-            <label><input type="radio" name="way" value="wa"><span>WhatsApp</span></label>
-            <label><input type="radio" name="way" value="vk"><span>ВКонтакте</span></label>
-          </fieldset>
-          <button type="submit" class="btn btn--full">Отправить заявку</button>
-          <p class="form__note">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</p>
-          <div class="form__success" id="success" hidden>
-            <h3>Спасибо!</h3>
-            <p id="success-text">Администратор перезвонит вам в течение 15 минут.</p>
+        <div class="booking">
+          <div class="booking__text reveal">
+            <h3>Запись</h3>
+            <p class="booking__lead">Напишите нам сами в мессенджер или оставьте заявку — мы перезвоним или напишем вам, как удобнее. Отвечаем ежедневно с 9:00 до 21:00.</p>
+            <div class="messengers">
+              <a href="https://t.me/" target="_blank" rel="noopener" class="messenger"><svg class="icon"><use href="#i-tg"/></svg>Telegram</a>
+              <a href="https://wa.me/79000000000" target="_blank" rel="noopener" class="messenger"><svg class="icon"><use href="#i-wa"/></svg>WhatsApp</a>
+              <a href="https://vk.com/" target="_blank" rel="noopener" class="messenger"><svg class="icon"><use href="#i-vk"/></svg>ВКонтакте</a>
+            </div>
+            <img class="photo" src="https://images.pexels.com/photos/3993124/pexels-photo-3993124.jpeg?auto=compress&w=1000" alt="Полки с профессиональной косметикой в салоне">
           </div>
-        </form>
+
+          <form class="form reveal" id="form" novalidate>
+            <label>Ваше имя
+              <input type="text" name="name" placeholder="Анна" autocomplete="given-name" required>
+            </label>
+            <label>Телефон
+              <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" required>
+            </label>
+            <label>Услуга
+              <select name="service">
+                <option>Волосы</option>
+                <option>Ногти</option>
+                <option>Брови и ресницы</option>
+                <option>Уход за лицом</option>
+                <option>Пока не знаю, нужна консультация</option>
+              </select>
+            </label>
+            <fieldset class="contact-way">
+              <legend>Как с вами связаться</legend>
+              <label><input type="radio" name="way" value="call" checked><span>Позвонить</span></label>
+              <label><input type="radio" name="way" value="tg"><span>Telegram</span></label>
+              <label><input type="radio" name="way" value="wa"><span>WhatsApp</span></label>
+              <label><input type="radio" name="way" value="vk"><span>ВКонтакте</span></label>
+            </fieldset>
+            <button type="submit" class="btn btn--light btn--full">Отправить заявку</button>
+            <p class="form__note">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</p>
+            <div class="form__success" id="success" hidden>
+              <h3>Спасибо!</h3>
+              <p id="success-text">Администратор перезвонит вам в течение 15 минут.</p>
+            </div>
+          </form>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- Контакты и подвал -->
+  <!-- Контакты и подвал (продолжает тёмный блок) -->
   <footer class="footer" id="contacts">
     <div class="container footer__inner">
       <div>
-        <a href="#top" class="logo logo--light">МИРА<span>beauty studio</span></a>
+        <a href="#top" class="logo">МИРА<span>beauty studio</span></a>
         <p class="footer__muted">Красота, в которой вам спокойно.</p>
       </div>
       <div>
