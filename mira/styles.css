@@ -5,10 +5,10 @@
   --bg: #F7F6F3;          /* почти белый фон */
   --bg-soft: #EFEEEA;     /* чуть темнее — для чередования секций */
   --white: #FFFFFF;
-  --ink: #04060C;         /* очень тёмный синий: текст и тёмные блоки */
+  --ink: #080B16;         /* очень тёмный синий: текст и тёмные блоки */
   --muted: #5E6470;
-  --line: rgba(4, 6, 12, .12);
-  --stroke: rgba(4, 6, 12, .32);
+  --line: rgba(8, 11, 22, .12);
+  --stroke: rgba(8, 11, 22, .32);
   --on-dark: #F7F6F3;
   --on-dark-muted: rgba(247, 246, 243, .64);
   --line-dark: rgba(247, 246, 243, .16);
@@ -115,7 +115,7 @@ h3 { font-size: 20px; line-height: 28px; }
 .section__head .muted { margin-top: 16px; max-width: 560px; }
 
 /* Услуги: фото, под ним линия, название и цена */
-.services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
 .service .photo { width: 100%; aspect-ratio: 3 / 4; transition: opacity .3s; }
 .service:hover .photo { opacity: .88; }
 .service__row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 16px 0 8px; margin-top: 16px; border-top: 1px solid var(--ink); }
@@ -130,8 +130,9 @@ h3 { font-size: 20px; line-height: 28px; }
 .feature p { color: var(--muted); }
 
 /* Мастера */
-.masters { display: grid; grid-template-columns: 1fr 1.12fr; gap: 80px; align-items: start; }
-.masters__media .photo { width: 100%; aspect-ratio: 4 / 5; position: sticky; top: 112px; }
+/* Фото тянется на всю высоту текстовой колонки: верх и низ совпадают */
+.masters { display: grid; grid-template-columns: 1fr 1.12fr; gap: 80px; align-items: stretch; }
+.masters__media .photo { width: 100%; height: 100%; min-height: 480px; }
 .masters__content > .muted { margin: 16px 0 32px; }
 .levels { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 48px; }
 .levels div { padding: 20px 24px 20px 0; }
@@ -140,6 +141,7 @@ h3 { font-size: 20px; line-height: 28px; }
 .levels span { color: var(--muted); }
 .masters__group { font-size: 16px; line-height: 24px; letter-spacing: .08em; color: var(--muted); margin-bottom: 8px; }
 .master-list { margin-bottom: 40px; }
+.master-list:last-child { margin-bottom: 0; }
 .master-list li { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
 .master-list b { font-weight: 600; margin-right: 12px; }
 .master-list span { color: var(--muted); }
@@ -241,7 +243,7 @@ h3 { font-size: 20px; line-height: 28px; }
   .topbar__hours { display: none; }
   .hero__inner { min-height: 560px; gap: 40px; }
   .services, .features { grid-template-columns: repeat(2, 1fr); }
-  .services { gap: 40px 24px; }
+  .services { gap: 48px 32px; }
   .features { gap: 40px 32px; }
   .masters { gap: 48px; }
   .booking { gap: 48px; }
@@ -271,7 +273,7 @@ h3 { font-size: 20px; line-height: 28px; }
   .hero__media { order: -1; height: 360px; }
   .hero__text { padding: 40px 0 64px; }
   .masters, .booking { grid-template-columns: 1fr; }
-  .masters__media .photo { position: static; aspect-ratio: 4 / 3; }
+  .masters__media .photo { height: auto; min-height: 0; aspect-ratio: 4 / 3; }
   .section { padding: 80px 0; }
   .dark { padding-top: 80px; }
   .offer { padding-bottom: 56px; }
@@ -281,8 +283,8 @@ h3 { font-size: 20px; line-height: 28px; }
   .footer__inner { grid-template-columns: 1fr 1fr; }
 
   .chat { display: block; position: fixed; right: 16px; bottom: 16px; z-index: 60; }
-  .chat__btn { height: 48px; padding: 0 24px; border: 1px solid var(--stroke-dark); border-radius: 100px; background: var(--ink); color: var(--on-dark); font: 500 12px/16px var(--head); letter-spacing: .16em; text-transform: uppercase; box-shadow: 0 8px 32px -8px rgba(4, 6, 12, .6); cursor: pointer; }
-  .chat__menu { position: absolute; right: 0; bottom: 56px; display: grid; gap: 4px; padding: 8px; min-width: 192px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 20px 40px -20px rgba(4, 6, 12, .5); opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .2s, transform .2s; }
+  .chat__btn { height: 48px; padding: 0 24px; border: 1px solid var(--stroke-dark); border-radius: 100px; background: var(--ink); color: var(--on-dark); font: 500 12px/16px var(--head); letter-spacing: .16em; text-transform: uppercase; box-shadow: 0 8px 32px -8px rgba(8, 11, 22, .6); cursor: pointer; }
+  .chat__menu { position: absolute; right: 0; bottom: 56px; display: grid; gap: 4px; padding: 8px; min-width: 192px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 20px 40px -20px rgba(8, 11, 22, .5); opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .2s, transform .2s; }
   .chat.is-open .chat__menu { opacity: 1; transform: none; pointer-events: auto; }
   .chat__menu a { display: flex; align-items: center; gap: 12px; padding: 12px; font-weight: 500; }
   .chat__menu a:hover { background: var(--bg); }
@@ -301,7 +303,7 @@ h3 { font-size: 20px; line-height: 28px; }
   .hero .btn { width: 100%; }
   .hero__rating { padding: 8px 16px; }
   .hero__rating b { font-size: 24px; line-height: 32px; }
-  .services { gap: 32px 16px; }
+  .services { gap: 40px 24px; }
   .service h3 { font-size: 16px; line-height: 24px; }
   .service__row { flex-direction: column; gap: 0; }
   .service p { font-size: 12px; line-height: 16px; }
