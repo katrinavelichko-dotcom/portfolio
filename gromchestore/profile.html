@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Профиль — ГРОМЧЕ</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="profile.js"></script>
+</head>
+<body>
+  <main id="main" class="catalog">
+    <div class="grid12">
+      <div class="cat-title"><h1 class="big-title" id="title">Вход</h1></div>
+      <div class="auth" id="auth" hidden>
+        <nav class="tabs" aria-label="Вход или регистрация">
+          <button type="button" id="tabLogin" aria-pressed="true">Вход</button>
+          <button type="button" id="tabReg" aria-pressed="false">Регистрация</button>
+        </nav>
+        <p class="demo-note">Демо режим: аккаунт хранится только в этом браузере. Не используй настоящий пароль.</p>
+        <form class="form" id="authForm" novalidate>
+          <div class="field" id="nameField" hidden><label for="aName">Имя</label><input id="aName" name="name" autocomplete="name"><p class="error" hidden></p></div>
+          <div class="field"><label for="aMail">Почта</label><input id="aMail" name="email" type="email" autocomplete="email"><p class="error" hidden></p></div>
+          <div class="field"><label for="aPass">Пароль</label><input id="aPass" name="password" type="password" autocomplete="current-password"><p class="error" hidden></p></div>
+          <p class="error" id="authError" role="alert" hidden></p>
+          <button class="btn" id="authSubmit" type="submit">Войти</button>
+        </form>
+      </div>
+      <div class="account" id="account" hidden>
+        <div class="account-head"><div><p id="aInfo"></p></div><button class="btn btn-ghost" id="logout" type="button">Выйти</button></div>
+        <section aria-labelledby="favTitle"><h2 id="favTitle">Избранное</h2><div class="products" id="favList"></div></section>
+        <section aria-labelledby="cartTitle2"><h2 id="cartTitle2">Корзина</h2><div class="cart-rows" id="cartList"></div></section>
+        <section aria-labelledby="ordersTitle"><h2 id="ordersTitle">Демо заказы</h2><div class="cart-rows" id="orderList"></div></section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

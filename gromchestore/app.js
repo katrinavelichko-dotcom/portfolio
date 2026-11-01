@@ -5,6 +5,58 @@ import { popCart, startMotion } from './motion.js';
 export const $ = s => document.querySelector(s);
 const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
 const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+const drop = k => { try { localStorage.removeItem(k); } catch {} };
+
+/* Демо аккаунты: всё хранится только в этом браузере, у каждого пользователя свои данные */
+const normMail = s => s.trim().toLowerCase();
+export const currentUser = () => {
+  const mail = read('gromche-session', null);
+  const u = mail && read('gromche-users', {})[mail];
+  return u ? { mail, name: u.name } : null;
+};
+const scoped = k => { const u = currentUser(); return u ? `gromche-${k}:${u.mail}` : `gromche-${k}`; };
+
+async function hash(password, salt) {
+  const data = new TextEncoder().encode(salt + password);
+  const out = await crypto.subtle.digest('SHA-256', data);
+  return [...new Uint8Array(out)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+// Вещи, выбранные до входа, переходят в аккаунт
+function mergeGuest(mail) {
+  const merge = (k, join) => {
+    const guest = read(`gromche-${k}`, []);
+    write(`gromche-${k}:${mail}`, join(read(`gromche-${k}:${mail}`, []), guest));
+    drop(`gromche-${k}`);
+  };
+  merge('favs', (a, b) => [...new Set([...a, ...b])]);
+  merge('cart', (a, b) => {
+    const all = a.map(l => ({ ...l }));
+    b.forEach(l => {
+      const same = all.find(x => x.id === l.id && x.size === l.size);
+      same ? same.qty += l.qty : all.push({ ...l });
+    });
+    return all;
+  });
+}
+export async function register(name, email, password) {
+  const mail = normMail(email), users = read('gromche-users', {});
+  if (users[mail]) return 'Такая почта уже зарегистрирована. Попробуй войти.';
+  const salt = crypto.randomUUID();
+  users[mail] = { name: name.trim(), salt, hash: await hash(password, salt) };
+  write('gromche-users', users);
+  mergeGuest(mail);
+  write('gromche-session', mail);
+  return '';
+}
+export async function login(email, password) {
+  const mail = normMail(email), user = read('gromche-users', {})[mail];
+  if (!user || user.hash !== await hash(password, user.salt)) return 'Неверная почта или пароль.';
+  mergeGuest(mail);
+  write('gromche-session', mail);
+  return '';
+}
+export function logout() { drop('gromche-session'); }
+export const getOrders = () => read(scoped('orders'), []);
 
 /* Громкость: буквы и двое на первом экране. Фон и фото товаров не меняются */
 export const LEVELS = [
@@ -33,6 +85,7 @@ const ICONS = {
   heart: svg('M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z'),
   bag: svg('M5 8h14l1 12H4zM9 8V7a3 3 0 0 1 6 0v1'),
   up: svg('M12 20V4M6 10l6-6 6 6'),
+  user: svg('M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM5 20c1-4 4-6 7-6s6 2 7 6'),
 };
 function setBadge(el, n) {
   el.textContent = n;
@@ -66,6 +119,7 @@ function renderChrome() {
             <button class="icon-btn" type="submit" aria-label="Найти">${ICONS.search}</button>
           </form>
           <button class="icon-btn search-toggle" type="button" id="searchOpen" aria-label="Открыть поиск" aria-expanded="false" aria-controls="searchBox">${ICONS.search}</button>
+          <a class="icon-btn" href="profile.html" aria-label="${currentUser() ? 'Профиль' : 'Войти'}">${ICONS.user}${currentUser() ? '<span class="dot"></span>' : ''}</a>
           <a class="icon-btn" href="favorites.html" aria-label="Избранное">${ICONS.heart}<span class="badge" id="favCount" hidden></span></a>
           <button class="icon-btn" type="button" id="cartOpen" aria-label="Корзина" aria-haspopup="dialog">${ICONS.bag}<span class="badge" id="cartCount" hidden></span></button>
         </div>
@@ -77,6 +131,7 @@ function renderChrome() {
       ${Object.entries(GENDERS).map(([g, t]) => `<details><summary>${t}</summary><a href="catalog.html?g=${g}">Смотреть всё</a>${sectionLinks(g)}</details>`).join('')}
       <a href="catalog.html?new=1">Новинки</a>
       <details><summary class="sale-link">Распродажа</summary><a href="catalog.html?sale=1">Смотреть всё</a><a href="catalog.html?sale=1&g=women">Женское</a><a href="catalog.html?sale=1&g=men">Мужское</a></details>
+      <a href="profile.html">${currentUser() ? 'Профиль' : 'Вход и регистрация'}</a>
       <a href="favorites.html">Избранное</a>
       <a href="help.html#faq">Вопросы и ответы</a>
       <a href="help.html">Покупателям</a>
@@ -149,11 +204,11 @@ function renderChrome() {
 }
 
 /* Избранное */
-let favs = read('gromche-favs', []);
+let favs = read(scoped('favs'), []);
 export const isFav = id => favs.includes(id);
 export function toggleFav(id) {
   favs = isFav(id) ? favs.filter(x => x !== id) : [...favs, id];
-  write('gromche-favs', favs);
+  write(scoped('favs'), favs);
   setBadge($('#favCount'), favs.length);
   return isFav(id);
 }
@@ -178,10 +233,11 @@ document.addEventListener('click', e => {
 
 /* Корзина */
 const DELIVERY = 390, FREE_FROM = 10000;
-let cart = read('gromche-cart', []).filter(l => byId(l.id)), placed = null;
+let cart = read(scoped('cart'), []).filter(l => byId(l.id)), placed = null;
+export const getCart = () => cart;
 
 function saveCart() {
-  write('gromche-cart', cart);
+  write(scoped('cart'), cart);
   setBadge($('#cartCount'), cart.reduce((n, l) => n + l.qty, 0));
   document.dispatchEvent(new CustomEvent('cart'));
 }
@@ -261,6 +317,10 @@ function bindCart() {
     const inputs = [...e.target.querySelectorAll('input')], bad = inputs.filter(i => !check(i));
     if (bad.length) { bad[0].focus(); return; }
     placed = inputs[0].value.trim().replace(/[<>&]/g, '');
+    if (currentUser()) {
+      const total = cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0);
+      write(scoped('orders'), [{ date: new Date().toLocaleDateString('ru-RU'), total, items: cart.map(l => ({ title: byId(l.id).title, size: l.size, qty: l.qty })) }, ...getOrders()]);
+    }
     cart = [];
     saveCart();
     renderCart();
