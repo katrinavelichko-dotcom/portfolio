@@ -19,7 +19,8 @@ function showLooks(i) {
     const [file, alt] = LOOKS[i][n];
     img.src = `images/${file}.png`;
     img.alt = alt;
-    if (!reduced) img.animate([{ opacity: 0, translate: '0 8px' }, { opacity: 1, translate: '0 0' }], { duration: 300, easing: 'ease-out' });
+    // Через filter, а не opacity: иначе анимация появления первого экрана примет прозрачность за конечную
+    if (!reduced) img.animate([{ filter: 'saturate(var(--sat)) opacity(0)' }, { filter: 'saturate(var(--sat)) opacity(1)' }], { duration: 300, easing: 'ease-out' });
   });
   const lvl = LEVELS[i], link = $('#levelLink');
   link.href = `catalog.html?level=${i}`;
