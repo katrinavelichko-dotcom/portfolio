@@ -1,4 +1,4 @@
-import { $, card, currentUser, getCart, getFavs, getOrders, login, logout, register } from './app.js';
+import { $, TEST_LOGIN, card, currentUser, getCart, getFavs, getOrders, login, logout, register } from './app.js';
 import { byId, rub } from './data.js';
 
 const user = currentUser();
@@ -38,7 +38,8 @@ const RULES = {
   password: v => v.length >= 6 ? '' : 'Пароль должен быть не короче 6 символов.',
 };
 function check(input) {
-  const msg = RULES[input.name](input.value), err = input.nextElementSibling;
+  const free = TEST_LOGIN && mode === 'login';
+  const msg = free ? (input.value.trim() ? '' : 'Введи что нибудь.') : RULES[input.name](input.value), err = input.nextElementSibling;
   err.textContent = msg;
   err.hidden = !msg;
   input.setAttribute('aria-invalid', !!msg);
@@ -47,6 +48,7 @@ function check(input) {
 
 function renderAuth() {
   $('#auth').hidden = false;
+  if (TEST_LOGIN) $('#demoNote').textContent = 'Тестовый режим: для входа подойдут любые почта и пароль. Не используй настоящий пароль.';
   $('#tabLogin').addEventListener('click', () => setMode('login'));
   $('#tabReg').addEventListener('click', () => setMode('reg'));
   $('#authForm').addEventListener('submit', async e => {

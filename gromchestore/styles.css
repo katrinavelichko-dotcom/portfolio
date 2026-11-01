@@ -57,7 +57,12 @@ h3 { font-size: 16px; line-height: 24px; font-weight: 500; }
 .has-mega { position: relative; }
 .mega { display: none; position: absolute; left: -16px; top: 100%; z-index: 41; min-width: 240px; padding: 8px 16px 16px; background: var(--ground); }
 .mega a { display: block; padding-block: 4px; }
-.has-mega:hover .mega, .has-mega:focus-within .mega { display: grid; animation: mega-in 300ms var(--ease); }
+.has-mega:hover > .mega, .has-mega:focus-within > .mega { display: grid; animation: mega-in 300ms var(--ease); }
+.has-sub { display: block; align-self: auto; }
+.has-sub > a::after { content: " ›"; }
+.has-sub > .mega { left: 100%; top: -8px; margin-left: 0; }
+.mobile-menu .sub { padding-left: 16px; }
+.mobile-menu .sub summary { font-size: 20px; line-height: 28px; padding-block: 8px; }
 @keyframes mega-in { from { opacity: 0; transform: translateY(-8px); } }
 .mega-all { font-weight: 700 !important; }
 .actions { grid-column: span 4; display: flex; justify-content: end; gap: 8px; }

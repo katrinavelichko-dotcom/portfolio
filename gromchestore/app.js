@@ -8,6 +8,8 @@ const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } ca
 const drop = k => { try { localStorage.removeItem(k); } catch {} };
 
 /* Демо аккаунты: всё хранится только в этом браузере, у каждого пользователя свои данные */
+// Тестовый режим: вход с любыми данными. Поставь false, чтобы вернуть проверку пароля
+export const TEST_LOGIN = true;
 const normMail = s => s.trim().toLowerCase();
 export const currentUser = () => {
   const mail = read('gromche-session', null);
@@ -50,6 +52,16 @@ export async function register(name, email, password) {
 }
 export async function login(email, password) {
   const mail = normMail(email), user = read('gromche-users', {})[mail];
+  if (TEST_LOGIN) {
+    if (!user) {
+      const users = read('gromche-users', {}), salt = crypto.randomUUID();
+      users[mail] = { name: email.trim().split('@')[0], salt, hash: await hash(password, salt) };
+      write('gromche-users', users);
+    }
+    mergeGuest(mail);
+    write('gromche-session', mail);
+    return '';
+  }
   if (!user || user.hash !== await hash(password, user.salt)) return 'Неверная почта или пароль.';
   mergeGuest(mail);
   write('gromche-session', mail);
@@ -100,12 +112,17 @@ function renderChrome() {
       <div class="bar">
         <a class="logo" href="index.html" aria-label="ГРОМЧЕ, на главную">ГРОМЧЕ</a>
         <nav class="main-nav" aria-label="Основное меню">
-          <a class="nav-catalog" href="catalog.html">Каталог</a>
-          ${Object.entries(GENDERS).map(([g, t]) => `
-            <div class="has-mega">
-              <a href="catalog.html?g=${g}">${t}</a>
-              <div class="mega"><a class="mega-all" href="catalog.html?g=${g}">Смотреть всё</a>${sectionLinks(g)}</div>
-            </div>`).join('')}
+          <div class="has-mega">
+            <a class="nav-catalog" href="catalog.html">Каталог</a>
+            <div class="mega">
+              <a class="mega-all" href="catalog.html">Смотреть всё</a>
+              ${Object.entries(GENDERS).map(([g, t]) => `
+                <div class="has-mega has-sub">
+                  <a href="catalog.html?g=${g}">${t}</a>
+                  <div class="mega"><a class="mega-all" href="catalog.html?g=${g}">Смотреть всё</a>${sectionLinks(g)}</div>
+                </div>`).join('')}
+            </div>
+          </div>
           <a href="catalog.html?new=1">Новинки</a>
           <div class="has-mega">
             <a class="sale-link" href="catalog.html?sale=1">Распродажа</a>
@@ -127,8 +144,10 @@ function renderChrome() {
       </div>
     </header>
     <div class="mobile-menu" id="mobileMenu" hidden>
-      <a class="nav-catalog" href="catalog.html">Каталог</a>
-      ${Object.entries(GENDERS).map(([g, t]) => `<details><summary>${t}</summary><a href="catalog.html?g=${g}">Смотреть всё</a>${sectionLinks(g)}</details>`).join('')}
+      <details><summary class="nav-catalog">Каталог</summary>
+        <a href="catalog.html">Смотреть всё</a>
+        ${Object.entries(GENDERS).map(([g, t]) => `<details class="sub"><summary>${t}</summary><a href="catalog.html?g=${g}">Смотреть всё</a>${sectionLinks(g)}</details>`).join('')}
+      </details>
       <a href="catalog.html?new=1">Новинки</a>
       <details><summary class="sale-link">Распродажа</summary><a href="catalog.html?sale=1">Смотреть всё</a><a href="catalog.html?sale=1&g=women">Женское</a><a href="catalog.html?sale=1&g=men">Мужское</a></details>
       <a href="profile.html">${currentUser() ? 'Профиль' : 'Вход и регистрация'}</a>
@@ -180,7 +199,7 @@ function renderChrome() {
 
   // В меню подсвечивается только страница, на которой находишься
   const here = new URLSearchParams(location.search), page = location.pathname.split('/').pop();
-  const key = page !== 'catalog.html' ? null : here.has('sale') ? 'sale=1' : here.has('new') ? 'new=1' : here.get('g') ? `g=${here.get('g')}` : 'catalog';
+  const key = page !== 'catalog.html' ? null : here.has('sale') ? 'sale=1' : here.has('new') ? 'new=1' : 'catalog';
   document.querySelectorAll('.main-nav a').forEach(a => {
     const q = a.getAttribute('href').split('?')[1];
     const direct = a.closest('.mega') ? false : key === 'catalog' ? !q && a.classList.contains('nav-catalog') : key && q === key;
