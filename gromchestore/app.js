@@ -1,6 +1,7 @@
 // Общее для всех страниц: шапка, подвал, громкость, избранное, корзина
 import { CATS, GENDERS, MENU, STORE, byId, rub } from './data.js';
 import { popCart, startMotion } from './motion.js';
+import './typo.js';
 
 export const $ = s => document.querySelector(s);
 const read = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };

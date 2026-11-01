@@ -113,7 +113,7 @@ h3 { font-size: 16px; line-height: 24px; font-weight: 500; }
 .gates { row-gap: var(--g); }
 .gate { overflow: hidden; }
 .gate .tile { aspect-ratio: 4 / 5; }
-.gate span { font-size: 72px; line-height: 76px; color: var(--wine); }
+.gate span { position: static; display: block; padding-top: 8px; font-size: 72px; line-height: 76px; color: var(--wine); }
 .under { text-decoration: underline; text-underline-offset: 4px; }
 .rail-wrap { position: relative; }
 .arrow { position: absolute; top: calc(50% - 56px); z-index: 2; display: grid; place-items: center; width: 48px; height: 48px; background: var(--ground); transition: background-color 300ms var(--ease), color 300ms var(--ease); }
