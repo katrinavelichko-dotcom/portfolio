@@ -5,7 +5,7 @@ const user = currentUser();
 let mode = 'login';
 
 function renderAccount() {
-  $('#title').textContent = `Привет, ${user.name}`;
+  $('#title').textContent = `Здравствуйте, ${user.name}`;
   document.title = 'Профиль — ГРОМЧЕ';
   $('#account').hidden = false;
   $('#aInfo').textContent = user.mail;
@@ -33,13 +33,13 @@ function setMode(m) {
 }
 
 const RULES = {
-  name: v => v.trim().length >= 2 ? '' : 'Напиши имя, хотя бы две буквы.',
-  email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Проверь почту, например name@mail.ru.',
+  name: v => v.trim().length >= 2 ? '' : 'Напишите имя, хотя бы две буквы.',
+  email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Проверьте почту, например name@mail.ru.',
   password: v => v.length >= 6 ? '' : 'Пароль должен быть не короче 6 символов.',
 };
 function check(input) {
   const free = TEST_LOGIN && mode === 'login';
-  const msg = free ? (input.value.trim() ? '' : 'Введи что нибудь.') : RULES[input.name](input.value), err = input.nextElementSibling;
+  const msg = free ? (input.value.trim() ? '' : 'Введите что нибудь.') : RULES[input.name](input.value), err = input.nextElementSibling;
   err.textContent = msg;
   err.hidden = !msg;
   input.setAttribute('aria-invalid', !!msg);
@@ -48,7 +48,7 @@ function check(input) {
 
 function renderAuth() {
   $('#auth').hidden = false;
-  if (TEST_LOGIN) $('#demoNote').textContent = 'Тестовый режим: для входа подойдут любые почта и пароль. Не используй настоящий пароль.';
+  if (TEST_LOGIN) $('#demoNote').textContent = 'Тестовый режим: для входа подойдут любые почта и пароль. Не используйте настоящий пароль.';
   $('#tabLogin').addEventListener('click', () => setMode('login'));
   $('#tabReg').addEventListener('click', () => setMode('reg'));
   $('#authForm').addEventListener('submit', async e => {

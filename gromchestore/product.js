@@ -22,7 +22,7 @@ $('#product').innerHTML = `
       <div class="size-row" id="sizes">${p.oneSize
         ? '<button class="size" type="button" aria-pressed="true" style="grid-column:1/-1">Один размер</button>'
         : SIZES.map(s => `<button class="size" type="button" aria-pressed="false"${p.sizes.includes(s) ? '' : ' disabled'}>${s}</button>`).join('')}</div>
-      <p class="error" id="sizeError" hidden>Выбери размер, чтобы добавить вещь в корзину.</p>
+      <p class="error" id="sizeError" hidden>Выберите размер, чтобы добавить вещь в корзину.</p>
     </fieldset>
     <div class="buy">
       <div id="buyBox"></div>

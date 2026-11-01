@@ -42,7 +42,7 @@ function mergeGuest(mail) {
 }
 export async function register(name, email, password) {
   const mail = normMail(email), users = read('gromche-users', {});
-  if (users[mail]) return 'Такая почта уже зарегистрирована. Попробуй войти.';
+  if (users[mail]) return 'Такая почта уже зарегистрирована. Попробуйте войти.';
   const salt = crypto.randomUUID();
   users[mail] = { name: name.trim(), salt, hash: await hash(password, salt) };
   write('gromche-users', users);
@@ -181,7 +181,7 @@ function renderChrome() {
       <p class="footer-word" aria-hidden="true">ГРОМЧЕ</p>
     </footer>
     <button class="to-top" id="toTop" type="button" aria-label="Наверх">${ICONS.up}</button>
-    <div class="notice" id="notice" hidden><p>Сайт хранит корзину и избранное только в твоём браузере.</p><button class="btn" id="noticeOk" type="button">Понятно</button></div>
+    <div class="notice" id="notice" hidden><p>Сайт хранит корзину и избранное только в вашем браузере.</p><button class="btn" id="noticeOk" type="button">Понятно</button></div>
     <dialog class="drawer" id="cart" aria-labelledby="cartTitle">
       <div class="drawer-head"><h2 id="cartTitle">Корзина</h2><button class="close" type="button" data-close aria-label="Закрыть"><span></span><span></span></button></div>
       <div class="drawer-body" id="cartBody"></div>
@@ -281,7 +281,7 @@ const emptyView = (title, text) => `<div class="empty"><h3>${title}</h3><p>${tex
 function renderCart() {
   const body = $('#cartBody');
   if (placed) { body.innerHTML = emptyView('Демо заказ оформлен', `Заказ для ${placed} принят в демонстрационном режиме. Деньги не списаны, данные никуда не отправлены.`); return; }
-  if (!cart.length) { body.innerHTML = emptyView('Пока пусто', 'Здесь появятся вещи, которые ты выберешь.'); return; }
+  if (!cart.length) { body.innerHTML = emptyView('Пока пусто', 'Здесь появятся вещи, которые вы выберете.'); return; }
   const sum = cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0), ship = sum >= FREE_FROM ? 0 : DELIVERY;
   body.innerHTML = cart.map((l, i) => {
     const p = byId(l.id);
@@ -305,9 +305,9 @@ function renderCart() {
     </form>`;
 }
 const RULES = {
-  name: v => v.trim().length >= 2 ? '' : 'Напиши имя, хотя бы две буквы.',
+  name: v => v.trim().length >= 2 ? '' : 'Напишите имя, хотя бы две буквы.',
   phone: v => v.replace(/\D/g, '').length >= 10 ? '' : 'Нужен номер из 10 цифр или больше.',
-  email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Проверь почту, например name@mail.ru.',
+  email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Проверьте почту, например name@mail.ru.',
 };
 function check(input) {
   const msg = RULES[input.name](input.value), err = input.nextElementSibling;

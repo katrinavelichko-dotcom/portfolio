@@ -73,7 +73,7 @@ function render() {
   $('#total').textContent = `${list.length} ${ending(list.length)}`;
   $('#reset').hidden = !Object.values(chosen).some(s => s.size) && !from.value && !to.value;
   $('#grid').innerHTML = list.length ? list.map(card).join('')
-    : `<div class="nothing"><h2>Ничего не нашлось</h2><p>Попробуй другое слово или сбрось фильтры.</p><a class="btn" href="catalog.html">Смотреть весь каталог</a></div>`;
+    : `<div class="nothing"><h2>Ничего не нашлось</h2><p>Попробуйте другое слово или сбросьте фильтры.</p><a class="btn" href="catalog.html">Смотреть весь каталог</a></div>`;
 }
 $('#filters').addEventListener('click', e => {
   const b = e.target.closest('.filter-chip');
