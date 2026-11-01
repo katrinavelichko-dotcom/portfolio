@@ -170,7 +170,16 @@ h3 { font-size: 16px; line-height: 24px; font-weight: 500; }
 .card:hover .tile img { transform: scale(1.03); }
 .card h3 a:hover { color: var(--wine); }
 .card p { font-weight: 600; }
-.fav { position: absolute; right: 8px; top: 8px; display: grid; place-items: center; width: 32px; height: 32px; }
+.card-media { position: relative; }
+.quick { display: none; }
+@media (hover: hover) {
+  .quick { position: absolute; left: 8px; right: 8px; bottom: 12px; z-index: 1; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 4px; padding: 4px; background: var(--ground); opacity: 0; transform: translateY(8px); transition: opacity 300ms var(--ease), transform 500ms var(--ease); }
+  .card-media:hover .quick, .quick:focus-within { opacity: 1; transform: none; }
+}
+.quick button { min-height: 40px; font-size: 14px; line-height: 20px; font-weight: 600; transition: background-color 300ms var(--ease), color 300ms var(--ease); }
+.quick button:hover:not(:disabled) { background: var(--wine); color: #fff; }
+.quick button:disabled { opacity: 0.35; text-decoration: line-through; cursor: not-allowed; }
+.fav { position: absolute; right: 2px; top: 2px; display: grid; place-items: center; width: 44px; height: 44px; }
 .fav path { fill: none; stroke: var(--text); stroke-width: 2; transition: fill 300ms var(--ease), stroke 300ms var(--ease); }
 .fav:hover path { stroke: var(--wine); }
 .fav[aria-pressed="true"] path { fill: var(--wine); stroke: var(--wine); }
@@ -196,12 +205,22 @@ h3 { font-size: 16px; line-height: 24px; font-weight: 500; }
 .filter-chip:hover { background: #fff; }
 .filter-chip[aria-pressed="true"] { background: var(--text); color: #fff; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+#fColors { gap: 4px; }
+.swatch { display: grid; place-items: center; width: 40px; height: 40px; }
+.swatch::before { content: ""; width: 28px; height: 28px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(22, 22, 26, 0.16); transition: transform 300ms var(--ease), box-shadow 300ms var(--ease); }
+.swatch:hover::before { transform: scale(1.1); }
+.swatch[aria-pressed="true"]::before { box-shadow: inset 0 0 0 1px rgba(22, 22, 26, 0.16), 0 0 0 2px var(--ground), 0 0 0 4px var(--text); }
+.active-tags { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 16px; }
+.active-tags:empty { display: none; }
+.tag { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 12px; background: var(--text); color: #fff; font-size: 14px; line-height: 20px; transition: background-color 300ms var(--ease); }
+.tag:hover { background: var(--wine); }
 .reset { text-decoration: underline; text-underline-offset: 4px; }
 .reset[hidden] { display: none; }
 .sale-tag { position: absolute; left: 8px; top: 8px; z-index: 1; padding: 4px 8px; background: var(--wine); color: #fff; font-size: 14px; line-height: 20px; font-weight: 700; }
 .tile { position: relative; }
-s { font-weight: 400; opacity: 0.6; }
-.sale-price { color: var(--wine); }
+s { font-weight: 400; opacity: 0.75; }
+.sale-price { color: var(--wine); font-weight: 800; }
+.card .sale-price { font-size: 18px; line-height: 24px; }
 .size:disabled { opacity: 0.4; text-decoration: line-through; cursor: not-allowed; }
 .side a { display: flex; justify-content: space-between; gap: 8px; transition: color 300ms var(--ease); }
 .side a:hover, .side a[aria-current="page"] { color: var(--wine); }
@@ -232,12 +251,13 @@ s { font-weight: 400; opacity: 0.6; }
 .size:hover { background: #fff; }
 .size:active { transform: scale(0.98); }
 .size[aria-pressed="true"] { background: var(--text); color: #fff; }
-.buy { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-#buyBox { grid-column: span 3; display: grid; }
+.buy { display: grid; grid-template-columns: minmax(0, 1fr) 48px; gap: 8px; }
+#buyBox { display: grid; }
+.fav.fav-buy { position: static; width: 48px; height: 48px; background: var(--tile); transition: background-color 300ms var(--ease); }
+.fav.fav-buy:hover { background: #fff; }
 .stepper { display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; min-height: 48px; background: var(--text); color: #fff; font-weight: 600; text-align: center; }
 .stepper button { height: 48px; font-size: 24px; line-height: 32px; transition: background-color 300ms var(--ease); }
 .stepper button:hover { background: var(--wine); }
-.buy .btn-ghost { padding-inline: 4px; font-size: 14px; line-height: 20px; }
 .error { color: var(--error); font-size: 14px; line-height: 20px; }
 .acc { display: grid; gap: 8px; }
 .acc details { background: var(--tile); }
@@ -285,6 +305,13 @@ dialog::backdrop { background: rgba(22, 22, 26, 0.5); }
 .qty button { width: 32px; height: 32px; background: var(--tile); }
 .total { display: flex; justify-content: space-between; font-weight: 600; }
 .empty { display: grid; gap: 16px; justify-items: start; padding-block: 32px; }
+.ship { display: grid; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 500; }
+.ship-bar { height: 4px; background: var(--tile); }
+.ship-bar span { display: block; height: 100%; background: var(--wine); }
+.picks { justify-self: stretch; display: grid; gap: 8px; padding-top: 16px; }
+.picks-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.pick { display: grid; gap: 4px; align-content: start; font-size: 14px; line-height: 20px; }
+.pick:hover { color: var(--wine); }
 .form { display: grid; gap: 12px; }
 .field { display: grid; gap: 4px; }
 .field label { font-weight: 500; }
@@ -353,6 +380,7 @@ dialog::backdrop { background: rgba(22, 22, 26, 0.5); }
   .side-col { grid-column: 1 / -1; gap: 16px; padding-bottom: 16px; }
   .side { display: flex; flex-wrap: wrap; gap: 8px; }
   .side a { padding: 8px 12px; background: var(--tile); }
+  .icon-btn, .burger { flex: none; width: 44px; height: 44px; }
   .filters summary { display: flex; justify-content: space-between; gap: 16px; min-height: 40px; padding: 8px 12px; background: var(--tile); font-weight: 500; }
   .filters summary::after { content: "+"; transition: transform 500ms var(--ease); }
   .filters[open] summary { margin-bottom: 16px; }

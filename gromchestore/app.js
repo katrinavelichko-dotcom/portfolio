@@ -1,5 +1,5 @@
 // Общее для всех страниц: шапка, подвал, громкость, избранное, корзина
-import { CATS, GENDERS, MENU, STORE, byId, rub } from './data.js';
+import { CATS, GENDERS, MENU, PRODUCTS, SIZES, STORE, byId, rub } from './data.js';
 import { popCart, startMotion } from './motion.js';
 import './typo.js';
 
@@ -73,10 +73,10 @@ export const getOrders = () => read(scoped('orders'), []);
 
 /* Громкость: буквы и двое на первом экране. Фон и фото товаров не меняются */
 export const LEVELS = [
-  { to: 25, name: 'Тихо', ground: '#F5F2EC', tile: '#E9E4DA', ink: '#16161A', hint: 'Тихо. База на каждый день: спокойный крой и один цвет.' },
-  { to: 50, name: 'Негромко', ground: '#F2EDE3', tile: '#E6DFD2', ink: '#16161A', hint: 'Негромко. Один акцент: шарф, носки или сумка.' },
-  { to: 75, name: 'Заметно', ground: '#EEE6D8', tile: '#E2D8C6', ink: '#5E1D29', hint: 'Заметно. Горошек рядом с полоской, цвета спорят сдержанно.' },
-  { to: 101, name: 'Громко', ground: '#EADFCD', tile: '#DED0B9', ink: '#7D1E2D', hint: 'Громко. Весь образ собран из акцентов.' },
+  { to: 25, shelf: 35, pick: 'тихие', name: 'Тихо', ground: '#F5F2EC', tile: '#E9E4DA', ink: '#16161A', hint: 'Тихо. База на каждый день: спокойный крой и один цвет.' },
+  { to: 50, shelf: 60, pick: 'негромкие', name: 'Негромко', ground: '#F2EDE3', tile: '#E6DFD2', ink: '#16161A', hint: 'Негромко. Один акцент: шарф, носки или сумка.' },
+  { to: 75, shelf: 80, pick: 'заметные', name: 'Заметно', ground: '#EEE6D8', tile: '#E2D8C6', ink: '#5E1D29', hint: 'Заметно. Горошек рядом с полоской, цвета спорят сдержанно.' },
+  { to: 101, shelf: 101, pick: 'громкие', name: 'Громко', ground: '#EADFCD', tile: '#DED0B9', ink: '#7D1E2D', hint: 'Громко. Весь образ собран из акцентов.' },
 ];
 export const getVolume = () => read('gromche-volume', 35);
 export function setVolume(n) {
@@ -234,11 +234,18 @@ export function toggleFav(id) {
 }
 export const getFavs = () => favs;
 
+export const HEART = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/></svg>';
+
+/* Быстрая покупка: размеры появляются при наведении, на телефоне их нет */
+const quick = p => `<div class="quick">${p.oneSize
+  ? `<button type="button" data-quick="${p.id}" data-size="Один размер">В корзину</button>`
+  : SIZES.map(s => `<button type="button" data-quick="${p.id}" data-size="${s}" aria-label="В корзину, размер ${s}"${p.sizes.includes(s) ? '' : ' disabled'}>${s}</button>`).join('')}</div>`;
+
 /* Карточка в сетке: занимает 3 колонки из 12 */
 export const card = p => `
   <article class="card">
-    <a href="product.html?id=${p.id}"><div class="tile">${p.sale ? `<span class="sale-tag">−${p.sale}%</span>` : ''}<img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" loading="lazy"></div></a>
-    <button class="fav" type="button" data-fav="${p.id}" aria-pressed="${isFav(p.id)}" aria-label="В избранное"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/></svg></button>
+    <div class="card-media"><a href="product.html?id=${p.id}"><div class="tile">${p.sale ? `<span class="sale-tag">−${p.sale}%</span>` : ''}<img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" loading="lazy"></div></a>${quick(p)}</div>
+    <button class="fav" type="button" data-fav="${p.id}" aria-pressed="${isFav(p.id)}" aria-label="В избранное">${HEART}</button>
     <h3><a href="product.html?id=${p.id}">${p.title}</a></h3>
     <p>${p.sale ? `<s>${rub(p.oldPrice)}</s> <span class="sale-price">${rub(p.price)}</span>` : rub(p.price)}</p>
   </article>`;
@@ -247,8 +254,12 @@ document.addEventListener('click', e => {
   if (!b) return;
   const on = toggleFav(b.dataset.fav);
   b.setAttribute('aria-pressed', on);
-  if (!b.classList.contains('fav')) b.textContent = on ? 'В избранном' : 'В избранное';
   document.dispatchEvent(new CustomEvent('favs'));
+});
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-quick]');
+  if (b) addToCart(b.dataset.quick, b.dataset.size);
 });
 
 /* Корзина */
@@ -277,14 +288,22 @@ export function changeQty(id, size, d) {
   saveCart();
   popCart();
 }
-const emptyView = (title, text) => `<div class="empty"><h3>${title}</h3><p>${text}</p><a class="btn" href="catalog.html?new=1">Перейти в каталог</a></div>`;
+const emptyView = (title, text, extra = '') => `<div class="empty"><h3>${title}</h3><p>${text}</p><a class="btn" href="catalog.html?new=1">Перейти в каталог</a>${extra}</div>`;
+// В пустой корзине показываем новинки: две женские и одну мужскую
+function picks() {
+  const fresh = g => PRODUCTS.filter(p => p.fresh && p.g === g);
+  const list = [fresh('women')[0], fresh('men')[0], fresh('women')[1]];
+  return `<div class="picks"><h3>Новинки</h3><div class="picks-row">${list.map(p => `<a class="pick" href="product.html?id=${p.id}"><div class="tile"><img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" loading="lazy"></div><span>${p.title}</span><strong>${rub(p.price)}</strong></a>`).join('')}</div></div>`;
+}
 
 function renderCart() {
   const body = $('#cartBody');
+  if (cart.length) placed = null;
   if (placed) { body.innerHTML = emptyView('Демо заказ оформлен', `Заказ для ${placed} принят в демонстрационном режиме. Деньги не списаны, данные никуда не отправлены.`); return; }
-  if (!cart.length) { body.innerHTML = emptyView('Пока пусто', 'Здесь появятся вещи, которые вы выберете.'); return; }
+  if (!cart.length) { body.innerHTML = emptyView('Пока пусто', 'Здесь появятся вещи, которые вы выберете.', picks()); return; }
   const sum = cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0), ship = sum >= FREE_FROM ? 0 : DELIVERY;
-  body.innerHTML = cart.map((l, i) => {
+  const left = FREE_FROM - sum;
+  body.innerHTML = `<div class="ship"><p>${left > 0 ? `До бесплатной доставки осталось ${rub(left)}` : 'Доставка будет бесплатной'}</p><div class="ship-bar" aria-hidden="true"><span style="width:${Math.min(sum / FREE_FROM * 100, 100)}%"></span></div></div>` + cart.map((l, i) => {
     const p = byId(l.id);
     return `<div class="line">
       <div class="tile"><img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125"></div>

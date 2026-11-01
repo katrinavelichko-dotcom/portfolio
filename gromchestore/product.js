@@ -1,4 +1,4 @@
-import { $, addToCart, card, cartQty, changeQty, isFav } from './app.js';
+import { $, HEART, addToCart, card, cartQty, changeQty, isFav } from './app.js';
 import { CATS, GENDERS, PRODUCTS, SIZES, byId, rub } from './data.js';
 
 const p = byId(new URLSearchParams(location.search).get('id')) || PRODUCTS[0];
@@ -26,7 +26,7 @@ $('#product').innerHTML = `
     </fieldset>
     <div class="buy">
       <div id="buyBox"></div>
-      <button class="btn btn-ghost" type="button" data-fav="${p.id}" aria-pressed="${isFav(p.id)}">${isFav(p.id) ? 'В избранном' : 'В избранное'}</button>
+      <button class="fav fav-buy" type="button" data-fav="${p.id}" aria-pressed="${isFav(p.id)}" aria-label="В избранное">${HEART}</button>
     </div>
     <div class="info-block small">
       <p>${p.desc}</p>
