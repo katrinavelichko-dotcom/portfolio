@@ -39,9 +39,9 @@ arrows();
 
 $('#faqList').innerHTML = FAQ.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join('');
 
-/* Если 3D не запустится, останется обычное слово */
+/* Сначала виден снимок букв, живые встают на его место с первым кадром. Если 3D не запустится, снимок останется */
 import('./letters.js').then(({ mountLetters }) => {
   setLetters = mountLetters($('#letters'), matchMedia('(prefers-reduced-motion: reduce)').matches);
-  $('#word').classList.add('is-3d');
   apply();
+  requestAnimationFrame(() => $('#word').classList.add('is-3d'));
 }).catch(() => {});

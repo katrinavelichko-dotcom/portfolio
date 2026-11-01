@@ -12,12 +12,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
+  <link rel="modulepreload" href="vendor/three.module.min.js">
+  <link rel="modulepreload" href="vendor/RoomEnvironment.js">
+  <link rel="modulepreload" href="letters.js">
   <script type="module" src="home.js"></script>
 </head>
 <body>
   <main id="main">
     <section class="hero" aria-label="ГРОМЧЕ">
-      <h1 class="word" id="word"><span>ГРОМЧЕ</span><canvas id="letters" aria-hidden="true"></canvas></h1>
+      <h1 class="word" id="word"><img src="images/word.webp" alt="ГРОМЧЕ" width="2400" height="500" fetchpriority="high"><canvas id="letters" aria-hidden="true"></canvas></h1>
       <div class="hero-grid">
         <img class="hero-look" src="images/cut-1.png" alt="Девушка в малиновом свитере, шарфе в горошек и широких джинсах" width="800" height="1200" fetchpriority="high">
         <div class="hero-mid">
