@@ -189,6 +189,7 @@ h3 { font-size: 16px; line-height: 24px; font-weight: 500; }
 .side { display: grid; gap: 8px; }
 .filters summary { font-weight: 700; cursor: pointer; list-style: none; padding-bottom: 16px; }
 .filters summary::-webkit-details-marker { display: none; }
+#fCount { display: none; }
 .filter-group { display: grid; gap: 8px; padding-bottom: 24px; }
 .filter-group h2 { font-size: 14px; line-height: 20px; letter-spacing: 0; font-weight: 500; }
 .filter-chip { min-height: 40px; padding: 8px 12px; background: var(--tile); font-size: 14px; line-height: 20px; transition: background-color 300ms var(--ease), color 300ms var(--ease); }
@@ -352,6 +353,11 @@ dialog::backdrop { background: rgba(22, 22, 26, 0.5); }
   .side-col { grid-column: 1 / -1; gap: 16px; padding-bottom: 16px; }
   .side { display: flex; flex-wrap: wrap; gap: 8px; }
   .side a { padding: 8px 12px; background: var(--tile); }
+  .filters summary { display: flex; justify-content: space-between; gap: 16px; min-height: 40px; padding: 8px 12px; background: var(--tile); font-weight: 500; }
+  .filters summary::after { content: "+"; transition: transform 500ms var(--ease); }
+  .filters[open] summary { margin-bottom: 16px; }
+  .filters[open] summary::after { transform: rotate(45deg); }
+  .filters:not([open]) #fCount { display: inline; }
   .gallery { display: flex; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .gallery::-webkit-scrollbar { display: none; }
   .gallery .tile { flex: 0 0 100%; aspect-ratio: 1; scroll-snap-align: start; }

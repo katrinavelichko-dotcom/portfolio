@@ -71,7 +71,9 @@ function render() {
   const list = base.filter(matches).sort(SORT[$('#fSort').value]);
   if (words.length) list.sort((a, b) => titleHit(b) - titleHit(a));
   $('#total').textContent = `${list.length} ${ending(list.length)}`;
-  $('#reset').hidden = !Object.values(chosen).some(s => s.size) && !from.value && !to.value;
+  const count = chosen.size.size + chosen.color.size + (from.value || to.value ? 1 : 0);
+  $('#fCount').textContent = count ? `: ${count}` : '';
+  $('#reset').hidden = !count;
   $('#grid').innerHTML = list.length ? list.map(card).join('')
     : `<div class="nothing"><h2>Ничего не нашлось</h2><p>Попробуйте другое слово или сбросьте фильтры.</p><a class="btn" href="catalog.html">Смотреть весь каталог</a></div>`;
 }
