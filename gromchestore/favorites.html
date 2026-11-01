@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Избранное — ГРОМЧЕ</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module">
+    import { $, card, getFavs } from './app.js';
+    import { byId } from './data.js';
+    function render() {
+      const list = getFavs().map(byId).filter(Boolean);
+      $('#grid').innerHTML = list.length ? list.map(card).join('')
+        : '<div class="nothing"><h2>Здесь пока пусто</h2><p>Нажми на сердечко у вещи, и она появится здесь.</p><a class="btn" href="catalog.html?new=1">Смотреть новинки</a></div>';
+    }
+    document.addEventListener('favs', render);
+    render();
+  </script>
+</head>
+<body>
+  <main id="main" class="catalog">
+    <div class="grid12"><div class="cat-title"><h1 class="big-title">Избранное</h1></div><div class="products" id="grid"></div></div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ГРОМЧЕ — магазин одежды</title>
+  <meta name="description" content="Демонстрационный магазин одежды ГРОМЧЕ: футболки, брюки, свитеры, платья и аксессуары.">
+  <meta name="robots" content="noindex">
+  <meta property="og:title" content="ГРОМЧЕ — магазин одежды">
+  <meta property="og:image" content="images/look-1.jpg">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
+  <script type="module" src="home.js"></script>
+</head>
+<body>
+  <main id="main">
+    <section class="hero" aria-label="ГРОМЧЕ">
+      <h1 class="word" id="word"><span>ГРОМЧЕ</span><canvas id="letters" aria-hidden="true"></canvas></h1>
+      <div class="hero-grid">
+        <img class="hero-look" src="images/cut-1.png" alt="Девушка в малиновом свитере, шарфе в горошек и широких джинсах" width="800" height="1200" fetchpriority="high">
+        <div class="hero-mid">
+         <a class="btn" href="catalog.html?new=1">Смотреть новинки</a>
+          <div class="dial">
+            <div class="dial-row"><label for="vol">Громкость</label><output id="out" for="vol"></output></div>
+            <input id="vol" type="range" min="0" max="100">
+            <p class="dial-hint" id="hint"></p>
+          </div>
+        </div>
+        <img class="hero-look" src="images/cut-2.png" alt="Парень в полосатом свитере, широких чёрных брюках и розовых носках" width="800" height="1200">
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><p id="marquee"></p></div>
+
+    <section class="rail-pin page-section" aria-labelledby="newTitle">
+      <div class="section-head">
+        <h2 class="big-head" id="newTitle">Новинки</h2>
+        <a class="under" href="catalog.html?new=1">Все новинки</a>
+      </div>
+      <div class="rail-wrap">
+        <button class="arrow arrow-prev" id="railPrev" type="button" aria-label="Предыдущие новинки"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="rail-view" id="railView" tabindex="0" aria-label="Лента новинок"><div class="products rail" id="fresh"></div></div>
+        <button class="arrow arrow-next" id="railNext" type="button" aria-label="Следующие новинки"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </section>
+
+    <section class="page-section grid12 gates" aria-label="Каталог: женское и мужское">
+      <a class="gate" href="catalog.html?g=women"><div class="tile"><img src="images/p-w-13.jpg" alt="Девушка в платье в полоску" width="900" height="1125" loading="lazy"></div><span>Женское</span></a>
+      <a class="gate" href="catalog.html?g=men"><div class="tile"><img src="images/look-2.jpg" alt="Парень в полосатом свитере" width="900" height="1125" loading="lazy"></div><span>Мужское</span></a>
+    </section>
+
+    <section class="page-section" id="faq" aria-labelledby="faqTitle">
+      <div class="section-head"><h2 class="big-head" id="faqTitle">Вопросы и ответы</h2></div>
+      <div class="grid12"><div class="faq" id="faqList"></div></div>
+    </section>
+
+    <section class="band" aria-labelledby="bandTitle">
+      <div class="band-text">
+        <h2 id="bandTitle">Примерь дома, плати потом</h2>
+        <p>Курьер подождёт 15 минут, ты платишь только за то, что подошло. На возврат есть 14 дней.</p>
+        <a class="btn btn-light" href="help.html#delivery">Как работает доставка</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

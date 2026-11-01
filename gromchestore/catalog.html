@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Каталог — ГРОМЧЕ</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="catalog.js"></script>
+</head>
+<body>
+  <main id="main" class="catalog">
+    <div class="grid12">
+      <div class="cat-title">
+        <h1 class="big-title" id="title">Каталог</h1>
+        <nav class="tabs" id="tabs" aria-label="Женское или мужское"></nav>
+      </div>
+      <aside class="side-col">
+        <nav class="side" id="side" aria-label="Разделы каталога"></nav>
+        <details class="filters" id="filters" open>
+          <summary>Фильтры</summary>
+          <div class="filter-group"><h2>Размер</h2><div class="chips" id="fSizes"></div></div>
+          <div class="filter-group"><h2>Цвет</h2><div class="chips" id="fColors"></div></div>
+          <div class="filter-group"><h2>Цена, ₽</h2>
+            <div class="price-range">
+              <label>От<input id="priceFrom" type="number" inputmode="numeric" min="0" step="100"></label>
+              <label>До<input id="priceTo" type="number" inputmode="numeric" min="0" step="100"></label>
+            </div>
+          </div>
+          <button class="reset" id="reset" type="button" hidden>Сбросить фильтры</button>
+        </details>
+      </aside>
+      <div class="listing">
+        <div class="tools">
+          <p id="total"></p>
+          <label>Сортировка<select id="fSort">
+            <option value="new">Сначала новинки</option>
+            <option value="asc">Сначала дешевле</option>
+            <option value="desc">Сначала дороже</option>
+          </select></label>
+        </div>
+        <div class="products in-catalog" id="grid"></div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
