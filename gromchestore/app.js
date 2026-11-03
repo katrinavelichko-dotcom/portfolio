@@ -244,9 +244,12 @@ export const getFavs = () => favs;
 export const HEART = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/></svg>';
 
 /* Быстрая покупка: размеры появляются при наведении, на телефоне их нет */
-const quick = p => `<div class="quick">${p.oneSize
-  ? `<button type="button" data-quick="${p.id}" data-size="Один размер">В корзину</button>`
-  : SIZES.map(s => `<button type="button" data-quick="${p.id}" data-size="${s}" aria-label="В корзину, размер ${s}"${p.sizes.includes(s) ? '' : ' disabled'}>${s}</button>`).join('')}</div>`;
+// У вещи одного размера в панели одна кнопка «Один размер». Размеры, которые уже в корзине, тёмные и с количеством
+const quickButtons = p => (p.oneSize ? ['Один размер'] : SIZES).map(s => {
+  const n = cartQty(p.id, s), off = !p.oneSize && !p.sizes.includes(s);
+  return `<button type="button" data-quick="${p.id}" data-size="${s}" aria-pressed="${n > 0}" aria-label="${n ? `${s}: в корзине ${n} шт., добавить ещё` : `В корзину, ${s === 'Один размер' ? 'один размер' : `размер ${s}`}`}"${off ? ' disabled' : ''}>${s}${n ? ` · ${n}` : ''}</button>`;
+}).join('');
+const quick = p => `<div class="quick" data-quick-for="${p.id}">${quickButtons(p)}</div>`;
 
 /* Карточка в сетке: занимает 3 колонки из 12 */
 export const card = p => `
@@ -266,13 +269,13 @@ document.addEventListener('click', e => {
 
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-quick]');
-  if (b) { addToCart(b.dataset.quick, b.dataset.size); b.closest('.quick').classList.remove('open'); b.blur(); return; }
+  // Панель запоминаем заранее: после добавления её кнопки рисуются заново
+  if (b) { const q = b.closest('.quick'); addToCart(b.dataset.quick, b.dataset.size); q.classList.remove('open'); return; }
   // Значок корзины: вещь одного размера сразу в корзину, для остальных открываем размеры
   const t = e.target.closest('[data-to-cart]');
   document.querySelectorAll('.quick.open').forEach(q => { if (!t || q.closest('.card') !== t.closest('.card')) q.classList.remove('open'); });
   if (!t) return;
-  if (byId(t.dataset.toCart).oneSize) addToCart(t.dataset.toCart, 'Один размер');
-  else t.closest('.card').querySelector('.quick').classList.toggle('open');
+  t.closest('.card').querySelector('.quick').classList.toggle('open');
 });
 // Курсор ушёл с фото: размеры прячутся, даже если их открыли нажатием на значок
 document.addEventListener('pointerout', e => {
@@ -297,6 +300,7 @@ function saveCart() {
     b.setAttribute('aria-label', cartLabel(b.dataset.toCart));
     setBadge(b.querySelector('.badge'), n);
   });
+  document.querySelectorAll('[data-quick-for]').forEach(q => { q.innerHTML = quickButtons(byId(q.dataset.quickFor)); });
   document.dispatchEvent(new CustomEvent('cart'));
 }
 export function addToCart(id, size) {
