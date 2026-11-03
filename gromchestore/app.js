@@ -140,7 +140,7 @@ function renderChrome() {
         </nav>
         <div class="actions">
           <form class="search" id="searchBox" action="catalog.html" role="search">
-            <input id="q" name="q" type="search" placeholder="Поиск" aria-label="Поиск по каталогу">
+            <input id="q" name="q" type="search" placeholder="Например, джинсы" aria-label="Поиск по каталогу">
             <button class="icon-btn" type="submit" aria-label="Найти">${ICONS.search}</button>
           </form>
           <button class="icon-btn search-toggle" type="button" id="searchOpen" aria-label="Открыть поиск" aria-expanded="false" aria-controls="searchBox">${ICONS.search}</button>
@@ -360,7 +360,13 @@ function picks() {
 function renderCart() {
   const body = $('#cartBody');
   if (cart.length) placed = null;
-  if (placed) { body.innerHTML = emptyView(`Демо заказ ${placed.no} оформлен`, `${placed.name}, спасибо! Доставка: ${placed.day}, ${placed.time}. Адрес: ${placed.address}. Курьер позвонит за час. Это демонстрация: деньги не списаны, данные никуда не отправлены.`); return; }
+  if (placed) {
+    const where = placed.guest
+      ? `<p class="saved">Заказ сохранён за почтой ${placed.email}. Чтобы видеть его в профиле, войдите или зарегистрируйтесь с этой почтой.</p><a class="under" href="profile.html">Войти или зарегистрироваться</a>`
+      : '<a class="under" href="profile.html">Заказ в профиле</a>';
+    body.innerHTML = emptyView(`Демо заказ ${placed.no} оформлен`, `${placed.name}, спасибо! Доставка: ${placed.day}, ${placed.time}. Адрес: ${placed.address}. Курьер позвонит за час. Это демонстрация: деньги не списаны, данные никуда не отправлены.`, where);
+    return;
+  }
   if (!cart.length) { body.innerHTML = emptyView('Пока пусто', 'Здесь появятся вещи, которые вы выберете.', picks()); return; }
   const sum = cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0), ship = sum >= FREE_FROM ? 0 : DELIVERY;
   const left = FREE_FROM - sum;
@@ -378,12 +384,13 @@ function renderCart() {
     <div class="total"><span>Доставка</span><span>${ship ? rub(ship) : 'Бесплатно'}</span></div>
     <div class="total"><span>Итого</span><span>${rub(sum + ship)}</span></div>
     <form class="form" id="orderForm" novalidate>
-      <div class="field"><label for="fName">Имя</label><input id="fName" name="name" autocomplete="name" required><p class="error" hidden></p></div>
-      <div class="field"><label for="fPhone">Телефон</label><input id="fPhone" name="phone" type="tel" autocomplete="tel" required><p class="error" hidden></p></div>
-      <div class="field"><label for="fEmail">Почта</label><input id="fEmail" name="email" type="email" autocomplete="email" required><p class="error" hidden></p></div>
+      ${currentUser() ? '' : '<p class="small login-hint">Есть аккаунт? <a class="under" href="profile.html">Войдите</a>, или оформите заказ без входа: он сохранится за вашей почтой.</p>'}
+      <div class="field"><label for="fName">Имя</label><input id="fName" name="name" autocomplete="name" placeholder="Анна" required><p class="error" hidden></p></div>
+      <div class="field"><label for="fPhone">Телефон</label><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 900 123-45-67" required><p class="error" hidden></p></div>
+      <div class="field"><label for="fEmail">Почта</label><input id="fEmail" name="email" type="email" autocomplete="email" placeholder="name@mail.ru" required><p class="error" hidden></p></div>
       <h3>Доставка</h3>
       <p class="small">Курьер по Москве. Можно примерить вещи 15 минут и оплатить только то, что подошло.</p>
-      <div class="field"><label for="fAddress">Адрес: улица, дом, квартира</label><input id="fAddress" name="address" autocomplete="street-address" required><p class="error" hidden></p></div>
+      <div class="field"><label for="fAddress">Адрес: улица, дом, квартира</label><input id="fAddress" name="address" autocomplete="street-address" placeholder="ул. Ленина, д. 5, кв. 12" required><p class="error" hidden></p></div>
       <div class="field"><label for="fDay">День</label><select id="fDay" name="day">${days().map(d => `<option>${d}</option>`).join('')}</select></div>
       <div class="field"><label for="fTime">Время</label><select id="fTime" name="time">${SLOTS.map(s => `<option>${s}</option>`).join('')}</select></div>
       <div class="field"><label for="fNote">Комментарий для курьера</label><textarea id="fNote" name="note" rows="2" placeholder="Подъезд, этаж, код домофона"></textarea></div>
@@ -417,6 +424,8 @@ function restoreDraft() {
   let d = {};
   try { d = JSON.parse(sessionStorage.getItem(DRAFT)) || {}; } catch {}
   if (!f) return;
+  const u = currentUser();
+  if (u) d = { name: u.name, email: u.mail, ...d };
   for (const [k, v] of Object.entries(d)) {
     const el = f.elements[k];
     if (!el || (el.tagName === 'SELECT' && ![...el.options].some(o => o.value === v))) continue;
@@ -452,7 +461,10 @@ function bindCart() {
       day: f.day.value, time: f.time.value, note: esc(f.note.value), ship, total: sum + ship,
       items: cart.map(l => ({ id: l.id, title: byId(l.id).title, size: l.size, qty: l.qty, price: byId(l.id).price })),
     };
-    if (currentUser()) write(scoped('orders'), [placed, ...getOrders()]);
+    // Без входа заказ сохраняется за почтой из формы и появится в профиле, когда человек войдёт с этой почтой
+    placed.guest = !currentUser();
+    const key = placed.guest ? `gromche-orders:${normMail(f.email.value)}` : scoped('orders');
+    write(key, [placed, ...read(key, [])]);
     try { sessionStorage.removeItem(DRAFT); } catch {}
     cart = [];
     saveCart();
