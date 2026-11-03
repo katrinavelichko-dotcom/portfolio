@@ -352,6 +352,10 @@ dialog::backdrop { background: rgba(22, 22, 26, 0.5); }
 .order-body { display: grid; gap: 16px; padding: 0 16px 16px; }
 .order-info { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; font-size: 14px; line-height: 20px; }
 .order-info dt { opacity: 0.75; }
+.order-cancel { display: grid; gap: 8px; }
+.order-cancel-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.order.cancelled summary > strong { text-decoration: line-through; opacity: 0.6; }
+.order.cancelled .order-status { color: var(--wine); font-weight: 600; }
 .field select { min-height: 48px; padding: 8px 12px; border: 0; background: #fff; font-size: 16px; }
 .cart-rows { display: grid; gap: 16px; max-width: 560px; }
 

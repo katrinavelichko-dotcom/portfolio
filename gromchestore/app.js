@@ -70,6 +70,13 @@ export async function login(email, password) {
 }
 export function logout() { drop('gromche-session'); }
 export const getOrders = () => read(scoped('orders'), []);
+// Отменённый заказ остаётся в списке с пометкой
+export function cancelOrder(i) {
+  const orders = getOrders();
+  if (!orders[i]) return;
+  orders[i].cancelled = new Date().toLocaleDateString('ru-RU');
+  write(scoped('orders'), orders);
+}
 
 /* Громкость: буквы и двое на первом экране. Фон и фото товаров не меняются */
 export const LEVELS = [
