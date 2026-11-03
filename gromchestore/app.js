@@ -243,12 +243,24 @@ export const getFavs = () => favs;
 
 export const HEART = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/></svg>';
 
-/* Быстрая покупка: размеры появляются при наведении, на телефоне их нет */
+/* Быстрая покупка: на компьютере размеры появляются при наведении, на телефоне по значку корзины */
 // У вещи одного размера в панели одна кнопка «Один размер». Размеры, которые уже в корзине, тёмные и с количеством
-const quickButtons = p => (p.oneSize ? ['Один размер'] : SIZES).map(s => {
-  const n = cartQty(p.id, s), off = !p.oneSize && !p.sizes.includes(s);
-  return `<button type="button" data-quick="${p.id}" data-size="${s}" aria-pressed="${n > 0}" aria-label="${n ? `${s}: в корзине ${n} шт., добавить ещё` : `В корзину, ${s === 'Один размер' ? 'один размер' : `размер ${s}`}`}"${off ? ' disabled' : ''}>${s}${n ? ` · ${n}` : ''}</button>`;
-}).join('');
+// Нажатие на размер, который уже в корзине, открывает счётчик: минусом можно убрать вещь, не заходя в корзину
+const quickButtons = (p, sel) => {
+  const n = sel && cartQty(p.id, sel);
+  // Нажатие на саму надпись с количеством возвращает к размерам
+  if (n) return `<button type="button" data-quick-step="-1" aria-label="Убрать одну штуку">−</button><button type="button" class="q-count" data-quick-back aria-label="${sel}: в корзине ${n} шт. Назад к размерам">${sel} · ${n}</button><button type="button" data-quick-step="1" aria-label="Добавить ещё одну">+</button>`;
+  return (p.oneSize ? ['Один размер'] : SIZES).map(s => {
+    const k = cartQty(p.id, s), off = !p.oneSize && !p.sizes.includes(s);
+    return `<button type="button" data-quick="${p.id}" data-size="${s}" aria-pressed="${k > 0}" aria-label="${k ? `${s}: в корзине ${k} шт. Изменить количество` : `В корзину, ${s === 'Один размер' ? 'один размер' : `размер ${s}`}`}"${off ? ' disabled' : ''}>${s}${k ? ` · ${k}` : ''}</button>`;
+  }).join('');
+};
+function drawQuick(q) {
+  const p = byId(q.dataset.quickFor);
+  if (q.dataset.sel && !cartQty(p.id, q.dataset.sel)) delete q.dataset.sel;
+  q.classList.toggle('step', !!q.dataset.sel);
+  q.innerHTML = quickButtons(p, q.dataset.sel);
+}
 const quick = p => `<div class="quick" data-quick-for="${p.id}">${quickButtons(p)}</div>`;
 
 /* Карточка в сетке: занимает 3 колонки из 12 */
@@ -268,9 +280,15 @@ document.addEventListener('click', e => {
 });
 
 document.addEventListener('click', e => {
-  const b = e.target.closest('[data-quick]');
-  // Панель запоминаем заранее: после добавления её кнопки рисуются заново
-  if (b) { const q = b.closest('.quick'); addToCart(b.dataset.quick, b.dataset.size); q.classList.remove('open'); return; }
+  const q = e.target.closest('.quick');
+  if (q) {
+    const b = e.target.closest('[data-quick]'), step = e.target.closest('[data-quick-step]');
+    if (b && cartQty(b.dataset.quick, b.dataset.size)) { q.dataset.sel = b.dataset.size; drawQuick(q); }
+    else if (b) { addToCart(b.dataset.quick, b.dataset.size); q.classList.remove('open'); }
+    else if (step) changeQty(q.dataset.quickFor, q.dataset.sel, +step.dataset.quickStep);
+    else if (e.target.closest('[data-quick-back]')) { delete q.dataset.sel; drawQuick(q); }
+    return;
+  }
   // Значок корзины: вещь одного размера сразу в корзину, для остальных открываем размеры
   const t = e.target.closest('[data-to-cart]');
   document.querySelectorAll('.quick.open').forEach(q => { if (!t || q.closest('.card') !== t.closest('.card')) q.classList.remove('open'); });
@@ -280,7 +298,10 @@ document.addEventListener('click', e => {
 // Курсор ушёл с фото: размеры прячутся, даже если их открыли нажатием на значок
 document.addEventListener('pointerout', e => {
   const m = e.target.closest?.('.card-media');
-  if (m && e.pointerType === 'mouse' && !m.contains(e.relatedTarget)) m.querySelector('.quick').classList.remove('open');
+  if (!m || e.pointerType !== 'mouse' || m.contains(e.relatedTarget)) return;
+  const q = m.querySelector('.quick');
+  q.classList.remove('open');
+  if (q.dataset.sel) { delete q.dataset.sel; drawQuick(q); }
 });
 
 /* Корзина */
@@ -300,7 +321,7 @@ function saveCart() {
     b.setAttribute('aria-label', cartLabel(b.dataset.toCart));
     setBadge(b.querySelector('.badge'), n);
   });
-  document.querySelectorAll('[data-quick-for]').forEach(q => { q.innerHTML = quickButtons(byId(q.dataset.quickFor)); });
+  document.querySelectorAll('[data-quick-for]').forEach(drawQuick);
   document.dispatchEvent(new CustomEvent('cart'));
 }
 export function addToCart(id, size) {
