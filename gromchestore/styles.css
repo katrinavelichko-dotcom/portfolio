@@ -124,7 +124,7 @@ h3 { font-size: 16px; line-height: 24px; font-weight: 500; }
 .arrow path { fill: none; stroke: currentColor; stroke-width: 2; }
 .rail-view { overflow-x: auto; padding-inline: var(--m); scroll-snap-type: x proximity; scroll-padding-inline: var(--m); scrollbar-width: none; }
 .rail-view::-webkit-scrollbar { display: none; }
-.products.rail { display: flex; gap: var(--g); width: max-content; }
+.products.rail { display: flex; gap: 32px; width: max-content; }
 .rail .card { margin-bottom: 0; scroll-snap-align: start; }
 .rail .tile { height: calc(100svh - 240px); min-height: 480px; }
 .band { margin-top: 96px; padding: 96px var(--m); background: var(--wine); color: var(--ground); }
@@ -171,30 +171,31 @@ h3 { font-size: 16px; line-height: 24px; font-weight: 500; }
 .card h3 a:hover { color: var(--wine); }
 .card p { font-weight: 600; }
 .card-media { position: relative; }
-.quick { position: absolute; left: 8px; right: 8px; bottom: 12px; z-index: 1; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 4px; padding: 4px; background: var(--ground); opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 300ms var(--ease), transform 500ms var(--ease); }
+.quick { position: absolute; left: 8px; right: 56px; bottom: 12px; z-index: 1; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 4px; padding: 4px; background: var(--ground); opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 300ms var(--ease), transform 500ms var(--ease); }
 .quick.open { opacity: 1; pointer-events: auto; transform: none; }
 @media (hover: hover) {
   .card-media:hover .quick, .quick:focus-within { opacity: 1; pointer-events: auto; transform: none; }
 }
 .card-foot { display: flex; justify-content: space-between; align-items: start; gap: 8px; }
 .card-foot > div { display: grid; gap: 4px; min-width: 0; }
-.to-cart { position: relative; flex: none; display: grid; place-items: center; width: 44px; height: 44px; margin: -8px -10px 0 0; transition: color 300ms var(--ease); }
-.to-cart .badge { right: 2px; top: 2px; }
+/* Значок корзины в углу фото: сразу видно, к какой вещи он относится */
+.to-cart { position: absolute; right: 8px; bottom: 12px; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; background: var(--ground); transition: color 300ms var(--ease), background-color 300ms var(--ease); }
+.to-cart .badge { right: -6px; top: -6px; }
 .to-cart path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .to-cart:hover { color: var(--wine); }
 .to-cart[aria-pressed="true"] { color: var(--wine); }
-.quick button { min-height: 40px; font-size: 14px; line-height: 20px; font-weight: 600; transition: background-color 300ms var(--ease), color 300ms var(--ease); }
+.quick button { min-height: 36px; font-size: 14px; line-height: 20px; font-weight: 600; transition: background-color 300ms var(--ease), color 300ms var(--ease); }
 .quick button:hover:not(:disabled) { background: var(--wine); color: #fff; }
 .quick button:disabled { opacity: 0.35; text-decoration: line-through; cursor: not-allowed; }
 .fav { position: absolute; right: 2px; top: 2px; display: grid; place-items: center; width: 44px; height: 44px; }
 .fav path { fill: none; stroke: var(--text); stroke-width: 2; transition: fill 300ms var(--ease), stroke 300ms var(--ease); }
 .fav:hover path { stroke: var(--wine); }
 .fav[aria-pressed="true"] path { fill: var(--wine); stroke: var(--wine); }
-.products { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--g); }
+.products { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 32px; }
 
 /* Каталог */
 .catalog { padding-top: 24px; }
-.back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding-inline: var(--m); font-weight: 600; transition: color 300ms var(--ease); }
+.back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin: 8px 0 12px; padding-inline: var(--m); font-weight: 600; transition: color 300ms var(--ease); }
 .back:hover { color: var(--wine); }
 .crumbs { padding: 0 var(--m) 16px; font-size: 14px; line-height: 20px; }
 .crumbs a { text-decoration: underline; text-underline-offset: 4px; }
@@ -387,6 +388,8 @@ dialog::backdrop { background: rgba(22, 22, 26, 0.5); }
   .rail .tile { width: 80vw; }
   .rail-view { scroll-snap-type: x mandatory; padding-inline: 10vw; scroll-padding-inline: 10vw; }
   .rail .card { scroll-snap-align: center; }
+  .products, .products.in-catalog { column-gap: 24px; }
+  .products.rail { gap: 24px; }
   .band { padding-block: 64px; }
   .main-nav { display: none; }
   .burger { display: block; }

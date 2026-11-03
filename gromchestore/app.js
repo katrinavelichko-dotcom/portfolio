@@ -244,11 +244,10 @@ const quick = p => `<div class="quick">${p.oneSize
 /* Карточка в сетке: занимает 3 колонки из 12 */
 export const card = p => `
   <article class="card">
-    <div class="card-media"><a href="product.html?id=${p.id}"><div class="tile">${p.sale ? `<span class="sale-tag">−${p.sale}%</span>` : ''}<img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" loading="lazy"></div></a>${quick(p)}</div>
+    <div class="card-media"><a href="product.html?id=${p.id}"><div class="tile">${p.sale ? `<span class="sale-tag">−${p.sale}%</span>` : ''}<img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" loading="lazy"></div></a>${quick(p)}<button class="to-cart" type="button" data-to-cart="${p.id}" aria-pressed="${inCart(p.id) > 0}" aria-label="${cartLabel(p.id)}">${ICONS.bag}<span class="badge"${inCart(p.id) ? '' : ' hidden'}>${inCart(p.id)}</span></button></div>
     <button class="fav" type="button" data-fav="${p.id}" aria-pressed="${isFav(p.id)}" aria-label="В избранное">${HEART}</button>
     <div class="card-foot"><div><h3><a href="product.html?id=${p.id}">${p.title}</a></h3>
-    <p>${p.sale ? `<s>${rub(p.oldPrice)}</s> <span class="sale-price">${rub(p.price)}</span>` : rub(p.price)}</p></div>
-    <button class="to-cart" type="button" data-to-cart="${p.id}" aria-pressed="${inCart(p.id) > 0}" aria-label="${cartLabel(p.id)}">${ICONS.bag}<span class="badge"${inCart(p.id) ? '' : ' hidden'}>${inCart(p.id)}</span></button></div>
+    <p>${p.sale ? `<s>${rub(p.oldPrice)}</s> <span class="sale-price">${rub(p.price)}</span>` : rub(p.price)}</p></div></div>
   </article>`;
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-fav]');
@@ -412,7 +411,24 @@ export function toast(text) {
 
 renderChrome();
 bindCart();
-addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
+// «Назад» в браузере: страница возвращается из памяти на то же место, обновляем только корзину и избранное
+addEventListener('pageshow', e => {
+  if (!e.persisted) return;
+  favs = read(scoped('favs'), []);
+  cart = read(scoped('cart'), []).filter(l => byId(l.id));
+  setBadge($('#favCount'), favs.length);
+  document.querySelectorAll('[data-fav]').forEach(b => b.setAttribute('aria-pressed', isFav(b.dataset.fav)));
+  saveCart();
+  document.dispatchEvent(new CustomEvent('favs'));
+});
+// Если браузер всё же загрузил страницу заново, сами возвращаем прокрутку туда, где человек был
+const scrollKey = `gromche-scroll:${location.pathname}${location.search}`;
+addEventListener('pagehide', () => { try { sessionStorage.setItem(scrollKey, String(scrollY)); } catch {} });
+if (performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
+  let y = 0;
+  try { y = +sessionStorage.getItem(scrollKey) || 0; } catch {}
+  if (y) { history.scrollRestoration = 'manual'; requestAnimationFrame(() => scrollTo(0, y)); }
+}
 saveCart();
 setBadge($('#favCount'), favs.length);
 // Даём странице дорисовать товары, потом включаем анимацию

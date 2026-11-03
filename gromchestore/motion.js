@@ -45,7 +45,8 @@ function scrollMotion() {
   const cards = gsap.utils.toArray('.card:not(.rail .card)');
   if (cards.length) {
     gsap.set(cards, { y: 48, opacity: 0 });
-    ScrollTrigger.batch(cards, { start: 'top 92%', once: true, onEnter: b => gsap.to(b, { y: 0, opacity: 1, duration: 0.8, ease: EASE, stagger: 0.08 }) });
+    const show = b => gsap.to(b, { y: 0, opacity: 1, duration: 0.8, ease: EASE, stagger: 0.08 });
+    ScrollTrigger.batch(cards, { start: 'top 92%', once: true, onEnter: show, onEnterBack: show });
     // На телефоне высота экрана меняется при прокрутке: пересчитываем точки появления, когда всё загрузилось
     addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
   }
