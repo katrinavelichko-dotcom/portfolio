@@ -266,13 +266,18 @@ document.addEventListener('click', e => {
 
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-quick]');
-  if (b) { addToCart(b.dataset.quick, b.dataset.size); b.closest('.quick').classList.remove('open'); return; }
+  if (b) { addToCart(b.dataset.quick, b.dataset.size); b.closest('.quick').classList.remove('open'); b.blur(); return; }
   // Значок корзины: вещь одного размера сразу в корзину, для остальных открываем размеры
   const t = e.target.closest('[data-to-cart]');
   document.querySelectorAll('.quick.open').forEach(q => { if (!t || q.closest('.card') !== t.closest('.card')) q.classList.remove('open'); });
   if (!t) return;
   if (byId(t.dataset.toCart).oneSize) addToCart(t.dataset.toCart, 'Один размер');
   else t.closest('.card').querySelector('.quick').classList.toggle('open');
+});
+// Курсор ушёл с фото: размеры прячутся, даже если их открыли нажатием на значок
+document.addEventListener('pointerout', e => {
+  const m = e.target.closest?.('.card-media');
+  if (m && e.pointerType === 'mouse' && !m.contains(e.relatedTarget)) m.querySelector('.quick').classList.remove('open');
 });
 
 /* Корзина */
@@ -360,6 +365,7 @@ function renderCart() {
       <button class="btn" type="submit">Оформить демо заказ</button>
       <p class="small">Это демонстрация: оплаты нет, данные никуда не отправляются.</p>
     </form>`;
+  restoreDraft();
 }
 const RULES = {
   name: v => v.trim().length >= 2 ? '' : 'Напишите имя, хотя бы две буквы.',
@@ -374,11 +380,32 @@ function check(input) {
   input.setAttribute('aria-invalid', !!msg);
   return !msg;
 }
+// Введённые при оформлении данные живут, пока открыта вкладка: не пропадают при закрытии корзины и смене количества
+const DRAFT = 'gromche-draft';
+function saveDraft(f) {
+  const d = {};
+  for (const el of f.elements) if (el.name) d[el.name] = el.value;
+  try { sessionStorage.setItem(DRAFT, JSON.stringify(d)); } catch {}
+}
+function restoreDraft() {
+  const f = $('#orderForm');
+  let d = {};
+  try { d = JSON.parse(sessionStorage.getItem(DRAFT)) || {}; } catch {}
+  if (!f) return;
+  for (const [k, v] of Object.entries(d)) {
+    const el = f.elements[k];
+    if (!el || (el.tagName === 'SELECT' && ![...el.options].some(o => o.value === v))) continue;
+    el.value = v;
+  }
+}
+
 function bindCart() {
   const dlg = $('#cart'), body = $('#cartBody');
   $('#cartOpen').addEventListener('click', () => { renderCart(); dlg.showModal(); document.documentElement.classList.add('lock'); });
   dlg.addEventListener('close', () => document.documentElement.classList.remove('lock'));
-  dlg.addEventListener('click', e => { if (e.target === dlg || e.target.closest('[data-close]')) dlg.close(); });
+  // Корзина закрывается только крестиком или клавишей Esc, нажатие мимо её не закрывает
+  dlg.addEventListener('click', e => { if (e.target.closest('[data-close]')) dlg.close(); });
+  body.addEventListener('input', e => { if (e.target.form?.id === 'orderForm') saveDraft(e.target.form); });
   body.addEventListener('click', e => {
     const q = e.target.closest('[data-qty]');
     if (!q) return;
@@ -401,6 +428,7 @@ function bindCart() {
       items: cart.map(l => ({ id: l.id, title: byId(l.id).title, size: l.size, qty: l.qty, price: byId(l.id).price })),
     };
     if (currentUser()) write(scoped('orders'), [placed, ...getOrders()]);
+    try { sessionStorage.removeItem(DRAFT); } catch {}
     cart = [];
     saveCart();
     renderCart();
