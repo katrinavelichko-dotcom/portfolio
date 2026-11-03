@@ -1,4 +1,4 @@
-import { $, HEART, addToCart, card, cartQty, changeQty, isFav } from './app.js';
+import { $, HEART, addToCart, card, cartQty, changeQty, getCart, isFav } from './app.js';
 import { GENDERS, PRODUCTS, SIZES, byId, catName, rub } from './data.js';
 
 const p = byId(new URLSearchParams(location.search).get('id')) || PRODUCTS[0];
@@ -6,6 +6,12 @@ document.title = `${p.title} — ГРОМЧЕ`;
 const img = (cls, loading = '') => `<div class="tile ${cls}"><img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" ${loading}></div>`;
 
 $('#crumbs').innerHTML = `<a href="catalog.html?g=${p.g}">${GENDERS[p.g]}</a> / <a href="catalog.html?g=${p.g}&cat=${p.cat}">${catName(p.cat, p.g)}</a> / ${p.title}`;
+// Назад туда, откуда пришли; если открыли по ссылке, то в раздел вещи
+const back = $('#back');
+back.href = `catalog.html?g=${p.g}&cat=${p.cat}`;
+back.addEventListener('click', e => {
+  if (document.referrer.startsWith(location.origin) && history.length > 1) { e.preventDefault(); history.back(); }
+});
 $('#product').innerHTML = `
   <div class="gallery-wrap">
     <div class="gallery" id="gallery">${img('')}${img('detail')}${img('detail')}</div>
@@ -16,6 +22,7 @@ $('#product').innerHTML = `
       <h1>${p.title}</h1>
       <p class="price">${p.sale ? `<s>${rub(p.oldPrice)}</s> <span class="sale-price">${rub(p.price)}</span>` : rub(p.price)}</p>
       <p>Цвет: ${p.color}</p>
+      <p class="in-cart" id="inCart" hidden></p>
     </div>
     <fieldset class="sizes">
       <legend>Размер</legend>
@@ -52,6 +59,12 @@ gallery.addEventListener('scroll', () => {
 }, { passive: true });
 
 let size = p.oneSize ? 'Один размер' : null;
+// Если вещь уже в корзине, сразу выбран её размер и видно количество
+const already = getCart().find(l => l.id === p.id);
+if (!p.oneSize && already) {
+  size = already.size;
+  document.querySelectorAll('#sizes .size').forEach(x => x.setAttribute('aria-pressed', x.textContent === size));
+}
 $('#sizes').addEventListener('click', e => {
   const b = e.target.closest('.size');
   if (!b || p.oneSize) return;
@@ -61,11 +74,15 @@ $('#sizes').addEventListener('click', e => {
   renderBuy();
 });
 function renderBuy() {
+  const lines = getCart().filter(l => l.id === p.id);
+  $('#inCart').hidden = !lines.length;
+  $('#inCart').innerHTML = `В корзине: ${lines.map(l => p.oneSize ? `${l.qty} шт.` : `${l.size} — ${l.qty} шт.`).join(', ')} · <button type="button" class="under" id="openCart">Открыть корзину</button>`;
   const n = size ? cartQty(p.id, size) : 0;
   $('#buyBox').innerHTML = n
     ? `<div class="stepper"><button type="button" data-step="-1" aria-label="Убрать одну штуку">−</button><span>В корзине: ${n}</span><button type="button" data-step="1" aria-label="Добавить ещё одну">+</button></div>`
     : '<button class="btn" id="add" type="button">В корзину</button>';
 }
+$('#inCart').addEventListener('click', e => { if (e.target.closest('#openCart')) $('#cartOpen').click(); });
 $('#buyBox').addEventListener('click', e => {
   const step = e.target.closest('[data-step]');
   if (step) { changeQty(p.id, size, +step.dataset.step); return; }

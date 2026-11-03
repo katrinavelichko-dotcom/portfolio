@@ -46,6 +46,8 @@ function scrollMotion() {
   if (cards.length) {
     gsap.set(cards, { y: 48, opacity: 0 });
     ScrollTrigger.batch(cards, { start: 'top 92%', once: true, onEnter: b => gsap.to(b, { y: 0, opacity: 1, duration: 0.8, ease: EASE, stagger: 0.08 }) });
+    // На телефоне высота экрана меняется при прокрутке: пересчитываем точки появления, когда всё загрузилось
+    addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
   }
 
   gsap.from('.footer-word', { yPercent: 32, ease: 'none', scrollTrigger: { trigger: '.site-footer', start: 'top bottom', end: 'bottom bottom', scrub: 1 } });
@@ -72,6 +74,7 @@ export async function startMotion() {
     await load('vendor/ScrollTrigger.min.js');
   } catch { return; }
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ ignoreMobileResize: true });
   pageIntro();
   scrollMotion();
   marquee();

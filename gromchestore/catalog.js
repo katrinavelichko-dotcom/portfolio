@@ -41,7 +41,8 @@ const link = (gender, c) => {
 $('#tabs').innerHTML = `<a href="${link(null, cat)}"${!g ? ' aria-current="page"' : ''}>Всё</a>` + Object.entries(GENDERS).map(([k, t]) =>
   `<a href="${link(k, MENU[k].includes(cat) ? cat : null)}"${k === g ? ' aria-current="page"' : ''}>${t}</a>`).join('');
 
-$('#side').innerHTML = `<a href="${link(g)}"${!cat ? ' aria-current="page"' : ''}>Все вещи</a>`
+const allLabel = onlyNew ? 'Все новинки' : onlySale ? 'Вся распродажа' : level ? 'Вся подборка' : 'Все вещи';
+$('#side').innerHTML = `<a href="${link(g)}"${!cat ? ' aria-current="page"' : ''}>${allLabel}</a>`
   + (g ? MENU[g] : Object.keys(CATS)).map(c => `<a href="${link(g, c)}"${c === cat ? ' aria-current="page"' : ''}>${catName(c, g)}</a>`).join('');
 
 /* Фильтры: можно выбрать несколько значений */

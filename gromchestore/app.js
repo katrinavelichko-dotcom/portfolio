@@ -246,9 +246,9 @@ export const card = p => `
   <article class="card">
     <div class="card-media"><a href="product.html?id=${p.id}"><div class="tile">${p.sale ? `<span class="sale-tag">−${p.sale}%</span>` : ''}<img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" loading="lazy"></div></a>${quick(p)}</div>
     <button class="fav" type="button" data-fav="${p.id}" aria-pressed="${isFav(p.id)}" aria-label="В избранное">${HEART}</button>
-    <button class="to-cart" type="button" data-to-cart="${p.id}" aria-pressed="${inCart(p.id)}" aria-label="${inCart(p.id) ? 'Уже в корзине, добавить ещё' : 'Добавить в корзину'}">${ICONS.bag}</button>
-    <h3><a href="product.html?id=${p.id}">${p.title}</a></h3>
-    <p>${p.sale ? `<s>${rub(p.oldPrice)}</s> <span class="sale-price">${rub(p.price)}</span>` : rub(p.price)}</p>
+    <div class="card-foot"><div><h3><a href="product.html?id=${p.id}">${p.title}</a></h3>
+    <p>${p.sale ? `<s>${rub(p.oldPrice)}</s> <span class="sale-price">${rub(p.price)}</span>` : rub(p.price)}</p></div>
+    <button class="to-cart" type="button" data-to-cart="${p.id}" aria-pressed="${inCart(p.id) > 0}" aria-label="${cartLabel(p.id)}">${ICONS.bag}<span class="badge"${inCart(p.id) ? '' : ' hidden'}>${inCart(p.id)}</span></button></div>
   </article>`;
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-fav]');
@@ -273,15 +273,18 @@ document.addEventListener('click', e => {
 const DELIVERY = 390, FREE_FROM = 10000;
 let cart = read(scoped('cart'), []).filter(l => byId(l.id)), placed = null;
 export const getCart = () => cart;
-const inCart = id => cart.some(l => l.id === id);
+// Сколько штук этой вещи в корзине, во всех размерах
+export const inCart = id => cart.filter(l => l.id === id).reduce((n, l) => n + l.qty, 0);
+const cartLabel = id => inCart(id) ? `В корзине: ${inCart(id)} шт. Добавить ещё` : 'Добавить в корзину';
 
 function saveCart() {
   write(scoped('cart'), cart);
   setBadge($('#cartCount'), cart.reduce((n, l) => n + l.qty, 0));
   document.querySelectorAll('[data-to-cart]').forEach(b => {
-    const on = inCart(b.dataset.toCart);
-    b.setAttribute('aria-pressed', on);
-    b.setAttribute('aria-label', on ? 'Уже в корзине, добавить ещё' : 'Добавить в корзину');
+    const n = inCart(b.dataset.toCart);
+    b.setAttribute('aria-pressed', n > 0);
+    b.setAttribute('aria-label', cartLabel(b.dataset.toCart));
+    setBadge(b.querySelector('.badge'), n);
   });
   document.dispatchEvent(new CustomEvent('cart'));
 }
