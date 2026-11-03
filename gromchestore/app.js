@@ -1,5 +1,5 @@
 // Общее для всех страниц: шапка, подвал, громкость, избранное, корзина
-import { CATS, GENDERS, MENU, PRODUCTS, SIZES, STORE, byId, rub } from './data.js';
+import { GENDERS, MENU, PRODUCTS, SIZES, STORE, byId, catName, rub } from './data.js';
 import { popCart, startMotion } from './motion.js';
 import './typo.js';
 
@@ -73,10 +73,10 @@ export const getOrders = () => read(scoped('orders'), []);
 
 /* Громкость: буквы и двое на первом экране. Фон и фото товаров не меняются */
 export const LEVELS = [
-  { to: 25, shelf: 35, pick: 'тихие', name: 'Тихо', ground: '#F5F2EC', tile: '#E9E4DA', ink: '#16161A', hint: 'Тихо. База на каждый день: спокойный крой и один цвет.' },
-  { to: 50, shelf: 60, pick: 'негромкие', name: 'Негромко', ground: '#F2EDE3', tile: '#E6DFD2', ink: '#16161A', hint: 'Негромко. Один акцент: шарф, носки или сумка.' },
-  { to: 75, shelf: 80, pick: 'заметные', name: 'Заметно', ground: '#EEE6D8', tile: '#E2D8C6', ink: '#5E1D29', hint: 'Заметно. Горошек рядом с полоской, цвета спорят сдержанно.' },
-  { to: 101, shelf: 101, pick: 'громкие', name: 'Громко', ground: '#EADFCD', tile: '#DED0B9', ink: '#7D1E2D', hint: 'Громко. Весь образ собран из акцентов.' },
+  { to: 25, shelf: 35, pick: 'базовые вещи', name: 'Тихо', ground: '#F5F2EC', tile: '#E9E4DA', ink: '#16161A', hint: 'Тихо. База на каждый день: спокойный крой и один цвет.' },
+  { to: 50, shelf: 60, pick: 'вещи с акцентом', name: 'Негромко', ground: '#F2EDE3', tile: '#E6DFD2', ink: '#16161A', hint: 'Негромко. Один акцент: шарф, носки или сумка.' },
+  { to: 75, shelf: 80, pick: 'смелые вещи', name: 'Заметно', ground: '#EEE6D8', tile: '#E2D8C6', ink: '#5E1D29', hint: 'Заметно. Горошек рядом с полоской, цвета спорят сдержанно.' },
+  { to: 101, shelf: 101, pick: 'яркие вещи', name: 'Громко', ground: '#EADFCD', tile: '#DED0B9', ink: '#7D1E2D', hint: 'Громко. Весь образ собран из акцентов.' },
 ];
 export const getVolume = () => read('gromche-volume', 35);
 export function setVolume(n) {
@@ -104,7 +104,7 @@ function setBadge(el, n) {
   el.textContent = n;
   el.hidden = !n;
 }
-const sectionLinks = g => MENU[g].map(c => `<a href="catalog.html?g=${g}&cat=${c}">${CATS[c]}</a>`).join('');
+const sectionLinks = g => MENU[g].map(c => `<a href="catalog.html?g=${g}&cat=${c}">${catName(c, g)}</a>`).join('');
 
 function renderChrome() {
   document.body.insertAdjacentHTML('afterbegin', `
@@ -246,6 +246,7 @@ export const card = p => `
   <article class="card">
     <div class="card-media"><a href="product.html?id=${p.id}"><div class="tile">${p.sale ? `<span class="sale-tag">−${p.sale}%</span>` : ''}<img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" loading="lazy"></div></a>${quick(p)}</div>
     <button class="fav" type="button" data-fav="${p.id}" aria-pressed="${isFav(p.id)}" aria-label="В избранное">${HEART}</button>
+    <button class="to-cart" type="button" data-to-cart="${p.id}" aria-pressed="${inCart(p.id)}" aria-label="${inCart(p.id) ? 'Уже в корзине, добавить ещё' : 'Добавить в корзину'}">${ICONS.bag}</button>
     <h3><a href="product.html?id=${p.id}">${p.title}</a></h3>
     <p>${p.sale ? `<s>${rub(p.oldPrice)}</s> <span class="sale-price">${rub(p.price)}</span>` : rub(p.price)}</p>
   </article>`;
@@ -259,17 +260,29 @@ document.addEventListener('click', e => {
 
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-quick]');
-  if (b) addToCart(b.dataset.quick, b.dataset.size);
+  if (b) { addToCart(b.dataset.quick, b.dataset.size); b.closest('.quick').classList.remove('open'); return; }
+  // Значок корзины: вещь одного размера сразу в корзину, для остальных открываем размеры
+  const t = e.target.closest('[data-to-cart]');
+  document.querySelectorAll('.quick.open').forEach(q => { if (!t || q.closest('.card') !== t.closest('.card')) q.classList.remove('open'); });
+  if (!t) return;
+  if (byId(t.dataset.toCart).oneSize) addToCart(t.dataset.toCart, 'Один размер');
+  else t.closest('.card').querySelector('.quick').classList.toggle('open');
 });
 
 /* Корзина */
 const DELIVERY = 390, FREE_FROM = 10000;
 let cart = read(scoped('cart'), []).filter(l => byId(l.id)), placed = null;
 export const getCart = () => cart;
+const inCart = id => cart.some(l => l.id === id);
 
 function saveCart() {
   write(scoped('cart'), cart);
   setBadge($('#cartCount'), cart.reduce((n, l) => n + l.qty, 0));
+  document.querySelectorAll('[data-to-cart]').forEach(b => {
+    const on = inCart(b.dataset.toCart);
+    b.setAttribute('aria-pressed', on);
+    b.setAttribute('aria-label', on ? 'Уже в корзине, добавить ещё' : 'Добавить в корзину');
+  });
   document.dispatchEvent(new CustomEvent('cart'));
 }
 export function addToCart(id, size) {
@@ -288,6 +301,15 @@ export function changeQty(id, size, d) {
   saveCart();
   popCart();
 }
+const esc = s => s.trim().replace(/[<>&"]/g, '');
+// Ближайшие пять дней, начиная с завтрашнего
+const days = () => Array.from({ length: 5 }, (_, i) => {
+  const d = new Date(); d.setDate(d.getDate() + i + 1);
+  return d.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+});
+// Невидимые связки не дают разорвать время по тире
+export const SLOTS = ['10:00⁠–⁠14:00', '14:00⁠–⁠18:00', '18:00⁠–⁠22:00'];
+export const sizeLabel = s => s === 'Один размер' ? s : `Размер ${s}`;
 const emptyView = (title, text, extra = '') => `<div class="empty"><h3>${title}</h3><p>${text}</p><a class="btn" href="catalog.html?new=1">Перейти в каталог</a>${extra}</div>`;
 // В пустой корзине показываем новинки: две женские и одну мужскую
 function picks() {
@@ -299,7 +321,7 @@ function picks() {
 function renderCart() {
   const body = $('#cartBody');
   if (cart.length) placed = null;
-  if (placed) { body.innerHTML = emptyView('Демо заказ оформлен', `Заказ для ${placed} принят в демонстрационном режиме. Деньги не списаны, данные никуда не отправлены.`); return; }
+  if (placed) { body.innerHTML = emptyView(`Демо заказ ${placed.no} оформлен`, `${placed.name}, спасибо! Доставка: ${placed.day}, ${placed.time}. Адрес: ${placed.address}. Курьер позвонит за час. Это демонстрация: деньги не списаны, данные никуда не отправлены.`); return; }
   if (!cart.length) { body.innerHTML = emptyView('Пока пусто', 'Здесь появятся вещи, которые вы выберете.', picks()); return; }
   const sum = cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0), ship = sum >= FREE_FROM ? 0 : DELIVERY;
   const left = FREE_FROM - sum;
@@ -307,7 +329,7 @@ function renderCart() {
     const p = byId(l.id);
     return `<div class="line">
       <div class="tile"><img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125"></div>
-      <div class="line-text"><a href="product.html?id=${p.id}">${p.title}</a><span class="small">Размер ${l.size}</span>
+      <div class="line-text"><a href="product.html?id=${p.id}">${p.title}</a><span class="small">${sizeLabel(l.size)}</span>
         <div class="qty"><div>
           <button type="button" data-qty="${i}" data-d="-1" aria-label="Убрать одну штуку">−</button><span>${l.qty}</span>
           <button type="button" data-qty="${i}" data-d="1" aria-label="Добавить одну штуку">+</button>
@@ -320,6 +342,12 @@ function renderCart() {
       <div class="field"><label for="fName">Имя</label><input id="fName" name="name" autocomplete="name" required><p class="error" hidden></p></div>
       <div class="field"><label for="fPhone">Телефон</label><input id="fPhone" name="phone" type="tel" autocomplete="tel" required><p class="error" hidden></p></div>
       <div class="field"><label for="fEmail">Почта</label><input id="fEmail" name="email" type="email" autocomplete="email" required><p class="error" hidden></p></div>
+      <h3>Доставка</h3>
+      <p class="small">Курьер по Москве. Можно примерить вещи 15 минут и оплатить только то, что подошло.</p>
+      <div class="field"><label for="fAddress">Адрес: улица, дом, квартира</label><input id="fAddress" name="address" autocomplete="street-address" required><p class="error" hidden></p></div>
+      <div class="field"><label for="fDay">День</label><select id="fDay" name="day">${days().map(d => `<option>${d}</option>`).join('')}</select></div>
+      <div class="field"><label for="fTime">Время</label><select id="fTime" name="time">${SLOTS.map(s => `<option>${s}</option>`).join('')}</select></div>
+      <div class="field"><label for="fNote">Комментарий для курьера</label><textarea id="fNote" name="note" rows="2" placeholder="Подъезд, этаж, код домофона"></textarea></div>
       <button class="btn" type="submit">Оформить демо заказ</button>
       <p class="small">Это демонстрация: оплаты нет, данные никуда не отправляются.</p>
     </form>`;
@@ -328,6 +356,7 @@ const RULES = {
   name: v => v.trim().length >= 2 ? '' : 'Напишите имя, хотя бы две буквы.',
   phone: v => v.replace(/\D/g, '').length >= 10 ? '' : 'Нужен номер из 10 цифр или больше.',
   email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Проверьте почту, например name@mail.ru.',
+  address: v => v.trim().length >= 5 ? '' : 'Напишите адрес: улицу, дом и квартиру.',
 };
 function check(input) {
   const msg = RULES[input.name](input.value), err = input.nextElementSibling;
@@ -355,11 +384,14 @@ function bindCart() {
     e.preventDefault();
     const inputs = [...e.target.querySelectorAll('input')], bad = inputs.filter(i => !check(i));
     if (bad.length) { bad[0].focus(); return; }
-    placed = inputs[0].value.trim().replace(/[<>&]/g, '');
-    if (currentUser()) {
-      const total = cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0);
-      write(scoped('orders'), [{ date: new Date().toLocaleDateString('ru-RU'), total, items: cart.map(l => ({ title: byId(l.id).title, size: l.size, qty: l.qty })) }, ...getOrders()]);
-    }
+    const f = e.target.elements, sum = cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0), ship = sum >= FREE_FROM ? 0 : DELIVERY;
+    placed = {
+      no: `№ ${String(Date.now()).slice(-6)}`, date: new Date().toLocaleDateString('ru-RU'),
+      name: esc(f.name.value), phone: esc(f.phone.value), email: esc(f.email.value), address: esc(f.address.value),
+      day: f.day.value, time: f.time.value, note: esc(f.note.value), ship, total: sum + ship,
+      items: cart.map(l => ({ id: l.id, title: byId(l.id).title, size: l.size, qty: l.qty, price: byId(l.id).price })),
+    };
+    if (currentUser()) write(scoped('orders'), [placed, ...getOrders()]);
     cart = [];
     saveCart();
     renderCart();
@@ -377,6 +409,7 @@ export function toast(text) {
 
 renderChrome();
 bindCart();
+addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
 saveCart();
 setBadge($('#favCount'), favs.length);
 // Даём странице дорисовать товары, потом включаем анимацию

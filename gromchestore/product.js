@@ -1,11 +1,11 @@
 import { $, HEART, addToCart, card, cartQty, changeQty, isFav } from './app.js';
-import { CATS, GENDERS, PRODUCTS, SIZES, byId, rub } from './data.js';
+import { GENDERS, PRODUCTS, SIZES, byId, catName, rub } from './data.js';
 
 const p = byId(new URLSearchParams(location.search).get('id')) || PRODUCTS[0];
 document.title = `${p.title} — ГРОМЧЕ`;
 const img = (cls, loading = '') => `<div class="tile ${cls}"><img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" ${loading}></div>`;
 
-$('#crumbs').innerHTML = `<a href="catalog.html?g=${p.g}">${GENDERS[p.g]}</a> / <a href="catalog.html?g=${p.g}&cat=${p.cat}">${CATS[p.cat]}</a> / ${p.title}`;
+$('#crumbs').innerHTML = `<a href="catalog.html?g=${p.g}">${GENDERS[p.g]}</a> / <a href="catalog.html?g=${p.g}&cat=${p.cat}">${catName(p.cat, p.g)}</a> / ${p.title}`;
 $('#product').innerHTML = `
   <div class="gallery-wrap">
     <div class="gallery" id="gallery">${img('')}${img('detail')}${img('detail')}</div>

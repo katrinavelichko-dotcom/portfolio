@@ -9,6 +9,9 @@ export const CATS = {
   dresses: 'Платья',
   acc: 'Аксессуары',
 };
+// В мужском разделе нет юбок и кардиганов
+const MEN_CATS = { skirts: 'Шорты', knit: 'Свитеры' };
+export const catName = (c, g) => (g === 'men' && MEN_CATS[c]) || CATS[c];
 export const MENU = {
   women: ['tees', 'tops', 'pants', 'knit', 'skirts', 'dresses', 'acc'],
   men: ['tees', 'pants', 'knit', 'skirts', 'acc'],

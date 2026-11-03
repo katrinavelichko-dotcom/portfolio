@@ -34,8 +34,8 @@ function scrollMotion() {
     gsap.from('.band-text', { y: 64, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.band', start: 'top 80%', end: 'top 32%', scrub: 1 } });
   }
 
-  document.querySelectorAll('.gallery .tile img').forEach(img => gsap.from(img.parentElement, {
-    clipPath: 'inset(16% 16% 16% 16%)', duration: 1.1, ease: EASE, scrollTrigger: { trigger: img, start: 'top 90%', once: true },
+  document.querySelectorAll('.gallery .tile img').forEach(img => gsap.from(img, {
+    opacity: 0, duration: 0.6, ease: EASE, scrollTrigger: { trigger: img, start: 'top 90%', once: true },
   }));
   document.querySelectorAll('.help-body section').forEach(el => gsap.from(el, {
     y: 48, opacity: 0, duration: 0.8, ease: EASE, scrollTrigger: { trigger: el, start: 'top 88%', once: true },

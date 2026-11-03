@@ -171,11 +171,15 @@ h3 { font-size: 16px; line-height: 24px; font-weight: 500; }
 .card h3 a:hover { color: var(--wine); }
 .card p { font-weight: 600; }
 .card-media { position: relative; }
-.quick { display: none; }
+.quick { position: absolute; left: 8px; right: 8px; bottom: 12px; z-index: 1; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 4px; padding: 4px; background: var(--ground); opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 300ms var(--ease), transform 500ms var(--ease); }
+.quick.open { opacity: 1; pointer-events: auto; transform: none; }
 @media (hover: hover) {
-  .quick { position: absolute; left: 8px; right: 8px; bottom: 12px; z-index: 1; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 4px; padding: 4px; background: var(--ground); opacity: 0; transform: translateY(8px); transition: opacity 300ms var(--ease), transform 500ms var(--ease); }
-  .card-media:hover .quick, .quick:focus-within { opacity: 1; transform: none; }
+  .card-media:hover .quick, .quick:focus-within { opacity: 1; pointer-events: auto; transform: none; }
 }
+.to-cart { position: absolute; right: 2px; top: 46px; display: grid; place-items: center; width: 44px; height: 44px; padding: 4px; background-clip: content-box; transition: background-color 300ms var(--ease), color 300ms var(--ease); }
+.to-cart path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.to-cart:hover { color: var(--wine); }
+.to-cart[aria-pressed="true"] { background-color: var(--wine); color: #fff; }
 .quick button { min-height: 40px; font-size: 14px; line-height: 20px; font-weight: 600; transition: background-color 300ms var(--ease), color 300ms var(--ease); }
 .quick button:hover:not(:disabled) { background: var(--wine); color: #fff; }
 .quick button:disabled { opacity: 0.35; text-decoration: line-through; cursor: not-allowed; }
@@ -331,7 +335,16 @@ dialog::backdrop { background: rgba(22, 22, 26, 0.5); }
 .account-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
 .account section { display: grid; gap: 16px; }
 .account .products { grid-column: auto; }
-.order { padding: 16px; background: var(--tile); display: grid; gap: 4px; }
+.order { background: var(--tile); }
+.order summary { display: flex; justify-content: space-between; align-items: start; gap: 16px; padding: 16px; cursor: pointer; list-style: none; }
+.order summary::-webkit-details-marker { display: none; }
+.order summary > span { display: grid; gap: 4px; }
+.order summary::after { content: "+"; transition: transform 500ms var(--ease); }
+.order[open] summary::after { transform: rotate(45deg); }
+.order-body { display: grid; gap: 16px; padding: 0 16px 16px; }
+.order-info { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; font-size: 14px; line-height: 20px; }
+.order-info dt { opacity: 0.75; }
+.field select { min-height: 48px; padding: 8px 12px; border: 0; background: #fff; font-size: 16px; }
 .cart-rows { display: grid; gap: 16px; max-width: 560px; }
 
 /* Документы и 404 */
@@ -365,6 +378,8 @@ dialog::backdrop { background: rgba(22, 22, 26, 0.5); }
   h1 { font-size: 32px; line-height: 40px; }
   .big-title, .big-head, .band h2, .gate span, .marquee p { font-size: 40px; line-height: 44px; }
   .rail .tile { width: 80vw; }
+  .rail-view { scroll-snap-type: x mandatory; padding-inline: 10vw; scroll-padding-inline: 10vw; }
+  .rail .card { scroll-snap-align: center; }
   .band { padding-block: 64px; }
   .main-nav { display: none; }
   .burger { display: block; }

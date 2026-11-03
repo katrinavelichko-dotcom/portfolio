@@ -1,5 +1,5 @@
 import { $, LEVELS, card } from './app.js';
-import { CATS, GENDERS, MENU, PRODUCTS, SIZES, rub } from './data.js';
+import { CATS, GENDERS, MENU, PRODUCTS, SIZES, catName, rub } from './data.js';
 
 const url = new URLSearchParams(location.search);
 const g = GENDERS[url.get('g')] ? url.get('g') : null;
@@ -23,8 +23,8 @@ const titleHit = p => words.some(w => tokens(p.title).includes(w));
 const base = PRODUCTS.filter(p => (!g || p.g === g) && (!cat || p.cat === cat)
   && (!onlyNew || p.fresh) && (!onlySale || p.sale) && (!level || (p.loud >= levelFrom && p.loud < level.shelf)) && found(p));
 
-const levelTitle = level && `${level.pick[0].toUpperCase()}${level.pick.slice(1)} вещи`;
-const title = rawQuery ? `Поиск: ${rawQuery}` : levelTitle || (onlySale ? 'Распродажа' : onlyNew ? 'Новинки' : cat ? CATS[cat] : g ? GENDERS[g] : 'Каталог');
+const levelTitle = level && `${level.pick[0].toUpperCase()}${level.pick.slice(1)}`;
+const title = rawQuery ? `Поиск: ${rawQuery}` : levelTitle || (onlySale ? 'Распродажа' : onlyNew ? 'Новинки' : cat ? catName(cat, g) : g ? GENDERS[g] : 'Каталог');
 $('#title').textContent = title;
 document.title = `${title} — ГРОМЧЕ`;
 $('#q').value = rawQuery;
@@ -42,7 +42,7 @@ $('#tabs').innerHTML = `<a href="${link(null, cat)}"${!g ? ' aria-current="page"
   `<a href="${link(k, MENU[k].includes(cat) ? cat : null)}"${k === g ? ' aria-current="page"' : ''}>${t}</a>`).join('');
 
 $('#side').innerHTML = `<a href="${link(g)}"${!cat ? ' aria-current="page"' : ''}>Все вещи</a>`
-  + (g ? MENU[g] : Object.keys(CATS)).map(c => `<a href="${link(g, c)}"${c === cat ? ' aria-current="page"' : ''}>${CATS[c]}</a>`).join('');
+  + (g ? MENU[g] : Object.keys(CATS)).map(c => `<a href="${link(g, c)}"${c === cat ? ' aria-current="page"' : ''}>${catName(c, g)}</a>`).join('');
 
 /* Фильтры: можно выбрать несколько значений */
 const chosen = { size: new Set(), color: new Set() };

@@ -24,7 +24,7 @@ function showLooks(i) {
   });
   const lvl = LEVELS[i], link = $('#levelLink');
   link.href = `catalog.html?level=${i}`;
-  link.textContent = `Смотреть ${lvl.pick} вещи`;
+  link.textContent = `Смотреть ${lvl.pick}`;
 }
 
 function apply() {

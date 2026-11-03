@@ -1,5 +1,17 @@
-import { $, TEST_LOGIN, card, currentUser, getCart, getFavs, getOrders, login, logout, register } from './app.js';
+import { $, TEST_LOGIN, card, sizeLabel, currentUser, getCart, getFavs, getOrders, login, logout, register } from './app.js';
 import { byId, rub } from './data.js';
+
+// Карточка заказа раскрывается по нажатию. В старых заказах нет адреса и времени, их не показываем
+const orderCard = o => {
+  const rows = [
+    o.day && ['Доставка', `${o.day}, ${o.time}`], o.address && ['Адрес', o.address], o.note && ['Комментарий', o.note],
+    o.name && ['Получатель', `${o.name}, ${o.phone}`], o.ship !== undefined && ['Стоимость доставки', o.ship ? rub(o.ship) : 'Бесплатно'],
+    ['Оплата', 'После примерки, картой или через СБП'], ['Итого', rub(o.total)],
+  ].filter(Boolean);
+  return `<details class="order"><summary><span><strong>${o.no ? `Заказ ${o.no}` : 'Заказ'} от ${o.date}</strong><span class="small">Демо заказ принят · ${o.items.reduce((n, i) => n + i.qty, 0)} шт.</span></span><strong>${rub(o.total)}</strong></summary>
+    <div class="order-body">${o.items.map(i => { const p = i.id && byId(i.id); return `<div class="line">${p ? `<div class="tile"><img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" loading="lazy"></div>` : '<div></div>'}<div class="line-text">${p ? `<a href="product.html?id=${p.id}">${i.title}</a>` : i.title}<span class="small">${sizeLabel(i.size)}, ${i.qty} шт.</span>${i.price ? `<strong>${rub(i.price * i.qty)}</strong>` : ''}</div></div>`; }).join('')}
+    <dl class="order-info">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div></details>`;
+};
 
 const user = currentUser();
 let mode = 'login';
@@ -15,7 +27,7 @@ function renderAccount() {
     ? cart.map(l => { const p = byId(l.id); return `<div class="total"><a href="product.html?id=${p.id}">${p.title}, ${l.size}, ${l.qty} шт.</a><span>${rub(p.price * l.qty)}</span></div>`; }).join('')
     : '<p>Корзина пока пуста.</p>';
   $('#orderList').innerHTML = orders.length
-    ? orders.map(o => `<div class="order"><strong>${o.date}, ${rub(o.total)}</strong>${o.items.map(i => `<span class="small">${i.title}, ${i.size}, ${i.qty} шт.</span>`).join('')}</div>`).join('')
+    ? orders.map(orderCard).join('')
     : '<p>Заказов пока нет.</p>';
   $('#logout').addEventListener('click', () => { logout(); location.reload(); });
 }
