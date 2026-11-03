@@ -334,7 +334,15 @@ dialog::backdrop { background: rgba(22, 22, 26, 0.5); }
 .field input { min-height: 48px; padding: 8px 12px; border: 0; background: #fff; font-size: 16px; }
 .field input::placeholder, .field textarea::placeholder { color: #8A857C; opacity: 1; }
 .login-hint { padding: 12px; background: var(--tile); }
-.saved { color: var(--wine); font-weight: 600; }
+.placed { display: grid; gap: 20px; padding-block: 24px; }
+.done-head { display: flex; gap: 12px; align-items: start; }
+.done-mark { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #2F6B3F; color: #fff; }
+.receipt { display: grid; gap: 12px; margin: 0; padding: 16px; background: #fff; }
+.receipt div { display: grid; grid-template-columns: 88px 1fr; gap: 12px; }
+.receipt dt { color: #6B665E; }
+.receipt dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.receipt-mail { padding-top: 12px; border-top: 1px solid var(--tile); font-size: 14px; line-height: 20px; overflow-wrap: anywhere; }
+.done-actions { display: grid; gap: 8px; }
 .field input[aria-invalid="true"] { outline: 2px solid var(--error); }
 .form .btn { width: 100%; }
 .toast { position: fixed; left: 50%; bottom: 24px; z-index: 70; translate: -50% 0; padding: 12px 16px; background: var(--text); color: #fff; opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity 300ms var(--ease), transform 500ms var(--ease); }

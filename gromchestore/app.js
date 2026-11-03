@@ -357,16 +357,28 @@ function picks() {
   return `<div class="picks"><h3>Новинки</h3><div class="picks-row">${list.map(p => `<a class="pick" href="product.html?id=${p.id}"><div class="tile"><img src="images/${p.img}.jpg" alt="${p.alt}" width="900" height="1125" loading="lazy"></div><span>${p.title}</span><strong>${rub(p.price)}</strong></a>`).join('')}</div></div>`;
 }
 
+// Экран после заказа: короткий чек с главным и что делать дальше
+const doneView = o => `<div class="placed">
+  <div class="done-head"><span class="done-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+    <div><h3>Заказ ${o.no} оформлен</h3><p>${o.name}, спасибо!</p></div></div>
+  <dl class="receipt">
+    <div><dt>Доставка</dt><dd>${o.day}, ${o.time}</dd></div>
+    <div><dt>Адрес</dt><dd>${o.address}</dd></div>
+    <div><dt>Итого</dt><dd>${rub(o.total)}</dd></div>
+    <p class="receipt-mail">Подробности заказа отправлены на ${o.email}</p>
+  </dl>
+  <p>Курьер позвонит за час до доставки.${o.guest ? ' Войдите или зарегистрируйтесь с этой почтой, чтобы видеть заказ в профиле.' : ''}</p>
+  <div class="done-actions">
+    <a class="btn" href="profile.html">${o.guest ? 'Войти или зарегистрироваться' : 'Заказ в профиле'}</a>
+    <a class="btn btn-ghost" href="catalog.html?new=1">Перейти в каталог</a>
+  </div>
+  <p class="small">Это демонстрация: письмо не отправляется, деньги не списаны.</p>
+</div>`;
+
 function renderCart() {
   const body = $('#cartBody');
   if (cart.length) placed = null;
-  if (placed) {
-    const where = placed.guest
-      ? `<p class="saved">Заказ сохранён за почтой ${placed.email}. Чтобы видеть его в профиле, войдите или зарегистрируйтесь с этой почтой.</p><a class="under" href="profile.html">Войти или зарегистрироваться</a>`
-      : '<a class="under" href="profile.html">Заказ в профиле</a>';
-    body.innerHTML = emptyView(`Демо заказ ${placed.no} оформлен`, `${placed.name}, спасибо! Доставка: ${placed.day}, ${placed.time}. Адрес: ${placed.address}. Курьер позвонит за час. Это демонстрация: деньги не списаны, данные никуда не отправлены.`, where);
-    return;
-  }
+  if (placed) { body.innerHTML = doneView(placed); return; }
   if (!cart.length) { body.innerHTML = emptyView('Пока пусто', 'Здесь появятся вещи, которые вы выберете.', picks()); return; }
   const sum = cart.reduce((n, l) => n + byId(l.id).price * l.qty, 0), ship = sum >= FREE_FROM ? 0 : DELIVERY;
   const left = FREE_FROM - sum;
