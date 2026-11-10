@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Студия 505 · три светлых наброска</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Три наброска первого экрана: фото сцены на фоне, афиша сразу на экране, светло и нежно.
+   Цвета только из брифа: синий Кляйна, цветочный белый, чёрный. */
+:root{--blue:#002FA7;--paper:#FFFAF0;--ink:#000;--m:32px;--ease:cubic-bezier(0.23,1,0.32,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font-family:Jost,system-ui,sans-serif}
+a{color:inherit;text-decoration:none;touch-action:manipulation}
+.label{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;padding:12px var(--m);background:var(--ink);color:var(--paper);font-size:16px;line-height:24px}
+.label b{font-weight:500}
+.idea{position:relative;min-height:100svh;overflow:hidden;isolation:isolate}
+.top{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:20px var(--m)}
+.word{font-size:20px;line-height:28px;font-weight:500}
+.nav{display:flex;gap:20px;font-size:15px;line-height:24px}
+@media (max-width:900px){.nav{display:none}}
+.bg{position:absolute;inset:0;z-index:-1}
+.bg img{width:100%;height:100%;object-fit:cover}
+.btn{display:inline-flex;align-items:center;min-height:40px;padding:8px 16px;border-radius:999px;font-size:15px;line-height:24px;font-weight:500;transition:transform 160ms var(--ease),background-color 200ms ease,color 200ms ease}
+.btn:active{transform:scale(.97)}
+.ev-t{transition:color 200ms ease}
+
+/* ---------- 1 · утро на сцене: фото под светлой дымкой, афиша колонкой справа ---------- */
+.i1 .bg::after{content:"";position:absolute;inset:0;background:var(--paper);opacity:.62}
+.i1 .bg img{object-position:50% 40%;filter:grayscale(1) contrast(.9)}
+.i1-body{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:48px var(--m) 40px;min-height:calc(100svh - 68px);align-items:end}
+.i1-name{grid-column:1 / span 6;color:var(--blue)}
+.i1-name h2{font-size:clamp(88px,13vw,210px);line-height:.82;font-weight:300;letter-spacing:-.05em}
+.i1-name p{margin-top:24px;max-width:360px;font-size:20px;line-height:28px;color:var(--ink)}
+.i1-side{grid-column:8 / span 5}
+.i1-list{list-style:none;background:var(--paper)}
+.i1-list li a{display:grid;grid-template-columns:76px 1fr auto;gap:16px;align-items:baseline;padding:16px 20px}
+.i1-list li + li a{box-shadow:inset 0 2px 0 rgba(0,47,167,.08)}
+.i1-list .d{font-size:28px;line-height:32px;font-weight:500;color:var(--blue)}
+.i1-list .ev-t{font-size:22px;line-height:28px}
+.i1-list small{display:block;font-size:14px;line-height:20px;opacity:.7}
+.i1-list .btn{background:var(--blue);color:var(--paper)}
+.i1-all{display:block;padding:16px 20px;font-size:16px;color:var(--blue);background:var(--paper);box-shadow:inset 0 2px 0 rgba(0,47,167,.08)}
+@media (hover:hover) and (pointer:fine){.i1-list a:hover .ev-t{color:var(--blue)}}
+@media (max-width:900px){.i1-body{grid-template-columns:1fr;row-gap:32px}.i1-name,.i1-side{grid-column:auto}.i1-list li a{grid-template-columns:64px 1fr;padding:14px 16px}.i1-list .btn{display:none}}
+
+/* ---------- 2 · сцена в облаке: фото тает по краям в белый, афиша полосой внизу ---------- */
+.i2 .bg{inset:0 0 auto;height:78svh}
+.i2 .bg img{object-position:50% 35%;filter:brightness(1.45) saturate(.75);-webkit-mask-image:radial-gradient(120% 95% at 50% 30%,#000 35%,transparent 78%);mask-image:radial-gradient(120% 95% at 50% 30%,#000 35%,transparent 78%)}
+.i2 .top{color:var(--paper)}
+.i2-name{position:relative;z-index:2;padding:16svh var(--m) 0;text-align:center;color:var(--paper)}
+.i2-name h2{font-size:clamp(72px,10vw,160px);line-height:.9;font-weight:300;letter-spacing:-.04em}
+.i2-name p{margin:16px auto 0;max-width:460px;font-size:20px;line-height:28px}
+.i2-strip{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin:22svh var(--m) 40px;list-style:none}
+.i2-strip a{display:block;padding:20px 0 0;box-shadow:inset 0 3px 0 var(--blue)}
+.i2-strip .d{font-size:44px;line-height:48px;font-weight:300;color:var(--blue);letter-spacing:-.02em}
+.i2-strip .ev-t{display:block;margin-top:8px;font-size:22px;line-height:28px}
+.i2-strip small{display:block;font-size:14px;line-height:20px;opacity:.7}
+@media (hover:hover) and (pointer:fine){.i2-strip a:hover .ev-t{color:var(--blue)}}
+@media (max-width:900px){.i2-strip{grid-template-columns:1fr 1fr;row-gap:28px;margin-top:16svh}}
+
+/* ---------- 3 · голубой час: сцена тонирована в синий Кляйна, как небо, афиша на бумажных листках ---------- */
+.i3{background:var(--blue);color:var(--paper)}
+.i3 .bg img{filter:grayscale(1) brightness(1.5) contrast(.8);mix-blend-mode:multiply;opacity:.9}
+.i3 .bg{background:#7f97d6}
+.i3 .bg::after{content:"";position:absolute;inset:0;background:var(--paper);opacity:.18}
+.i3-body{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:40px var(--m);min-height:calc(100svh - 68px);align-content:space-between}
+.i3-name{grid-column:1 / span 7}
+.i3-name h2{font-size:clamp(80px,12vw,190px);line-height:.85;font-weight:300;letter-spacing:-.05em}
+.i3-name p{margin-top:20px;max-width:400px;font-size:20px;line-height:28px}
+.i3-cards{grid-column:1 / -1;display:flex;gap:16px;align-items:flex-end;list-style:none;margin-top:40px}
+.i3-cards li{flex:1}
+.i3-cards li:nth-child(odd){transform:translateY(-16px)}
+.i3-cards a{display:block;padding:16px 18px 18px;background:var(--paper);color:var(--ink);transition:transform 300ms var(--ease)}
+@media (hover:hover) and (pointer:fine){.i3-cards a:hover{transform:translateY(-6px)}}
+.i3-cards .d{font-size:36px;line-height:40px;font-weight:300;color:var(--blue)}
+.i3-cards .ev-t{display:block;margin-top:6px;font-size:20px;line-height:26px}
+.i3-cards small{display:block;font-size:14px;line-height:20px;opacity:.7}
+@media (max-width:900px){.i3-body{grid-template-columns:1fr}.i3-name{grid-column:auto}.i3-cards{display:grid;grid-template-columns:1fr 1fr}.i3-cards li:nth-child(odd){transform:none}}
+
+@media (prefers-reduced-motion:reduce){*{transition-duration:0ms !important}}
+</style>
+</head>
+<body>
+
+<p class="label"><b>1 · утро на сцене</b> фото сцены под светлой дымкой цвета бумаги, крупно «студия 505», ближайшие показы колонкой справа</p>
+<section class="idea i1" aria-label="Набросок 1">
+  <div class="bg" aria-hidden="true"><img src="../studio505/images/photos/diss-04.jpg" alt=""></div>
+  <div class="top"><span class="word" style="color:var(--blue)">студия 505</span><nav class="nav"><a href="#">афиша</a><a href="#">спектакли</a><a href="#">о театре</a><a href="#">люди театра</a><a href="#">как добраться</a><a href="#">партнёры</a><a href="#">контакты</a></nav></div>
+  <div class="i1-body">
+    <div class="i1-name"><h2>студия<br>505</h2><p>Независимый театр в Москве, Воротниковский переулок, 7 ст3.</p></div>
+    <div class="i1-side">
+      <ul class="i1-list">
+        <li><a href="#"><span class="d">14.11</span><span><span class="ev-t">вишнёвый сад</span><small>сб · 19:00 · режиссёр Александр Марин</small></span><span class="btn">билеты</span></a></li>
+        <li><a href="#"><span class="d">15.11</span><span><span class="ev-t">придворные акробаты</span><small>вс · 19:00 · режиссёр Александр Марин</small></span><span class="btn">билеты</span></a></li>
+        <li><a href="#"><span class="d">21.11</span><span><span class="ev-t">блок</span><small>сб · 19:00 · режиссёр Александр Марин</small></span><span class="btn">билеты</span></a></li>
+        <li><a href="#"><span class="d">22.11</span><span><span class="ev-t">диссипация</span><small>вс · 20:00 · идея Игорь Шаройко</small></span><span class="btn">билеты</span></a></li>
+      </ul>
+      <a class="i1-all" href="#">вся афиша ноября и декабря →</a>
+    </div>
+  </div>
+</section>
+
+<p class="label"><b>2 · сцена в облаке</b> фото сцены растворяется по краям в белый, как в дымке, ближайшие показы лёгкой полосой внизу</p>
+<section class="idea i2" aria-label="Набросок 2">
+  <div class="bg" aria-hidden="true"><img src="../studio505/images/photos/repeticiya-01.jpg" alt=""></div>
+  <div class="top"><span class="word">студия 505</span><nav class="nav"><a href="#">афиша</a><a href="#">спектакли</a><a href="#">о театре</a><a href="#">люди театра</a><a href="#">как добраться</a><a href="#">партнёры</a><a href="#">контакты</a></nav></div>
+  <div class="i2-name"><h2>студия 505</h2><p>Независимый театр в Москве</p></div>
+  <ul class="i2-strip">
+    <li><a href="#"><span class="d">14.11</span><span class="ev-t">вишнёвый сад</span><small>суббота · 19:00</small></a></li>
+    <li><a href="#"><span class="d">15.11</span><span class="ev-t">придворные акробаты</span><small>воскресенье · 19:00</small></a></li>
+    <li><a href="#"><span class="d">21.11</span><span class="ev-t">блок</span><small>суббота · 19:00</small></a></li>
+    <li><a href="#"><span class="d">22.11</span><span class="ev-t">диссипация</span><small>воскресенье · 20:00</small></a></li>
+  </ul>
+</section>
+
+<p class="label"><b>3 · голубой час</b> фото сцены тонировано в синий Кляйна и стало похоже на небо, показы на светлых листках, как программки</p>
+<section class="idea i3" aria-label="Набросок 3">
+  <div class="bg" aria-hidden="true"><img src="../studio505/images/photos/akrobaty-06.jpg" alt=""></div>
+  <div class="top"><span class="word">студия 505</span><nav class="nav"><a href="#">афиша</a><a href="#">спектакли</a><a href="#">о театре</a><a href="#">люди театра</a><a href="#">как добраться</a><a href="#">партнёры</a><a href="#">контакты</a></nav></div>
+  <div class="i3-body">
+    <div class="i3-name"><h2>студия<br>505</h2><p>Независимый театр в Москве</p></div>
+    <ul class="i3-cards">
+      <li><a href="#"><span class="d">14.11</span><span class="ev-t">вишнёвый сад</span><small>суббота · 19:00</small></a></li>
+      <li><a href="#"><span class="d">15.11</span><span class="ev-t">придворные акробаты</span><small>воскресенье · 19:00</small></a></li>
+      <li><a href="#"><span class="d">21.11</span><span class="ev-t">блок</span><small>суббота · 19:00</small></a></li>
+      <li><a href="#"><span class="d">22.11</span><span class="ev-t">диссипация</span><small>воскресенье · 20:00</small></a></li>
+    </ul>
+  </div>
+</section>
+
+</body>
+</html>

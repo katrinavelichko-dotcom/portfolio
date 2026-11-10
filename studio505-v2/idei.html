@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Студия 505 · три идеи</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Onest:wght@400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* Наброски первого экрана трёх идей. Цвета только из брифа: синий Кляйна, цветочный белый, чёрный. */
+:root{--blue:#002FA7;--paper:#FFFAF0;--ink:#000;--soft:#5a5a5a;--m:32px;--ease:cubic-bezier(0.23,1,0.32,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font-family:Jost,system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.label{position:sticky;top:0;z-index:20;display:flex;gap:16px;align-items:baseline;padding:12px var(--m);background:var(--ink);color:var(--paper);font-size:16px;line-height:24px}
+.label b{font-weight:500}
+.idea{position:relative;min-height:100svh;overflow:hidden}
+.top{position:absolute;inset:0 0 auto;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:20px var(--m)}
+.word{font-size:20px;line-height:28px;font-weight:500;letter-spacing:.01em}
+.nav{display:flex;gap:20px;font-size:15px;line-height:24px}
+@media (max-width:860px){.nav{display:none}}
+
+/* ---------- А · небо Кляйна ---------- */
+.a{background:var(--blue);color:var(--paper);display:grid;grid-template-rows:1fr auto}
+.a-505{align-self:center;padding:120px var(--m) 0;font-family:Jost;font-weight:600;font-size:clamp(180px,38vw,620px);line-height:.8;letter-spacing:-.06em;
+  background:url(../studio505/images/photos/diss-04.jpg) center 40%/cover;-webkit-background-clip:text;background-clip:text;color:transparent}
+.a-foot{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;padding:24px var(--m) 32px;align-items:end}
+.a-foot p{grid-column:1 / span 5;font-size:22px;line-height:30px;font-weight:400}
+.a-next{grid-column:8 / span 5;display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 20px;background:var(--paper);color:var(--ink);transition:transform 160ms var(--ease)}
+.a-next:active{transform:scale(.98)}
+.a-next b{font-weight:500;font-size:20px}
+.a-next span{color:var(--blue);font-size:28px;font-weight:500}
+@media (max-width:860px){.a-foot{grid-template-columns:1fr}.a-foot p,.a-next{grid-column:auto}}
+
+/* ---------- Б · содержание (поле 505) ---------- */
+.b{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:120px var(--m) 48px;color:var(--blue)}
+.b-h{grid-column:1 / span 4;align-self:start;position:sticky;top:120px}
+.b-h h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(48px,5.4vw,84px);line-height:.9;letter-spacing:-.01em}
+.b-h p{margin-top:24px;max-width:300px;font-size:17px;line-height:26px;color:var(--ink)}
+.b-list{grid-column:5 / span 8;list-style:none;font-family:"Cormorant Garamond",serif}
+.b-list li{position:relative}
+.b-list a{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:12px;padding:14px 0;font-size:clamp(30px,3.6vw,54px);line-height:1.1;font-weight:500}
+.b-list a::after{content:"";grid-column:2;grid-row:1;align-self:end;margin-bottom:.32em;border-bottom:2px dotted currentColor;opacity:.5}
+.b-list .d{grid-column:3;font-family:Jost;font-size:20px;font-weight:400;color:var(--ink);white-space:nowrap}
+.b-list .t{grid-column:1}
+.b-pic{position:absolute;right:22%;top:50%;width:220px;aspect-ratio:4/5;object-fit:cover;opacity:0;transform:translateY(-50%) rotate(-3deg) scale(.96);transition:opacity 200ms ease,transform 300ms var(--ease);pointer-events:none;z-index:2}
+@media (hover:hover) and (pointer:fine){.b-list li:hover .b-pic{opacity:1;transform:translateY(-50%) rotate(-3deg) scale(1)}}
+@media (max-width:860px){.b{grid-template-columns:1fr;padding-top:96px}.b-h{position:static;grid-column:auto}.b-list{grid-column:auto;margin-top:32px}.b-list a{grid-template-columns:1fr;gap:4px}.b-list a::after{display:none}.b-list .d{grid-column:1}.b-pic{display:none}}
+
+/* ---------- В · разметка сцены ---------- */
+.c{background:var(--ink);color:var(--paper)}
+.c-floor{position:absolute;inset:0;background:url(../studio505/images/photos/diss-03.jpg) center/cover;opacity:.32}
+.c-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(200px,auto);gap:0;margin:110px var(--m) 40px;outline:6px solid var(--blue);outline-offset:-3px}
+.c-cell{position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:24px;box-shadow:inset 0 0 0 3px var(--blue);transition:background-color 200ms ease}
+@media (hover:hover) and (pointer:fine){.c-cell:hover{background:rgba(0,47,167,.28)}}
+.c-num{font-size:56px;line-height:1;font-weight:600;color:var(--blue);-webkit-text-stroke:0}
+.c-cell b{font-size:clamp(26px,2.6vw,40px);line-height:1.05;font-weight:400}
+.c-cell small{font-size:16px;line-height:24px;opacity:.8}
+.c-big{grid-column:span 2;grid-row:span 2;justify-content:flex-end}
+.c-big h2{font-size:clamp(72px,11vw,180px);line-height:.85;font-weight:600;letter-spacing:-.04em}
+.c-tag{position:absolute;top:24px;right:24px;padding:6px 12px 8px;background:var(--paper);color:var(--ink);font-size:14px;line-height:18px;transform:rotate(4deg)}
+.c-tag i{display:block;font-style:normal;font-size:28px;line-height:30px;font-weight:600;color:var(--blue)}
+@media (max-width:860px){.c-grid{grid-template-columns:1fr 1fr;margin-top:90px}.c-big{grid-column:span 2;grid-row:auto;min-height:260px}}
+
+@media (prefers-reduced-motion:reduce){*{transition-duration:0ms !important}}
+</style>
+</head>
+<body>
+
+<p class="label"><b>А · небо Кляйна</b> синий из брифа как целое небо, «505» вырезано в нём, сквозь цифры видна сцена</p>
+<section class="idea a" aria-label="Идея А">
+  <div class="top"><span class="word">студия 505</span><nav class="nav"><a href="#">афиша</a><a href="#">спектакли</a><a href="#">о театре</a><a href="#">люди театра</a><a href="#">как добраться</a><a href="#">партнёры</a><a href="#">контакты</a></nav></div>
+  <h2 class="a-505" aria-label="505">505</h2>
+  <div class="a-foot">
+    <p>Независимый театр в Москве. Сигнал, которому нужен адресат.</p>
+    <a class="a-next" href="#"><b>ближайший показ · вишнёвый сад</b><span>14.11</span></a>
+  </div>
+</section>
+
+<p class="label"><b>Б · содержание</b> в библиотеках поле 505 — это оглавление. Афиша как оглавление книги, фото всплывает при наведении</p>
+<section class="idea b" aria-label="Идея Б">
+  <div class="top" style="color:var(--blue)"><span class="word">студия 505</span><nav class="nav" style="color:var(--ink)"><a href="#">афиша</a><a href="#">спектакли</a><a href="#">о театре</a><a href="#">люди театра</a><a href="#">как добраться</a><a href="#">партнёры</a><a href="#">контакты</a></nav></div>
+  <div class="b-h"><h2>Содержание</h2><p>Поле 505 в библиотечном каталоге хранит названия частей книги. Наша книга — четыре спектакля.</p></div>
+  <ol class="b-list">
+    <li><a href="#"><span class="t">Вишнёвый сад</span><span class="d">14.11 · 28.11 · 06.12</span></a><img class="b-pic" src="../studio505/images/photos/repeticiya-01.jpg" alt=""></li>
+    <li><a href="#"><span class="t">Придворные акробаты</span><span class="d">15.11 · 29.11 · 13.12</span></a><img class="b-pic" src="../studio505/images/photos/akrobaty-03.jpg" alt=""></li>
+    <li><a href="#"><span class="t">Блок</span><span class="d">21.11 · 05.12</span></a><img class="b-pic" src="../studio505/images/photos/trening-03.jpg" alt=""></li>
+    <li><a href="#"><span class="t">Диссипация</span><span class="d">22.11 · 12.12</span></a><img class="b-pic" src="../studio505/images/photos/diss-02.jpg" alt=""></li>
+  </ol>
+</section>
+
+<p class="label"><b>В · разметка</b> синие квадраты из скотча на полу вашей репетиции становятся сеткой сайта</p>
+<section class="idea c" aria-label="Идея В">
+  <div class="c-floor" aria-hidden="true"></div>
+  <div class="top"><span class="word">студия 505</span><nav class="nav"><a href="#">афиша</a><a href="#">спектакли</a><a href="#">о театре</a><a href="#">люди театра</a><a href="#">как добраться</a><a href="#">партнёры</a><a href="#">контакты</a></nav></div>
+  <div class="c-grid">
+    <div class="c-cell c-big"><span class="c-tag">Hello, my name is<i>505</i></span><h2>студия<br>505</h2></div>
+    <a class="c-cell" href="#"><span class="c-num">14.11</span><span><b>вишнёвый сад</b><br><small>19:00 · суббота</small></span></a>
+    <a class="c-cell" href="#"><span class="c-num">15.11</span><span><b>придворные акробаты</b><br><small>19:00 · воскресенье</small></span></a>
+    <a class="c-cell" href="#"><span class="c-num">21.11</span><span><b>блок</b><br><small>19:00 · суббота</small></span></a>
+    <a class="c-cell" href="#"><span class="c-num">22.11</span><span><b>диссипация</b><br><small>20:00 · воскресенье</small></span></a>
+    <a class="c-cell" href="#"><span class="c-num">→</span><span><b>вся афиша</b><br><small>ноябрь и декабрь</small></span></a>
+  </div>
+</section>
+
+</body>
+</html>

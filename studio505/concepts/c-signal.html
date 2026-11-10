@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>студия 505 · вариант В «Сигнал»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800&family=Golos+Text:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#002FA7; --paper:#FFFAF0; --ink:#000; --paper-2:#F3ECDC;
+  --m:clamp(16px,2.5vw,40px); --gap:clamp(96px,14vw,200px);
+  --disp:Unbounded,system-ui,sans-serif; --sans:"Golos Text",system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font:400 18px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.hero :focus-visible,.site-header :focus-visible{outline-color:var(--paper)}
+
+.site-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px var(--m);background:var(--blue);color:var(--paper)}
+.logo{font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.nav{display:flex;gap:clamp(14px,1.8vw,28px);font-size:16px}
+.nav a{padding:4px 0;transition:opacity .2s}
+.nav a:hover{opacity:.7}
+.burger{display:none;font-size:16px;padding:8px 0}
+
+.hero{background:var(--blue);color:var(--paper);min-height:calc(100svh - 72px);padding:clamp(24px,4vw,56px) var(--m) clamp(24px,3vw,40px);display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto 1fr auto;column-gap:24px;row-gap:32px}
+.morse{grid-column:1 / -1;display:flex;align-items:center;gap:clamp(6px,.9vw,14px);flex-wrap:wrap}
+.morse i{display:block;height:clamp(14px,1.6vw,24px);width:clamp(14px,1.6vw,24px);border-radius:999px;background:var(--paper);opacity:.25;animation:blink 6s steps(1) infinite;animation-delay:calc(var(--k) * .18s)}
+.morse i.dash{width:clamp(44px,5vw,76px)}
+.morse .sp{width:clamp(18px,2.4vw,40px)}
+@keyframes blink{0%{opacity:1}6%{opacity:.25}}
+.hero h1{grid-column:1 / -1;align-self:center;font-family:var(--disp);font-weight:800;font-size:clamp(48px,10.6vw,176px);line-height:.88;letter-spacing:-.04em;text-transform:lowercase}
+.hero h1 span{display:block}
+.hero-lead{grid-column:1 / span 6;font-size:clamp(19px,1.6vw,24px);line-height:1.4}
+.hero-cta{grid-column:8 / span 5;justify-self:end;align-self:end;display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.btn{display:inline-flex;align-items:center;min-height:52px;padding:0 24px;border-radius:0;font-size:16px;font-weight:500;transition:transform .16s var(--ease),background-color .2s,color .2s}
+.btn:active{transform:scale(.97)}
+.btn-paper{background:var(--paper);color:var(--blue)}
+.btn-paper:hover{background:#fff}
+.btn-line{background:#0a3cc0;color:var(--paper)}
+.btn-line:hover{background:#1446cc}
+
+/* афиша как у Сатирикона */
+.afisha{padding:var(--gap) var(--m) 0}
+.af-head{display:flex;align-items:center;gap:24px;margin-bottom:40px}
+.af-month{font-family:var(--disp);font-weight:800;font-size:clamp(36px,5vw,80px);line-height:1;letter-spacing:-.03em;text-transform:uppercase}
+.af-arrows{display:flex;gap:8px}
+.arrow{width:56px;height:56px;border-radius:50%;background:var(--paper-2);font-size:22px;transition:background-color .2s,color .2s,transform .16s var(--ease)}
+.arrow:hover:not(:disabled){background:var(--ink);color:var(--paper)}
+.arrow:active:not(:disabled){transform:scale(.94)}
+.arrow:disabled{opacity:.3;cursor:default}
+.ev{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;padding:40px 0}
+.ev{border-top:3px solid var(--ink)}
+.ev-date{grid-column:1 / span 3;display:flex;flex-direction:column;gap:8px}
+.ev-day{font-family:var(--disp);font-weight:800;font-size:clamp(40px,4vw,64px);line-height:1;letter-spacing:-.03em}
+.ev-time{font-family:var(--disp);font-weight:500;font-size:20px}
+.ev-main{grid-column:4 / span 5;display:flex;flex-direction:column;gap:12px}
+.ev-title{font-family:var(--disp);font-weight:800;font-size:clamp(26px,2.6vw,42px);line-height:1;letter-spacing:-.03em;text-transform:uppercase}
+.ev-title a:hover{color:var(--blue)}
+.ev-sub{font-size:17px;color:#333}
+.ev-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:16px}
+.btn-buy{background:var(--blue);color:var(--paper)}
+.btn-buy:hover{background:#00238a}
+.btn-cast{background:var(--paper-2)}
+.btn-cast:hover{background:var(--ink);color:var(--paper)}
+.ev-pic{grid-column:9 / span 4;aspect-ratio:4/3}
+.ev-cast{grid-column:4 / span 9;padding-top:32px}
+.ev-cast-h{font-family:var(--disp);font-weight:500;margin-bottom:12px}
+.ev-cast dl{display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
+.ev-cast dl div{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:2px solid var(--paper-2)}
+.ev-cast dt{color:#333}
+.ev-cast dd a{font-weight:500;color:var(--blue)}
+.ev-cast dd a:hover{text-decoration:underline}
+.ev.is-open .ev-cast{animation:open .35s var(--ease)}
+@keyframes open{from{opacity:0;transform:translateY(-8px)}}
+.af-note{font-size:15px;color:#555;margin-top:16px}
+
+/* заглушка фото: синий кадр с сигналом */
+.ph{background:var(--blue);color:var(--paper);display:flex;flex-direction:column;justify-content:space-between;padding:20px;font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(18px,1.6vw,24px);line-height:1;overflow:hidden}
+.ph::before{content:"";height:12px;width:100%;background:
+  radial-gradient(circle,var(--paper) 5px,transparent 5.5px) 0 0/22px 12px repeat-x;
+  -webkit-mask:linear-gradient(90deg,#000 0 108px,transparent 108px 128px,#000 128px 100%);
+  mask:linear-gradient(90deg,#000 0 108px,transparent 108px 128px,#000 128px 100%);opacity:.9;transition:transform .5s var(--ease)}
+.ev:hover .ph::before{transform:translateX(10px)}
+
+/* призыв: адресат */
+.call{margin:var(--gap) var(--m) 0;display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;row-gap:24px;align-items:end}
+.call h2{grid-column:1 / span 7;font-family:var(--disp);font-weight:800;font-size:clamp(36px,5vw,84px);line-height:.95;letter-spacing:-.04em;text-transform:lowercase;color:var(--blue)}
+.call p{grid-column:9 / span 4;font-size:clamp(19px,1.5vw,22px);line-height:1.45}
+
+.site-footer{margin-top:var(--gap);background:var(--ink);color:var(--paper);padding:clamp(40px,5vw,72px) var(--m) 24px}
+.ft-grid{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;row-gap:40px}
+.ft-brand{grid-column:1 / span 4;display:flex;flex-direction:column;justify-content:space-between;gap:40px}
+.ft-logo{font-family:var(--disp);font-weight:800;font-size:clamp(36px,4vw,60px);line-height:.95;letter-spacing:-.03em}
+.ft-partner{display:flex;align-items:center;gap:12px;font-size:15px}
+.ft-partner img{border-radius:50%;transition:transform .3s var(--ease)}
+.ft-partner:hover img{transform:rotate(-12deg)}
+.ft-col{display:flex;flex-direction:column}
+.ft-col:nth-child(2){grid-column:6 / span 4}
+.ft-col:nth-child(3){grid-column:10 / span 3}
+.ft-k{font-size:15px;opacity:.75}
+.ft-k:not(:first-child){margin-top:24px}
+.ft-v{font-size:clamp(20px,1.7vw,26px);line-height:1.25}
+.ft-v:hover{text-decoration:underline;text-underline-offset:4px}
+.ft-bottom{display:flex;justify-content:space-between;gap:16px;margin-top:clamp(48px,6vw,96px);font-size:15px;opacity:.75}
+
+.hero h1 span{animation:rise .9s var(--ease) both}
+.hero h1 span:nth-child(2){animation-delay:.08s}.hero h1 span:nth-child(3){animation-delay:.16s}
+.hero-lead,.hero-cta{animation:rise .9s var(--ease) .3s both}
+@keyframes rise{from{opacity:0;transform:translateY(32px)}}
+.js-reveal [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js-reveal [data-reveal].is-in{opacity:1;transform:none}
+
+@media (max-width:1100px){
+  .burger{display:block}
+  .nav{position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;padding:8px var(--m) 24px;background:var(--blue);font-family:var(--disp);font-weight:500;font-size:24px;display:none}
+  .nav a{padding:10px 0}
+  .site-header.is-open .nav{display:flex}
+}
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .hero h1{font-size:13.4vw}
+  .morse{gap:5px;flex-wrap:nowrap}
+  .morse i{width:9px;height:9px}
+  .morse i.dash{width:24px}
+  .morse .sp{width:10px;flex:none}
+  .hero-lead,.hero-cta{grid-column:1;justify-self:start;justify-content:flex-start}
+  .af-head{flex-wrap:wrap}
+  .ev{grid-template-columns:1fr;row-gap:12px;padding:28px 0}
+  .ev-date,.ev-main,.ev-pic,.ev-cast{grid-column:1}
+  .ev-pic{order:-1;aspect-ratio:16/9}
+  .ev-date{flex-direction:row;align-items:baseline;gap:12px}
+  .ev-cast dl{grid-template-columns:1fr}
+  .call{grid-template-columns:1fr}
+  .call h2,.call p{grid-column:1}
+  .ft-grid{grid-template-columns:1fr}
+  .ft-brand,.ft-col,.ft-col:nth-child(2),.ft-col:nth-child(3){grid-column:1}
+  .ft-bottom{flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}.morse i{opacity:1}}
+</style>
+</head>
+<body>
+<header class="site-header" data-header></header>
+
+<main>
+  <section class="hero" aria-labelledby="h1">
+    <div class="morse" role="img" aria-label="505 азбукой Морзе">
+      <i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i>
+      <span class="sp"></span>
+      <i class="dash" style="--k:6"></i><i class="dash" style="--k:7"></i><i class="dash" style="--k:8"></i><i class="dash" style="--k:9"></i><i class="dash" style="--k:10"></i>
+      <span class="sp"></span>
+      <i style="--k:12"></i><i style="--k:13"></i><i style="--k:14"></i><i style="--k:15"></i><i style="--k:16"></i>
+    </div>
+    <h1 id="h1"><span>студия 505.</span><span>спасите</span><span>наши души</span></h1>
+    <p class="hero-lead">Независимый театр в Москве. 505 похоже на SOS: сигнал, которому нужен адресат. Приходите на спектакль — адресат это вы.</p>
+    <div class="hero-cta">
+      <a class="btn btn-paper" href="#afisha">Афиша на ноябрь</a>
+      <a class="btn btn-line" href="https://t.me/theatrestudio505" target="_blank" rel="noopener">Наш телеграм</a>
+    </div>
+  </section>
+
+  <section class="afisha" id="afisha" aria-label="Афиша" data-afisha></section>
+
+  <section class="call" aria-labelledby="call-h">
+    <h2 id="call-h" data-reveal>ищем общий язык</h2>
+    <p data-reveal>Ошибка 505 — это когда сервер не понимает язык, на котором к нему обратились. Мы играем Чехова, Блока и китайскую трагикомедию, чтобы этот язык найти. Вместе со зрителем.</p>
+  </section>
+</main>
+
+<footer class="site-footer" id="footer" data-footer></footer>
+<script src="common.js"></script>
+</body>
+</html>
