@@ -1,0 +1,445 @@
+/* студия 505 · облачный вариант после правок заказчика 24.11:
+   без плавных появлений при прокрутке; фон белее и холоднее; синий вперемешку с чёрным; логотип «студия 505»;
+   две главные (чёрная с лентой спектаклей и затемнённое фото); репертуар как у «Внутри»; синий подвал из базового.
+   Навыки: design-taste-frontend (композиция, запреты), landing-page-design (шкалы размеров и отступов, состояния),
+   emil-design-eng + animate (нажатие, наведение, одна лента вместо появлений), mobile-native (касания, вырез, высота экрана),
+   break-ui (длинные имена и пустые данные через ?data=), gsap-* — GSAP убран: правка «без плавных переходов». */
+
+:root{
+  --blue:#002FA7; --blue-press:#00238A; --blue-light:#9DB3EE;
+  /* фон: был бежевый #FFFAF0, по правке — менее бежевый и чуть холоднее */
+  --paper:#F7F7F4; --paper-2:#EDEDE9; --paper-3:#DFDFD9;
+  --ink:#000; --soft:#4A4A48; --night:#000; --night-soft:#B5B5B0; --line:rgba(0,0,0,.12);
+
+  /* шкала размеров (landing-page-design B1) */
+  --t-sm:14px; --l-sm:20px; --t-base:16px; --l-base:24px; --t-lg:18px; --l-lg:28px;
+  --t-xl:20px; --l-xl:28px; --t-2xl:24px; --l-2xl:32px; --t-3xl:30px; --l-3xl:36px;
+  --t-4xl:36px; --l-4xl:40px; --t-5xl:48px; --t-6xl:60px; --t-7xl:72px; --t-8xl:96px;
+
+  /* шкала отступов: всё кратно 4px */
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-6:24px; --s-8:32px; --s-10:40px; --s-12:48px; --s-16:64px; --s-20:80px; --s-24:96px; --s-32:128px;
+  --m:var(--s-8); --col:var(--s-6);
+  --gap:var(--s-32);          /* между разделами: по правке «меньше пространства между блоками» было 160 */
+
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --font:Jost,system-ui,sans-serif;
+  --header-h:72px;
+}
+
+/* ---------- основа и телефон (mobile-native) ---------- */
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;scroll-padding-top:calc(var(--header-h) + var(--s-4))}
+body{background:var(--paper);color:var(--ink);font-family:var(--font);font-size:var(--t-lg);line-height:var(--l-lg);font-weight:400;-webkit-font-smoothing:antialiased;font-variant-numeric:lining-nums}
+/* лёгкое серое зерно бумаги (было тёплым, теперь нейтральное — фон не уходит в бежевый) */
+body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.14;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .45 0 0 0 0 .45 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a,button,[role="button"]{touch-action:manipulation}
+button,.btn,.nav a{user-select:none;-webkit-user-select:none}
+img,svg,video,iframe{display:block;max-width:100%}
+ul,ol{list-style:none}
+h1,h2,h3{text-wrap:balance;font-weight:500}
+p,li,dd,blockquote{text-wrap:pretty}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:2px}
+.dark :focus-visible,.site-footer :focus-visible{outline-color:var(--paper)}
+::selection{background:var(--blue);color:var(--paper)}
+.wrap{padding-left:var(--m);padding-right:var(--m)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col)}
+.skip{position:fixed;left:var(--s-4);top:var(--s-4);z-index:100;padding:var(--s-3) var(--s-4);background:var(--ink);color:var(--paper);border-radius:999px;font-size:var(--t-base);font-weight:500;transform:translateY(-200%)}
+.skip:focus{transform:none}
+.dark{background:var(--night);color:var(--paper)}
+.soft{color:var(--soft)}
+.dark .soft{color:var(--night-soft)}
+.note{margin-top:var(--s-6);font-size:var(--t-sm);line-height:var(--l-sm);color:var(--soft)}
+
+/* логотип: «505» той же высоты, что строчные буквы «студия» (правка «цифры на том же уровне, что текст») */
+/* Jost: высота строчной «х» 469 из 1000, высота цифр ~710 → цифры на 66% размера.
+   Уменьшенные цифры выглядят тоньше букв, поэтому они на ступень-две жирнее: штрих совпадает (правка «одной жирности») */
+.num{font-size:.66em;letter-spacing:.02em;font-style:normal}
+.wordmark .num{font-weight:720}
+.hero-name .num{font-weight:440}
+.ft-name .num{font-weight:800}
+
+/* ---------- стили текста: заголовки разделов синие, названия и имена чёрные (правка «мешать синий с чёрным») ---------- */
+.heading-2{font-size:var(--t-6xl);line-height:1;letter-spacing:-.02em;font-weight:500;color:var(--blue)}
+.body-3{font-size:var(--t-lg);line-height:var(--l-lg)}
+
+/* ---------- кнопки ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s-2);min-height:48px;padding:var(--s-3) var(--s-6);border:1.5px solid transparent;border-radius:999px;font-size:var(--t-base);line-height:var(--l-base);font-weight:500;letter-spacing:.01em;white-space:nowrap;transition:transform 160ms var(--ease-out),background-color 200ms ease,color 200ms ease,border-color 200ms ease}
+.btn:active{transform:scale(.97)}
+.btn-blue{background:var(--blue);color:var(--paper)}
+.btn-blue:active{background:var(--blue-press)}
+.btn-paper{background:var(--paper);color:var(--ink)}
+.btn-line{border-color:var(--paper-3);color:var(--ink)}
+.btn-line[aria-expanded="true"]{border-color:var(--blue);color:var(--blue)}
+.btn-cast .chev{transition:transform 200ms var(--ease-out)}
+.btn-cast[aria-expanded="true"] .chev{transform:rotate(180deg)}
+@media (hover:hover) and (pointer:fine){
+  .btn-blue:hover{background:var(--blue-press)}
+  .btn-paper:hover{background:#fff}
+  .btn-line:hover{border-color:var(--blue);color:var(--blue)}
+}
+
+/* ---------- шапка: логотип слева, меню справа ---------- */
+.site-header{position:fixed;inset:0 0 auto;z-index:40;height:calc(var(--header-h) + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) var(--m) 0;display:flex;align-items:center;justify-content:space-between;gap:var(--s-6);background:var(--paper);color:var(--ink);transition:background-color 200ms ease,color 200ms ease}
+.site-header.on-dark{background:transparent;color:var(--paper)}
+.wordmark{position:relative;z-index:2;font-size:var(--t-3xl);line-height:var(--l-3xl);font-weight:500;letter-spacing:-.01em;color:var(--blue);white-space:nowrap;transition:color 200ms ease}
+.site-header.on-dark .wordmark{color:var(--paper)}
+.nav{display:flex;gap:var(--s-8);font-size:var(--t-lg);line-height:var(--l-lg);font-weight:400}
+.nav a{position:relative;padding:var(--s-1) 0;transition:color 200ms ease}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform 250ms var(--ease-out)}
+.site-header.on-dark .nav a::after{background:currentColor}
+.nav a[aria-current="page"]::after{transform:scaleX(1)}
+@media (hover:hover) and (pointer:fine){
+  .nav a:hover{color:var(--blue)}
+  .site-header.on-dark .nav a:hover,.site-header.on-dark .wordmark:hover{color:var(--blue-light)}
+  .wordmark:hover{color:var(--blue-press)}
+}
+.burger{display:none;position:relative;z-index:2;width:48px;height:48px;margin-right:calc(var(--s-3) * -1)}
+.burger i{position:absolute;left:12px;right:12px;height:2px;background:currentColor;border-radius:2px;transition:transform 250ms var(--ease-out)}
+.burger i:first-child{top:19px}.burger i:last-child{top:27px}
+.site-header.is-open .burger i:first-child{transform:translateY(4px) rotate(45deg)}
+.site-header.is-open .burger i:last-child{transform:translateY(-4px) rotate(-45deg)}
+
+/* ---------- главная: первый экран чуть ниже экрана, чтобы снизу было видно начало афиши ---------- */
+.hero{position:relative;isolation:isolate;overflow:hidden;min-height:max(560px,calc(100svh - var(--s-24)));padding:calc(var(--header-h) + var(--s-8)) var(--m) var(--s-10)}
+.hero-name{font-size:clamp(72px,11.5vw,184px);line-height:.9;font-weight:300;letter-spacing:-.045em;white-space:nowrap}
+.hero-down{display:inline-flex;align-items:center;min-height:48px;font-size:var(--t-xl);line-height:var(--l-xl);transition:color 200ms ease}
+@media (hover:hover) and (pointer:fine){.hero-down:hover{color:var(--blue-light)}}
+
+/* вариант 1: чёрный, «студия 505» снизу слева, справа лента спектаклей */
+.hero-night{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:minmax(0,1fr) auto;column-gap:var(--col);height:max(560px,calc(100svh - var(--s-24)))}
+.hero-night .hero-name{grid-column:1 / span 8;grid-row:1;align-self:end}
+.hero-night .hero-down{grid-column:1 / span 4;grid-row:2;margin-top:var(--s-4)}
+/* лента начинается под шапкой и не заходит под меню */
+.ribbon{grid-column:10 / span 3;grid-row:1 / span 2;min-height:0;margin:calc(var(--s-8) * -1) 0 calc(var(--s-10) * -1);overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent)} /* taste-skill-ignore: маска, края ленты растворяются в чёрном, это не заливка */
+.rb-track{display:flex;flex-direction:column;animation:rb-up 48s linear infinite}
+.rb-set{display:flex;flex-direction:column;gap:var(--s-8);padding-bottom:var(--s-8)}
+.ribbon:hover .rb-track,.ribbon:focus-within .rb-track{animation-play-state:paused}
+@keyframes rb-up{to{transform:translateY(-50%)}}
+@keyframes rb-left{to{transform:translateX(-50%)}}
+.rb-card{display:flex;flex-direction:column;gap:var(--s-3)}
+.rb-pic{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;background:#151515}
+.rb-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.rb-title{font-size:var(--t-2xl);line-height:var(--l-2xl);font-weight:500;transition:color 200ms ease}
+@media (hover:hover) and (pointer:fine){.rb-card:hover .rb-title{color:var(--blue-light)}}
+
+/* вариант 2: общее фото студии, затемнено; сверху темнее, чтобы надпись на стене не спорила с логотипом.
+   Логотип в нижнем углу, на полу, не на лицах (конспект: текст на фото только на спокойном месте) */
+.hero-photo{display:flex;flex-direction:column;justify-content:flex-end;gap:var(--s-4)}
+.hero-img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:50% 60%}
+.hero-photo::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient( /* taste-skill-ignore: нейтральное затемнение фото по правке заказчика */to bottom,rgba(0,0,0,.78) 0%,rgba(0,0,0,.5) 34%,rgba(0,0,0,.42) 60%,rgba(0,0,0,.82) 100%)}
+
+.home .afisha{padding-top:var(--s-10)}
+
+/* ---------- шапка внутренних страниц: только заголовок, без поясняющего текста сбоку (правка) ---------- */
+.page-head{padding:calc(var(--header-h) + var(--s-16)) var(--m) var(--s-10)}
+.page-title{font-size:clamp(56px,8.5vw,136px);line-height:.92;letter-spacing:-.03em;font-weight:500}
+
+/* ---------- афиша списком (оставлена как была, названия жирнее) ---------- */
+.afisha{padding-top:var(--gap)}
+.tabs{display:flex;gap:var(--s-8);margin-top:var(--s-6)}
+.tab{position:relative;padding:var(--s-3) 0;font-size:var(--t-xl);line-height:var(--l-xl);color:var(--soft);transition:color 200ms ease}
+.tab::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform 250ms var(--ease-out)}
+.tab[aria-selected="true"]{color:var(--ink)}
+.tab[aria-selected="true"]::after{transform:scaleX(1)}
+@media (hover:hover) and (pointer:fine){.tab:hover{color:var(--blue)}}
+.rows{display:flex;flex-direction:column}
+.rows[hidden]{display:none}
+.ev.row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col);padding:var(--s-12) 0 var(--s-16);align-items:start}
+.ev.row .row-when{grid-column:1 / span 3;grid-row:1}
+.row-pic{grid-row:1;display:block;position:relative;overflow:hidden;aspect-ratio:16/10;background:var(--paper-3)}
+.row-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;transition:transform 600ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.row-pic:hover img{transform:scale(1.03)}}
+.ev.row .row-main{grid-row:2;position:relative;z-index:1}
+.ev.row:nth-child(3n+1) .row-pic{grid-column:4 / span 6}
+.ev.row:nth-child(3n+1) .row-main{grid-column:6 / span 7}
+.ev.row:nth-child(3n+2) .row-pic{grid-column:6 / span 7}
+.ev.row:nth-child(3n+2) .row-main{grid-column:4 / span 7}
+.ev.row:nth-child(3n+3) .row-pic{grid-column:4 / span 5}
+.ev.row:nth-child(3n+3) .row-main{grid-column:7 / span 6}
+.ev.row.no-pic .row-main{grid-column:4 / span 9;grid-row:1}
+.row-when{display:flex;flex-direction:column;gap:var(--s-2);font-variant-numeric:tabular-nums}
+.row-date{font-size:var(--t-7xl);line-height:.9;font-weight:500;letter-spacing:-.03em;color:var(--blue)}
+.row-time{font-size:var(--t-xl);line-height:var(--l-xl)}
+.row-wd{color:var(--soft)}
+.row-main{display:flex;flex-direction:column;gap:var(--s-2);min-width:0}
+/* названия жирнее (правка): было 300 */
+.row-title{margin-top:-.62em;font-size:clamp(40px,5vw,76px);line-height:1;font-weight:500;text-transform:lowercase;letter-spacing:-.03em;overflow-wrap:break-word;hyphens:manual}
+.row-title span{display:inline-block;max-width:100%;background:var(--paper);padding:.06em .28em .1em}
+.ev.row.no-pic .row-title{margin-top:0}
+.ev.row.no-pic .row-title span{padding:0;background:none}
+.row-title a{transition:color 200ms ease}
+@media (hover:hover) and (pointer:fine){.row-title a:hover{color:var(--blue)}}
+.row-dir{font-size:var(--t-base);line-height:var(--l-base);color:var(--blue)}
+.row-sub{font-size:var(--t-base);line-height:var(--l-base);max-width:52ch}
+.ev-actions{display:flex;flex-wrap:wrap;gap:var(--s-2);margin-top:var(--s-3)}
+.ev.row > .ev-cast{grid-column:1 / -1;padding-top:var(--s-6);max-width:none}
+.ev-cast-h{font-size:var(--t-lg);line-height:var(--l-lg);font-weight:500;margin-bottom:var(--s-3)}
+.ev-cast dl{display:flex;flex-direction:column}
+.ev-cast dl div{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s-6);padding:var(--s-3) 0;border-bottom:1px solid var(--line)} /* taste-skill-ignore: строки таблицы «роль — исполнитель» */
+.ev-cast dt{min-width:0;font-size:var(--t-base);line-height:var(--l-base);color:var(--soft)}
+.ev-cast dd{flex-shrink:0;text-align:right;font-size:var(--t-base);line-height:var(--l-base);font-weight:500}
+.empty{display:flex;flex-direction:column;align-items:center;gap:var(--s-4);padding:var(--s-12) var(--s-4);text-align:center}
+.empty p{max-width:36ch}
+.person-link{font-weight:500;text-decoration:underline 1.5px var(--blue);text-underline-offset:4px;transition:color 200ms ease}
+@media (hover:hover) and (pointer:fine){.person-link:hover{color:var(--blue)}}
+
+/* ---------- репертуар: как у «Внутри» — афиша слева, справа название, синяя линия, режиссёр;
+   между спектаклями едва заметная линия ---------- */
+.reps{display:flex;flex-direction:column}
+.rep{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col);align-items:center;padding:var(--s-16) 0;border-top:1px solid var(--line)} /* taste-skill-ignore: правка заказчика «едва заметные линии между спектаклями» */
+.rep-pic{grid-column:2 / span 4;position:relative;display:block;aspect-ratio:3/4;overflow:hidden;background:var(--paper-3)}
+.rep-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%;transition:transform 600ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.rep-pic:hover img{transform:scale(1.03)}}
+.rep-info{grid-column:8 / span 4;display:flex;flex-direction:column;align-items:flex-end;text-align:right}
+.rep-title{font-size:clamp(36px,3.6vw,56px);line-height:1.05;font-weight:600;letter-spacing:-.02em;text-transform:lowercase;overflow-wrap:break-word}
+.rep-title a{transition:color 200ms ease}
+@media (hover:hover) and (pointer:fine){.rep-title a:hover{color:var(--blue)}}
+.rep-sub{margin-top:var(--s-4);font-size:var(--t-lg);line-height:var(--l-lg);color:var(--soft)}
+.rep-sub::after{content:"";display:block;width:min(440px,100%);height:2px;margin:var(--s-8) 0 var(--s-8) auto;background:var(--blue)}
+.rep-dir{font-size:var(--t-lg);line-height:var(--l-lg)}
+.rep-dir b{font-weight:600}
+
+/* ---------- страница спектакля ---------- */
+.sp-top{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col);row-gap:var(--s-10);align-items:start}
+.sp-gallery{grid-column:1 / span 7;display:flex;flex-direction:column;gap:var(--s-2)}
+.sp-main{position:relative;aspect-ratio:5/4;overflow:hidden;background:var(--paper-3)}
+.sp-main img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.sp-empty{display:grid;place-items:center;color:var(--soft)}
+.sp-thumbs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--s-2)}
+.sp-thumb{position:relative;display:block;width:100%;aspect-ratio:1;overflow:hidden;background:var(--paper-3);transition:transform 160ms var(--ease-out)}
+.sp-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;transition:opacity 200ms ease}
+.sp-thumb{outline:3px solid transparent;outline-offset:-3px}
+.sp-thumb:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.sp-thumb:hover{outline-color:var(--blue)}}
+.sp-side{grid-column:9 / span 4;display:flex;flex-direction:column}
+.sp-sub{font-size:var(--t-xl);line-height:var(--l-xl);padding-bottom:var(--s-8);border-bottom:2px solid var(--blue)}
+.sp-k{margin-top:var(--s-8);font-size:var(--t-base);line-height:var(--l-base);font-weight:500;color:var(--blue)}
+.team{display:flex;flex-direction:column;margin-top:var(--s-3)}
+.team div{display:flex;flex-direction:column;gap:var(--s-1);padding:var(--s-3) 0;border-bottom:1px solid var(--line)} /* taste-skill-ignore: строки таблицы «роль — имя» */ /* taste-skill-ignore: строки таблицы «роль — исполнитель» */
+.team dt,.roles dt,.sp-facts dt{font-size:var(--t-sm);line-height:var(--l-sm);color:var(--soft)}
+.team dd{font-size:var(--t-lg);line-height:var(--l-lg)}
+.sp-about,.sp-team{padding-top:var(--gap);row-gap:var(--s-8)}
+.sp-about .heading-2,.sp-team .heading-2{grid-column:1 / span 4}
+.sp-text{grid-column:5 / span 6;display:flex;flex-direction:column;gap:var(--s-6)}
+/* цитата синим: синий текст и синяя черта слева (правка «цитаты синим цветом») */
+.sp-text blockquote{margin-top:var(--s-4);padding:var(--s-2) 0 var(--s-2) var(--s-8);border-left:2px solid var(--blue);color:var(--blue)}
+.sp-text blockquote p{font-size:var(--t-2xl);line-height:var(--l-2xl);font-weight:500}
+.sp-text blockquote footer{margin-top:var(--s-4);font-size:var(--t-base);color:var(--ink)}
+.sp-facts{grid-column:11 / span 2;display:flex;flex-direction:column;gap:var(--s-6)}
+.sp-facts dd{font-size:var(--t-base);line-height:var(--l-base);font-weight:500}
+.sp-team .roles,.sp-team .ensemble{grid-column:5 / span 8}
+.roles div{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--col);padding:var(--s-3) 0;border-bottom:1px solid var(--line)} /* taste-skill-ignore: строки таблицы «роль — исполнитель» */
+.roles dd{font-size:var(--t-lg);line-height:var(--l-lg)}
+.ensemble{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-2) var(--col);font-size:var(--t-lg);line-height:var(--l-lg)}
+.ensemble .tail{font-weight:500;color:var(--blue)}
+.sp-dates{padding-top:var(--gap)}
+.sp-dates .heading-2{margin-bottom:var(--s-4)}
+
+/* ---------- о студии: фото, текст, люди театра ---------- */
+.about-pics{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col)}
+.about-pics figure:first-child{grid-column:1 / span 7}
+.about-pics figure:last-child{grid-column:8 / span 5;margin-top:var(--s-24)}
+.about-pics img{width:100%;height:auto}
+.about-text{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col);padding-top:var(--s-16)}
+.about-text p{grid-column:5 / span 6;font-size:var(--t-2xl);line-height:var(--l-2xl)}
+.team-sec{padding-top:var(--gap)}
+.team-sec .heading-2{margin-bottom:var(--s-10)}
+.people{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s-12) var(--col)}
+.people li:first-child{grid-column:span 2;grid-row:span 2}
+.person{display:flex;flex-direction:column;gap:var(--s-3);height:100%}
+.ph{position:relative;background:var(--paper-2);color:var(--soft);overflow:hidden;display:flex;align-items:flex-end;padding:var(--s-4)}
+.ph > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.ph b{font-size:var(--t-5xl);line-height:1;font-weight:500;color:var(--ink);letter-spacing:-.02em}
+.person .ph{aspect-ratio:3/4;transition:transform 300ms var(--ease-out),background-color 200ms ease}
+.people li:first-child .ph{flex:1;aspect-ratio:auto;min-height:320px}
+.person:active .ph{transform:scale(.99)}
+.people li:first-child .ph b{font-size:var(--t-8xl)}
+.person-name{font-size:var(--t-xl);line-height:var(--l-xl);font-weight:500;overflow-wrap:anywhere;hyphens:auto;transition:color 200ms ease}
+.people li:first-child .person-name{font-size:var(--t-3xl);line-height:var(--l-3xl)}
+@media (hover:hover) and (pointer:fine){.person:hover .person-name{color:var(--blue)}.person:hover .ph{background:var(--paper-3)}}
+
+/* taste-skill-ignore: тень у карточки человека, это настоящее всплывающее окно поверх страницы */
+.card{margin:auto;width:min(640px,calc(100% - var(--s-8)));max-height:calc(100svh - var(--s-8));border:0;border-radius:16px;background:var(--paper);color:var(--ink);overflow:auto;overscroll-behavior:contain;box-shadow:0 24px 64px rgba(0,0,0,.28)} /* taste-skill-ignore */
+.card::backdrop{background:rgba(0,0,0,.55)}
+.card-body{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s-8);padding:var(--s-8)}
+.card-pic{aspect-ratio:4/5;max-height:62svh;border-radius:8px}
+.card-info{display:flex;flex-direction:column;gap:var(--s-6);padding-top:var(--s-2)}
+.card-name{font-size:var(--t-5xl);line-height:1;letter-spacing:-.02em;padding-right:var(--s-16);overflow-wrap:anywhere;hyphens:auto}
+/* в карточке — только спектакли, без ролей и должностей (правка) */
+.card-works{display:flex;flex-direction:column;gap:var(--s-3)}
+.card-works a,.card-works span{font-size:var(--t-2xl);line-height:var(--l-2xl);font-weight:500}
+.card-works a{color:var(--blue)}
+@media (hover:hover) and (pointer:fine){.card-works a:hover{text-decoration:underline;text-underline-offset:4px}}
+.card-close{position:sticky;top:var(--s-4);float:right;margin:var(--s-4) var(--s-4) calc(var(--s-16) * -1) 0;width:48px;height:48px;border-radius:999px;background:var(--paper-2);color:var(--ink);font-size:var(--t-2xl);z-index:1;transition:transform 160ms var(--ease-out),background-color 200ms ease,color 200ms ease}
+.card-close:active{transform:scale(.94)}
+@media (hover:hover) and (pointer:fine){.card-close:hover{background:var(--ink);color:var(--paper)}}
+
+/* ---------- адрес: карта слева, адрес и контакты справа, плотнее (правка) ---------- */
+.visit{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col);row-gap:var(--s-8);align-items:start}
+.visit-mapbox{grid-column:1 / span 7;display:flex;flex-direction:column;gap:var(--s-2)}
+.visit-map{position:relative;z-index:0;aspect-ratio:4/3;background:var(--paper-3);overflow:hidden;font-family:var(--font)}
+.visit-ya{align-self:flex-start;font-size:var(--t-sm);line-height:var(--l-sm);color:var(--soft);transition:color 200ms ease}
+@media (hover:hover) and (pointer:fine){.visit-ya:hover{color:var(--blue)}}
+/* синяя точка студии: как в прошлом варианте, с мягкой пульсацией */
+.map-pin{background:none;border:0}
+.map-dot{position:relative;display:block;width:16px;height:16px;border-radius:999px;background:var(--blue)}
+.map-dot::after{content:"";position:absolute;inset:-10px;border-radius:999px;border:2px solid var(--blue);opacity:0;animation:ping 2.4s var(--ease-out) infinite}
+@keyframes ping{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
+.map-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-4);font-size:var(--t-lg)}
+.visit-map .leaflet-tile-pane{filter:grayscale(1) contrast(.88) brightness(1.06)}
+.visit-map .leaflet-control-attribution{font-size:11px;background:rgba(247,247,244,.85)}
+.visit-map .leaflet-control-zoom a{color:var(--ink)}
+.visit-info{grid-column:8 / span 5;display:flex;flex-direction:column;gap:var(--s-6)}
+.visit-addr{font-size:var(--t-3xl);line-height:var(--l-3xl);font-weight:500}
+.metro{display:flex;flex-direction:column;gap:var(--s-2)}
+.metro li{display:flex;align-items:baseline;gap:var(--s-3);font-size:var(--t-base);line-height:var(--l-base)}
+.metro .dot{flex-shrink:0;width:10px;height:10px;border-radius:999px;transform:translateY(-1px)}
+.visit-contacts{display:flex;flex-direction:column;gap:var(--s-1);margin-top:var(--s-4);padding-top:var(--s-6);border-top:2px solid var(--blue)}
+.visit-k{font-size:var(--t-base);line-height:var(--l-base);font-weight:500;color:var(--blue);margin-bottom:var(--s-2)}
+.visit-mail,.visit-social{font-size:var(--t-xl);line-height:var(--l-xl);font-weight:500;overflow-wrap:anywhere;transition:color 200ms ease}
+.visit-social{margin-top:var(--s-4)}
+.visit-contacts .soft{font-size:var(--t-sm);line-height:var(--l-sm)}
+.visit-nicks{display:flex;flex-wrap:wrap;gap:var(--s-1) var(--s-4);font-size:var(--t-base);line-height:var(--l-base)}
+.visit-nicks a{transition:color 200ms ease}
+@media (hover:hover) and (pointer:fine){.visit-mail:hover,.visit-social:hover,.visit-nicks a:hover{color:var(--blue)}}
+.video-wrap{padding-top:var(--s-20)}
+.video-wrap .heading-2{margin-bottom:var(--s-6)}
+.video-ph{aspect-ratio:16/9;background:var(--paper-2);color:var(--soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-4);text-align:center}
+.play{width:72px;height:72px;border-radius:999px;background:var(--blue);display:grid;place-items:center}
+.play::after{content:"";margin-left:5px;border-left:20px solid var(--paper);border-top:12px solid transparent;border-bottom:12px solid transparent}
+.video-ph b{font-size:var(--t-2xl);line-height:var(--l-2xl);font-weight:500;color:var(--ink)}
+
+/* ---------- 404 ---------- */
+.lost{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-8);padding:var(--s-24) var(--m);text-align:center}
+.lost-num{font-size:clamp(120px,22vw,320px);line-height:.9;letter-spacing:-.04em;font-weight:300}
+.lost-sub{font-size:var(--t-xl);line-height:var(--l-xl)}
+
+/* ---------- подвал: синий, из базового варианта; «студия 505» мельче и жирнее, почта над адресом, потом соцсети ---------- */
+.site-footer{margin-top:var(--gap);background:var(--blue);color:var(--paper);padding:var(--s-12) var(--m) calc(var(--s-6) + env(safe-area-inset-bottom,0px))}
+.ft-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col);row-gap:var(--s-8);align-items:start}
+.ft-name{grid-column:1 / span 4;font-size:var(--t-5xl);line-height:1;font-weight:600;letter-spacing:-.02em;white-space:nowrap}
+.ft-col{display:flex;flex-direction:column;gap:var(--s-1);font-size:var(--t-base);line-height:var(--l-base)}
+.ft-col:nth-child(2){grid-column:5 / span 3}
+.ft-col:nth-child(3){grid-column:8 / span 3}
+.ft-col a{overflow-wrap:anywhere;text-decoration:underline 1px transparent;text-underline-offset:4px;transition:text-decoration-color 200ms ease}
+.ft-mail,.ft-social{font-size:var(--t-lg);line-height:var(--l-lg);font-weight:500}
+.ft-partner{grid-column:11 / span 2;justify-self:end;display:flex;flex-direction:column;align-items:flex-end;gap:var(--s-2);font-size:var(--t-sm);line-height:var(--l-sm)}
+.ft-partner img{width:72px;height:72px;border-radius:50%;transition:transform 300ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.ft-col a:hover{text-decoration-color:currentColor}.ft-partner:hover img{transform:scale(1.05)}}
+.ft-bottom{display:flex;justify-content:space-between;gap:var(--s-6);margin-top:var(--s-12);font-size:var(--t-sm);line-height:var(--l-sm);opacity:.8}
+
+/* ---------- переключатель данных для проверки (break-ui, только на localhost) ---------- */
+.devbar{position:fixed;left:50%;bottom:var(--s-4);transform:translateX(-50%);z-index:95;display:flex;gap:2px;padding:3px;border-radius:999px;background:#d9d9d9;font:500 13px/1 system-ui,sans-serif}
+.devbar a{padding:8px 12px;border-radius:999px;color:#333;white-space:nowrap}
+.devbar a[aria-current="true"]{background:#fff;color:#000}
+
+/* ---------- планшет ---------- */
+@media (max-width:1100px){
+  .burger{display:block}
+  .nav{position:fixed;inset:0;z-index:1;flex-direction:column;justify-content:center;gap:var(--s-2);padding:calc(var(--header-h) + env(safe-area-inset-top,0px)) var(--m) calc(var(--s-12) + env(safe-area-inset-bottom,0px));background:var(--paper);color:var(--ink);font-size:var(--t-4xl);line-height:var(--l-4xl);visibility:hidden}
+  .nav a{padding:var(--s-2) 0;align-self:flex-start}
+  .site-header.is-open{color:var(--ink)}
+  .site-header.is-open .wordmark{color:var(--blue)}
+  .site-header.is-open .nav{visibility:visible}
+  .site-header.is-open .nav a::after{background:var(--blue)}
+  .grid>*{grid-column:1 / -1 !important}
+  .sp-facts{flex-direction:row;gap:var(--s-10)}
+  .sp-gallery,.sp-side{grid-column:1 / -1}
+  .rep-pic{grid-column:1 / span 5}
+  .rep-info{grid-column:7 / span 6}
+  .people{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .visit-mapbox,.visit-info{grid-column:1 / -1}
+  .hero-night .hero-name{grid-column:1 / span 9}
+  .ribbon{grid-column:10 / span 3}
+  .ft-name{grid-column:1 / -1}
+  .ft-col:nth-child(2){grid-column:1 / span 6}
+  .ft-col:nth-child(3){grid-column:7 / span 4}
+}
+
+/* ---------- телефон ---------- */
+@media (max-width:760px){
+  :root{--m:var(--s-4);--gap:var(--s-24);--header-h:64px}
+  body{font-size:var(--t-base);line-height:var(--l-base)}
+  .wordmark{font-size:var(--t-2xl);line-height:var(--l-2xl)}
+  .heading-2{font-size:var(--t-4xl);line-height:var(--l-4xl)}
+  .page-head{padding-top:calc(var(--header-h) + var(--s-10));padding-bottom:var(--s-8)}
+  .page-title{font-size:clamp(48px,14vw,72px)}
+
+  /* главная, вариант 1: «студия 505» сверху, лента спектаклей едет влево внизу экрана */
+  .hero{min-height:max(520px,calc(100svh - var(--s-20)))}
+  .hero-name{font-size:17vw}
+  /* узкий экран: лента сразу под шапкой, «студия 505» внизу — всё в одном экране */
+  .hero-night{display:flex;flex-direction:column;justify-content:space-between;gap:var(--s-6);height:max(520px,calc(100svh - var(--s-20)))}
+  .hero-night .hero-name{align-self:flex-start;margin-top:auto}
+  .ribbon{order:-1;flex:none;margin:0 calc(var(--m) * -1);-webkit-mask-image:none;mask-image:none}
+  .rb-track{flex-direction:row;width:max-content;animation-name:rb-left;animation-duration:40s}
+  .rb-set{flex-direction:row;gap:var(--s-3);padding:0 var(--s-3) 0 0}
+  .rb-card{width:54vw}
+  .rb-title{font-size:var(--t-lg);line-height:var(--l-lg)}
+  .hero-night .hero-down{margin-top:calc(var(--s-4) * -1)}
+
+  .tabs{gap:var(--s-6);overflow-x:auto}
+  .tab{font-size:var(--t-lg);white-space:nowrap}
+  .ev.row{display:flex;flex-direction:column;align-items:stretch;padding:var(--s-10) 0}
+  .ev.row .row-when{margin-bottom:var(--s-4)}
+  .row-pic{width:86%}
+  .ev.row:nth-child(even) .row-pic{align-self:flex-end}
+  .ev.row .row-main{padding-left:var(--s-3)}
+  .ev.row.no-pic .row-main{padding-left:0}
+  .row-date{font-size:var(--t-5xl)}
+  .row-title{font-size:40px;line-height:1.05}
+  .ev-actions .btn{flex:1}
+  .ev-cast dl div{flex-direction:column;align-items:flex-start;gap:0}
+  .ev-cast dd{text-align:left}
+
+  .rep{display:flex;flex-direction:column;align-items:stretch;gap:var(--s-6);padding:var(--s-10) 0}
+  .rep-pic{width:72%}
+  .rep-info{align-items:flex-start;text-align:left}
+  .rep-title{font-size:var(--t-4xl);line-height:var(--l-4xl)}
+  .rep-sub::after{margin:var(--s-6) auto var(--s-6) 0}
+
+  .sp-thumbs{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .sp-main{aspect-ratio:4/5}
+  .sp-facts{flex-direction:column;gap:var(--s-4)}
+  .sp-text blockquote{padding-left:var(--s-4)}
+  .sp-text blockquote p{font-size:var(--t-xl);line-height:var(--l-xl)}
+  .roles div{grid-template-columns:minmax(0,1fr);gap:0}
+  .ensemble{grid-template-columns:minmax(0,1fr)}
+
+  .about-pics,.about-text{grid-template-columns:minmax(0,1fr);row-gap:var(--s-3)}
+  .about-pics figure:nth-child(n),.about-text p{grid-column:auto;margin-top:0}
+  .about-text{padding-top:var(--s-8)}
+  .about-text p{font-size:var(--t-xl);line-height:var(--l-xl)}
+  .people{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-8) var(--s-3)}
+  .people li:first-child{grid-row:auto}
+  .people li:first-child .ph{flex:none;aspect-ratio:4/3;min-height:0}
+  .ph b{font-size:var(--t-3xl)}
+  .people li:first-child .ph b{font-size:var(--t-6xl)}
+  .person-name{font-size:var(--t-base);line-height:var(--l-base)}
+  .people li:first-child .person-name{font-size:var(--t-2xl);line-height:var(--l-2xl)}
+  .card{width:calc(100% - var(--s-4));max-height:calc(100svh - var(--s-4))}
+  .card-body{gap:var(--s-6);padding:var(--s-4)}
+  .card-pic{aspect-ratio:4/3}
+  .card-name{font-size:var(--t-3xl);line-height:var(--l-3xl)}
+
+  .visit-map{aspect-ratio:1}
+  .visit-addr{font-size:var(--t-2xl);line-height:var(--l-2xl)}
+  .video-wrap{padding-top:var(--s-16)}
+
+  .ft-grid{grid-template-columns:minmax(0,1fr);row-gap:var(--s-6)}
+  .ft-name,.ft-col:nth-child(n),.ft-partner{grid-column:1 / -1}
+  .ft-name{font-size:var(--t-4xl)}
+  .ft-partner{justify-self:start;align-items:flex-start}
+}
+
+/* меньше движения: лента стоит и листается рукой, без перемещений при нажатии */
+@media (prefers-reduced-motion:reduce){
+  .rb-track,.map-dot::after{animation:none}
+  .ribbon{overflow:auto;scrollbar-width:none}
+  .btn,.card-close,.sp-thumb,.burger i,.nav a::after,.person .ph,.ft-partner img,.row-pic img,.rep-pic img{transition-property:opacity,background-color,color,border-color,box-shadow}
+  .btn:active,.card-close:active,.sp-thumb:active,.person:active .ph{transform:none}
+}

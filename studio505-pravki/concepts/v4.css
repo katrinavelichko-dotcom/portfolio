@@ -1,0 +1,96 @@
+/* образец v4: живое небо, «505» среди облаков, три формы афиши */
+
+/* ---------- первый экран ---------- */
+.c-hero{position:relative;isolation:isolate;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-6);padding:var(--s-24) var(--m) var(--s-16);text-align:center;overflow:hidden;background:#B9CDEE}
+.c-hero > canvas.bg{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
+.c-505{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--s-2)}
+.c-505 h1{display:flex;flex-direction:column;align-items:center;gap:var(--s-2);font-weight:500}
+.c-505 .hero-505{font-size:clamp(160px,32vw,480px);line-height:.8;letter-spacing:-.03em;font-weight:600;color:var(--blue)}
+.c-505 .hero-word{font-size:var(--t-3xl);line-height:var(--l-3xl);letter-spacing:.32em;padding-left:.32em;font-weight:400;color:var(--ink)}
+/* облака поверх цифр: только над «505», чтобы не закрывать текст и кнопку */
+.c-505 > canvas.front{position:absolute;left:-18%;right:-18%;top:-12%;height:96%;width:136%;pointer-events:none;z-index:2}
+.c-hero .hero-sub{max-width:44ch;font-size:var(--t-xl);line-height:var(--l-xl);color:var(--ink)}
+canvas.no-gl{display:none}
+
+/* ---------- переключатель образцов ---------- */
+.switch{position:sticky;top:var(--s-4);z-index:30;display:flex;justify-content:center;margin:var(--s-16) auto 0;width:max-content}
+.switch div{display:flex;gap:2px;padding:4px;border-radius:999px;background:var(--ink)}
+.switch button{min-height:44px;padding:0 var(--s-6);border-radius:999px;color:var(--paper);font-size:var(--t-base);transition:background-color 200ms ease,color 200ms ease,transform 160ms var(--ease-out)}
+.switch button:active{transform:scale(.97)}
+.switch button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.switch button[aria-pressed="false"]:hover{background:#2a2a2a}}
+.variant[hidden]{display:none}
+.v-head{padding:var(--s-16) var(--m) var(--s-8);display:flex;justify-content:space-between;align-items:end;gap:var(--s-6);flex-wrap:wrap}
+.v-head h2{font-size:clamp(48px,6vw,96px);line-height:1;letter-spacing:-.02em;font-weight:500}
+.v-head p{max-width:40ch;color:var(--soft)}
+
+/* ---------- А. выход за края ---------- */
+.vA{overflow:hidden}
+.vA-pin{height:100svh;display:flex;align-items:center;overflow:hidden}
+.vA-track{display:flex;align-items:stretch;gap:0;padding-left:var(--m);will-change:transform}
+.ev.vA-panel{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:var(--s-4);width:92vw;flex-shrink:0;padding:0 8vw 0 0;border-radius:0;background:none;position:relative}
+.ev.vA-panel:hover,.ev.vA-panel.is-open{background:none}
+.vA-date{font-size:clamp(160px,24vw,420px);line-height:.78;letter-spacing:-.05em;font-weight:600;color:var(--blue);margin-left:-.06em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.vA-title{font-size:clamp(36px,4.4vw,72px);line-height:1;font-weight:500;letter-spacing:-.02em;max-width:14ch;hyphens:auto}
+.vA-title a{transition:color 200ms ease}
+@media (hover:hover) and (pointer:fine){.vA-title a:hover{color:var(--blue)}}
+.vA-meta{color:var(--soft)}
+.vA-panel .ev-actions{margin-top:var(--s-2)}
+.vA-panel .ev-cast{grid-column:auto;max-width:640px;max-height:34svh;overflow:auto;overscroll-behavior:contain;background:var(--paper-2);padding:var(--s-4);border-radius:12px}
+.vA-end{display:flex;align-items:center;width:40vw;flex-shrink:0;font-size:var(--t-2xl);color:var(--soft);padding-right:var(--m)}
+
+/* ---------- Б. показы в небе ---------- */
+.vB{position:relative;isolation:isolate;min-height:120svh;overflow:hidden;background:#B9CDEE}
+.vB > canvas.bg{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.vB .v-head{position:relative;z-index:1}
+.vB .v-head p{color:var(--ink)}
+.vB-field{position:relative;height:90svh;margin:0 var(--m)}
+.vB-dot{position:absolute;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:var(--s-4) var(--s-6);border-radius:999px;background:var(--paper);color:var(--ink);text-align:left;transform:translate(-50%,-50%);transition:background-color 200ms ease,color 200ms ease;will-change:transform}
+.vB-dot b{font-size:var(--t-3xl);line-height:var(--l-3xl);font-weight:500;color:var(--blue);font-variant-numeric:tabular-nums}
+.vB-dot span{font-size:var(--t-base);line-height:var(--l-base);white-space:nowrap}
+.vB-dot:active{scale:.97}
+@media (hover:hover) and (pointer:fine){.vB-dot:hover{background:var(--ink);color:var(--paper)}.vB-dot:hover b{color:var(--paper)}}
+.vB-card .card-body{display:block}
+.vB-card .ev-title{display:none}
+.vB-card .ev{grid-template-columns:7.5rem minmax(0,1fr);row-gap:var(--s-4)}
+.vB-card .ev-actions{grid-column:2}
+.vB-card .ev-cast{grid-column:1 / -1}
+
+/* ---------- В. сигнал во времени ---------- */
+.vC{padding-bottom:var(--s-16)}
+.vC-scroll{overflow-x:auto;overscroll-behavior-x:contain;padding:0 var(--m)}
+.vC-stage{position:relative;min-width:900px;height:360px}
+.vC-stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.vC-line{fill:none;stroke:var(--ink);stroke-width:2;vector-effect:non-scaling-stroke}
+.vC-axis text{font:400 12px var(--font);fill:var(--soft)}
+.vC-peak{position:absolute;display:flex;flex-direction:column;align-items:center;gap:2px;padding:var(--s-2) var(--s-3);border-radius:12px;background:var(--paper);color:var(--ink);transition:background-color 200ms ease,color 200ms ease}
+.vC-peak b{font-size:var(--t-2xl);line-height:var(--l-2xl);font-weight:500;color:var(--blue);font-variant-numeric:tabular-nums}
+.vC-peak span{font-size:var(--t-sm);line-height:var(--l-sm);white-space:nowrap}
+.vC-peak[aria-pressed="true"]{background:var(--blue);color:var(--paper)}
+.vC-peak[aria-pressed="true"] b{color:var(--paper)}
+.vC-peak:active{scale:.97}
+@media (hover:hover) and (pointer:fine){.vC-peak[aria-pressed="false"]:hover{background:var(--paper-2)}}
+.vC-detail{margin:var(--s-8) var(--m) 0;max-width:1100px}
+
+@media (max-width:760px){
+  .c-505 .hero-505{font-size:46vw}
+  .c-505 .hero-word{font-size:var(--t-xl);line-height:var(--l-xl)}
+  .c-hero .hero-sub{font-size:var(--t-lg);line-height:var(--l-lg)}
+  /* А на телефоне: ленты нет, показы идут вниз, огромные даты обрезаны краем экрана */
+  .vA-pin{height:auto;display:block}
+  .vA-track{flex-direction:column;gap:var(--s-16);padding:0 var(--m) var(--s-16);transform:none !important}
+  .ev.vA-panel{width:auto;padding:0}
+  .vA-date{font-size:40vw;margin-left:-.12em}
+  .vA-end{width:auto}
+  /* Б на телефоне: облачка идут двумя колонками со сдвигом */
+  .vB-field{height:auto;display:grid;grid-template-columns:1fr 1fr;gap:var(--s-6) var(--s-3);padding-bottom:var(--s-16)}
+  .vB-dot{position:relative;left:auto !important;top:auto !important;transform:none;border-radius:24px}
+  .vB-dot:nth-child(even){margin-top:var(--s-12)}
+  .vB-dot span{white-space:normal}
+  .vB-card .ev{grid-template-columns:1fr}
+  .vB-card .ev-actions{grid-column:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .switch button,.vB-dot,.vC-peak{transition-property:background-color,color}
+  .vA-pin{overflow-x:auto}
+}

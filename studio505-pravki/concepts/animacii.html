@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>студия 505 · примерка анимаций (правки 24.11)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Вместо плавных появлений при прокрутке (их убрали по правке) — движение только в ответ на мышку/палец
+   или одна спокойная лента. Навыки animate и emil-design-eng: короткие ответы на действие, кривая ease-out,
+   при «меньше движения» всё стоит. */
+:root{--blue:#002FA7;--paper:#F7F7F4;--paper-2:#EDEDE9;--ink:#000;--soft:#4A4A48;--ease-out:cubic-bezier(0.23,1,0.32,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:Jost,system-ui,sans-serif;padding:48px 32px 96px}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1280px;margin:0 auto}
+h1{font-size:30px;line-height:36px;font-weight:500}
+.lead{margin-top:12px;max-width:62ch;font-size:18px;line-height:28px;color:var(--soft)}
+.demo{margin-top:64px}
+.demo h2{font-size:24px;line-height:32px;font-weight:500;color:var(--blue)}
+.demo .lead{margin-bottom:24px}
+
+/* А · лента: едет сама, останавливается под мышкой */
+.ribbon{overflow:hidden;background:#000;padding:24px 0}
+.track{display:flex;width:max-content;animation:left 36s linear infinite}
+.ribbon:hover .track{animation-play-state:paused}
+.set{display:flex;gap:16px;padding-right:16px}
+.card{width:220px;color:#fff;display:flex;flex-direction:column;gap:8px}
+.card img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.card span{font-size:20px;font-weight:500;transition:color 200ms ease}
+.card:hover span{color:#9DB3EE}
+@keyframes left{to{transform:translateX(-50%)}}
+
+/* Б · синий свет: при наведении название заливается синим слева направо */
+.titles{display:flex;flex-direction:column;gap:8px}
+.light{font-size:64px;line-height:1.05;font-weight:600;text-transform:lowercase;letter-spacing:-.02em;
+  background:linear-gradient(90deg,var(--blue) 50%,var(--ink) 50%);background-size:200% 100%;background-position:100% 0; /* taste-skill-ignore: заливка текста для демонстрации эффекта */
+  -webkit-background-clip:text;background-clip:text;color:transparent;transition:background-position 450ms var(--ease-out)}
+.light:hover{background-position:0 0}
+
+/* В · фото проявляется: в покое чёрно-белое, под мышкой цветное и чуть ближе */
+.pics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.pic{overflow:hidden;aspect-ratio:3/4}
+.pic img{width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter 400ms ease,transform 600ms var(--ease-out)}
+.pic:hover img{filter:none;transform:scale(1.03)}
+
+@media (prefers-reduced-motion:reduce){.track{animation:none}.ribbon{overflow:auto}.light,.pic img{transition:none}}
+@media (max-width:760px){body{padding:32px 16px 64px}.light{font-size:40px}.pics{grid-template-columns:repeat(2,minmax(0,1fr))}.card{width:150px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Анимации вместо плавных появлений</h1>
+  <p class="lead">Блоки больше не выплывают при прокрутке. Вместо этого три варианта: можно взять один, несколько или ни одного. Наведи мышку на каждый пример.</p>
+
+  <section class="demo">
+    <h2>А · Лента спектаклей</h2>
+    <p class="lead">Едет сама и останавливается под мышкой. Сейчас она уже стоит на чёрной главной (вариант 1).</p>
+    <div class="ribbon"><div class="track">
+      <div class="set">
+        <a class="card" href="#"><img src="../images/photos/sad-01.jpg" alt=""><span>Вишнёвый сад</span></a>
+        <a class="card" href="#"><img src="../images/photos/blok-01.jpg" alt=""><span>Блок</span></a>
+        <a class="card" href="#"><img src="../images/photos/akrobaty-03.jpg" alt=""><span>Придворные акробаты</span></a>
+        <a class="card" href="#"><img src="../images/photos/diss-02.jpg" alt=""><span>Диссипация</span></a>
+      </div>
+      <div class="set" aria-hidden="true">
+        <a class="card" href="#" tabindex="-1"><img src="../images/photos/sad-01.jpg" alt=""><span>Вишнёвый сад</span></a>
+        <a class="card" href="#" tabindex="-1"><img src="../images/photos/blok-01.jpg" alt=""><span>Блок</span></a>
+        <a class="card" href="#" tabindex="-1"><img src="../images/photos/akrobaty-03.jpg" alt=""><span>Придворные акробаты</span></a>
+        <a class="card" href="#" tabindex="-1"><img src="../images/photos/diss-02.jpg" alt=""><span>Диссипация</span></a>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="demo">
+    <h2>Б · Синий свет</h2>
+    <p class="lead">Сергею нравится, что текст «загорается» синим под мышкой. Здесь синий не просто включается, а заливает название слева направо.</p>
+    <div class="titles">
+      <a class="light" href="#">вишнёвый сад</a>
+      <a class="light" href="#">блок</a>
+      <a class="light" href="#">придворные акробаты</a>
+    </div>
+  </section>
+
+  <section class="demo">
+    <h2>В · Фото проявляется</h2>
+    <p class="lead">В покое фото чёрно-белые, под мышкой становятся цветными. Сайт выглядит спокойнее, цвет появляется в ответ на интерес.</p>
+    <div class="pics">
+      <div class="pic"><img src="../images/photos/sad-01.jpg" alt=""></div>
+      <div class="pic"><img src="../images/photos/blok-04.jpg" alt=""></div>
+      <div class="pic"><img src="../images/photos/akrobaty-06.jpg" alt=""></div>
+      <div class="pic"><img src="../images/photos/diss-04.jpg" alt=""></div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

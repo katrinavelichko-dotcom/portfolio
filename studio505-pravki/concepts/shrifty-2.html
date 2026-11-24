@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>студия 505 · примерка шрифтов (правки 24.11)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Unbounded:wght@500;700&family=Dela+Gothic+One&family=Playfair+Display:wght@500;700&family=Cormorant+Garamond:wght@500;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Примерка шрифтов для заголовков: логотип, название в афише, заголовок раздела. Текст везде Jost, как на сайте.
+   Все шрифты здесь бесплатные (Google Fonts, лицензия OFL: можно на коммерческом сайте). */
+:root{--blue:#002FA7;--paper:#F7F7F4;--paper-2:#EDEDE9;--ink:#000;--soft:#4A4A48}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:Jost,system-ui,sans-serif;padding:48px 32px 96px}
+.wrap{max-width:1280px;margin:0 auto}
+h1{font-size:30px;line-height:36px;font-weight:500}
+.lead{margin-top:12px;max-width:62ch;font-size:18px;line-height:28px;color:var(--soft)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:48px}
+.card{background:#fff;padding:32px;display:flex;flex-direction:column;gap:24px}
+.tag{font-size:14px;line-height:20px;font-weight:500;color:var(--soft)}
+.tag b{color:var(--blue);font-weight:500}
+.logo{font-size:32px;line-height:1;color:var(--blue)}
+.logo .num{font-size:.66em}
+.title{font-size:64px;line-height:1;text-transform:lowercase;letter-spacing:-.02em}
+.h2{font-size:44px;line-height:1;color:var(--blue)}
+.p{font-size:18px;line-height:28px;max-width:52ch}
+.f-jost .logo,.f-jost .title,.f-jost .h2{font-family:Jost;font-weight:500}
+.f-unb .logo,.f-unb .title,.f-unb .h2{font-family:Unbounded;font-weight:700;letter-spacing:-.03em}.f-unb .title{font-size:52px}
+.f-dela .logo,.f-dela .title,.f-dela .h2{font-family:'Dela Gothic One';font-weight:400}.f-dela .title{font-size:56px}
+.f-play .logo,.f-play .title,.f-play .h2{font-family:'Playfair Display';font-weight:700}
+.f-corm .logo,.f-corm .title,.f-corm .h2{font-family:'Cormorant Garamond';font-weight:700}.f-corm .title{font-size:72px}
+.f-osw .logo,.f-osw .title,.f-osw .h2{font-family:Oswald;font-weight:600;letter-spacing:0}.f-osw .title{text-transform:uppercase;font-size:60px}
+.paid{margin-top:64px;padding:32px;background:var(--paper-2)}
+.paid h2{font-size:24px;line-height:32px;font-weight:500}
+.paid ul{margin-top:16px;display:flex;flex-direction:column;gap:8px;font-size:18px;line-height:28px}
+.paid a{color:var(--blue);text-decoration:underline;text-underline-offset:4px}
+@media (max-width:860px){body{padding:32px 16px 64px}.grid{grid-template-columns:1fr}.title{font-size:44px!important}.h2{font-size:32px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Шрифты для заголовков: 6 бесплатных вариантов</h1>
+  <p class="lead">Сергею больше понравились шрифты облачного варианта, поэтому первые два — оттуда. Остальные выразительнее. Основной текст везде остаётся Jost.</p>
+
+  <div class="grid">
+    <section class="card f-jost"><p class="tag"><b>1 · Jost</b> · сейчас на сайте</p><p class="logo">студия <span class="num">505</span></p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Спокойный геометрический гротеск. Чистый и современный, но без характера.</p></section>
+    <section class="card f-unb"><p class="tag"><b>2 · Unbounded</b> · был в облачном у «505» и названий</p><p class="logo">студия <span class="num">505</span></p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Широкий и жирный, похож на пост студии с синим «505». Громкий, молодой.</p></section>
+    <section class="card f-dela"><p class="tag"><b>3 · Dela Gothic One</b></p><p class="logo">студия <span class="num">505</span></p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Плотный, почти плакатный. Хорош в коротких названиях, длинный текст им не набирают.</p></section>
+    <section class="card f-play"><p class="tag"><b>4 · Playfair Display</b></p><p class="logo">студия <span class="num">505</span></p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Контрастная антиква. Поэтично и «театрально», ближе к классике и артхаусу.</p></section>
+    <section class="card f-corm"><p class="tag"><b>5 · Cormorant Garamond</b></p><p class="logo">студия <span class="num">505</span></p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Изящная книжная антиква. Тихая, нежная, хорошо с фото в цветах.</p></section>
+    <section class="card f-osw"><p class="tag"><b>6 · Oswald</b></p><p class="logo">студия <span class="num">505</span></p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Узкий и высокий, как афишная строка. Строгий, с ритмом.</p></section>
+  </div>
+
+  <section class="paid">
+    <h2>Платные, если бесплатные не зайдут</h2>
+    <p class="lead">Показать их вживую здесь нельзя: без лицензии шрифт не подключить. Посмотреть можно на сайте студии type.today. Веб-лицензия покупается на каждое начертание, например у шрифта Zhivov — около $50 за одно. Точная цена на странице шрифта.</p>
+    <ul>
+      <li><a href="https://type.today/" target="_blank" rel="noopener">type.today</a>: Kazimir, Halvar, Gramatika, Zhivov</li>
+      <li>Покупает студия, лицензию оформляют на неё. Я ничего не покупаю.</li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>
