@@ -61,7 +61,10 @@ function renderHeader(el) {
     const hits = new Set();
     io = new IntersectionObserver((entries) => {
       entries.forEach((en) => (en.isIntersecting ? hits.add(en.target) : hits.delete(en.target)));
-      el.classList.toggle('on-dark', !el.classList.contains('is-open') && hits.size > 0);
+      const open = el.classList.contains('is-open');
+      el.classList.toggle('on-dark', !open && hits.size > 0);
+      // над тёмным первым экраном (не над синим подвалом) логотип может быть синим — примерка ?logo=blue / light
+      el.classList.toggle('on-hero', !open && [...hits].some((n) => n.classList.contains('hero')));
     }, { rootMargin: `0px 0px -${Math.max(0, innerHeight - h)}px 0px` });
     document.querySelectorAll('.dark, .site-footer').forEach((s) => io.observe(s));
   };

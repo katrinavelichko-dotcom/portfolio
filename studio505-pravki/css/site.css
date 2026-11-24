@@ -136,6 +136,8 @@ p,li,dd,blockquote{text-wrap:pretty}
 /* примерка цвета надписи на главной (?logo=blue / ?logo=light) */
 .logo-blue .hero-name{color:var(--blue)}
 .logo-light .hero-name{color:var(--blue-soft)}
+.logo-blue .site-header.on-hero .wordmark{color:var(--blue)}
+.logo-light .site-header.on-hero .wordmark{color:var(--blue-soft)}
 
 /* ---------- шапка внутренних страниц: только заголовок, без поясняющего текста сбоку (правка) ---------- */
 .page-head{padding:calc(var(--header-h) + var(--s-16)) var(--m) var(--s-10)}
