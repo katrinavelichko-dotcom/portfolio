@@ -322,7 +322,7 @@ function renderPeople(grid, dialog) {
         <h2 class="card-name" id="card-name">${esc(p.name)}</h2>
         ${works.length ? `<ul class="card-works" aria-label="Спектакли">${works.map((w) =>
           `<li>${w.href ? `<a href="${w.href}">${esc(w.title)}</a>` : `<span>${esc(w.title)}</span>`}</li>`).join('')}</ul>`
-          : '<p class="body-3 soft">Спектакли скоро появятся.</p>'}
+          : p.note ? `<p class="card-note">${esc(p.note)}</p>` : '<p class="body-3 soft">Спектакли скоро появятся.</p>'}
       </div>`;
     if (!dialog.open) dialog.showModal();
   };

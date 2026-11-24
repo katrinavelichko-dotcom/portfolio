@@ -43,6 +43,7 @@ const PEOPLE = [
   { id: 'bondarenko', name: 'Тимур Бондаренко', shows: ['sad', 'blok', 'akro'] },
   { id: 'manturovskaya', name: 'Мария Мантуровская', shows: ['sad'] },
   { id: 'vasileva', name: 'Владлена Васильева', shows: ['sad'] },
+  { id: 'velichko', name: 'Катерина Величко', shows: [], note: 'создатель сайта' }, // в документе заказчика: «добавить Катю»
 ];
 
 /* Спектакли. creators и cast: [роль, [имена]]. Имя из PEOPLE становится ссылкой на карточку. */
