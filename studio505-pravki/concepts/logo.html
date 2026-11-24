@@ -3,51 +3,46 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>студия 505 · примерка цвета логотипа на главной</title>
+<title>студия 505 · примерка цвета надписи на главной</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300..800&display=swap" rel="stylesheet">
 <style>
-/* Примерка: «студия 505» на главной белым и синим, на чёрном фоне и на затемнённом фото.
-   Цифры уменьшены до высоты строчных букв и на ступень жирнее, чтобы штрих был одной толщины с буквами. */
-:root{--blue:#002FA7;--blue-light:#6F8EF0;--paper:#F7F7F4;--soft:#4A4A48}
+/* Примерка: настоящие главные (с лентой спектаклей сбоку) с надписью «студия 505» белым, фирменным синим и светлым синим.
+   Каждый вариант — живая страница сайта, можно открыть её целиком по ссылке. */
+:root{--blue:#002FA7;--paper:#F7F7F4;--soft:#4A4A48}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--paper);font-family:Jost,system-ui,sans-serif;color:#000}
-.intro{padding:48px 32px 32px;max-width:1280px}
+body{background:var(--paper);font-family:Jost,system-ui,sans-serif;color:#000;padding:48px 32px 96px}
 h1{font-size:30px;line-height:36px;font-weight:500}
-.intro p{margin-top:12px;max-width:62ch;font-size:18px;line-height:28px;color:var(--soft)}
-.opt{position:relative;isolation:isolate;overflow:hidden;min-height:72vh;display:flex;flex-direction:column;justify-content:flex-end;padding:32px;background:#000;margin-top:8px}
-.opt img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:50% 60%}
-.opt.photo::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,rgba(0,0,0,.78),rgba(0,0,0,.5) 34%,rgba(0,0,0,.42) 60%,rgba(0,0,0,.82))} /* taste-skill-ignore: затемнение фото, как на главной */
-.label{position:absolute;top:24px;left:32px;padding:8px 14px;border-radius:999px;background:var(--paper);color:#000;font-size:15px;font-weight:500}
-.name{font-size:clamp(64px,11.5vw,184px);line-height:.9;font-weight:300;letter-spacing:-.045em;white-space:nowrap}
-.name .num{font-size:.66em;font-weight:440;letter-spacing:.02em}
-.white{color:var(--paper)}
-.blue{color:var(--blue)}
-.light{color:var(--blue-light)}
-.note{margin-top:16px;font-size:16px;line-height:24px;color:#B5B5B0}
-@media (max-width:760px){.intro,.opt{padding-left:16px;padding-right:16px}.label{left:16px}.name{font-size:17vw}}
+.lead{margin-top:12px;max-width:62ch;font-size:18px;line-height:28px;color:var(--soft)}
+.opt{margin-top:48px}
+.opt h2{font-size:24px;line-height:32px;font-weight:500}
+.opt h2 a{color:var(--blue);font-size:18px;font-weight:400;margin-left:12px;text-decoration:underline;text-underline-offset:4px}
+.opt p{margin-top:4px;font-size:16px;line-height:24px;color:var(--soft)}
+.frame{margin-top:16px;width:100%;height:min(80vh,760px);border:0;display:block;background:#000}
+@media (max-width:760px){body{padding:32px 16px 64px}.frame{height:80vh}}
 </style>
 </head>
 <body>
-<div class="intro">
-  <h1>«студия 505» на главной: белым или синим</h1>
-  <p>Пять вариантов, сверху вниз. Фирменный синий #002FA7 на чёрном получается тёмным: красиво, но читается хуже. Светлый синий виден лучше, но это уже не точный фирменный цвет.</p>
-</div>
+  <h1>Главная: «студия 505» белым или синим</h1>
+  <p class="lead">Здесь настоящие главные страницы, с лентой спектаклей сбоку. Каждую можно открыть целиком по ссылке рядом с названием.</p>
 
-<section class="opt"><span class="label">А · белый на чёрном (сейчас)</span>
-  <p class="name white">студия <span class="num">505</span></p><p class="note">Самый контрастный, читается лучше всего.</p></section>
+  <section class="opt"><h2>А · белая надпись (сейчас) <a href="../index.html" target="_blank">открыть ↗</a></h2>
+    <p>Самая контрастная.</p>
+    <iframe class="frame" src="../index.html" title="Главная с белой надписью" loading="lazy"></iframe></section>
 
-<section class="opt"><span class="label">Б · фирменный синий на чёрном</span>
-  <p class="name blue">студия <span class="num">505</span></p><p class="note">Как в посте студии с синим «505». Глубокий, но тёмный: на телефоне на солнце может потеряться.</p></section>
+  <section class="opt"><h2>Б · фирменный синий <a href="../index.html?logo=blue" target="_blank">открыть ↗</a></h2>
+    <p>Синий #002FA7, как в посте студии. Глубокий, но на чёрном тёмный.</p>
+    <iframe class="frame" src="../index.html?logo=blue" title="Главная с фирменной синей надписью" loading="lazy"></iframe></section>
 
-<section class="opt"><span class="label">В · светлый синий на чёрном</span>
-  <p class="name light">студия <span class="num">505</span></p><p class="note">Читается так же уверенно, как белый, при этом синий.</p></section>
+  <section class="opt"><h2>В · светлый синий <a href="../index.html?logo=light" target="_blank">открыть ↗</a></h2>
+    <p>Синий, но читается так же уверенно, как белый.</p>
+    <iframe class="frame" src="../index.html?logo=light" title="Главная со светлой синей надписью" loading="lazy"></iframe></section>
 
-<section class="opt photo"><img src="../images/photos/obshee.jpg" alt=""><span class="label">Г · фирменный синий на затемнённом фото</span>
-  <p class="name blue">студия <span class="num">505</span></p><p class="note">Почти сливается с тёмным полом.</p></section>
+  <section class="opt"><h2>Г · фото, фирменный синий <a href="../glavnaya-2.html?logo=blue" target="_blank">открыть ↗</a></h2>
+    <iframe class="frame" src="../glavnaya-2.html?logo=blue" title="Главная с фото и фирменной синей надписью" loading="lazy"></iframe></section>
 
-<section class="opt photo"><img src="../images/photos/obshee.jpg" alt=""><span class="label">Д · светлый синий на затемнённом фото</span>
-  <p class="name light">студия <span class="num">505</span></p><p class="note">Видно и на фото.</p></section>
+  <section class="opt"><h2>Д · фото, светлый синий <a href="../glavnaya-2.html?logo=light" target="_blank">открыть ↗</a></h2>
+    <iframe class="frame" src="../glavnaya-2.html?logo=light" title="Главная с фото и светлой синей надписью" loading="lazy"></iframe></section>
 </body>
 </html>

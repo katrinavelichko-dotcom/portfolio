@@ -105,11 +105,12 @@ function photoAlt(name, s) {
 }
 const isWide = (name) => name.startsWith('blok') || name === 'obshee';
 /* где на снимке главное (object-position): у «Вишнёвого сада» лицо внизу кадра — поднимаем его выше */
-const FOCUS = { 'sad-01': '50% 78%' };
-const photoTag = (name, s, lazy = true) => {
+const FOCUS = { 'sad-01': '50% 58%' };
+/* thumb: лёгкая копия (images/thumbs, ~70 КБ) для ленты и миниатюр, чтобы фото появлялись сразу */
+const photoTag = (name, s, lazy = true, thumb = false) => {
   const [w, h] = isWide(name) ? [1600, 1067] : [1075, 1600];
   const pos = FOCUS[name] ? ` style="object-position:${FOCUS[name]}"` : '';
-  return `<img src="images/photos/${name}.jpg" alt="${esc(photoAlt(name, s))}" width="${w}" height="${h}"${pos}${lazy ? ' loading="lazy"' : ''} decoding="async">`;
+  return `<img src="images/${thumb ? 'thumbs' : 'photos'}/${name}.jpg" alt="${esc(photoAlt(name, s))}" width="${w}" height="${h}"${pos}${lazy ? ' loading="lazy"' : ''} decoding="async">`;
 };
 
 /* ---------- афиша (оставляем как есть, названия жирнее) ---------- */
@@ -200,7 +201,7 @@ function renderRibbon(el) {
   const items = SHOW_ORDER.map((id) => {
     const s = SHOWS[id];
     return `<a class="rb-card" href="${showUrl(id)}">
-      <span class="rb-pic">${s.photos?.length ? photoTag(s.photos[0], s) : ''}</span>
+      <span class="rb-pic">${s.photos?.length ? photoTag(s.photos[0], s, false, true) : ''}</span>
       <span class="rb-title">${esc(s.title)}</span>
     </a>`;
   }).join('');
@@ -243,7 +244,7 @@ function renderShowPage(el) {
     <div class="sp-gallery">
       ${photos.length ? `<figure class="sp-main">${photoTag(photos[0], s, false)}</figure>` : '<div class="sp-main sp-empty"><span>Фото скоро появятся</span></div>'}
       ${photos.length > 1 ? `<ul class="sp-thumbs" aria-label="Другие фото">${photos.slice(1).map((p, i) => `
-        <li><button class="sp-thumb" type="button" data-i="${i + 1}" aria-label="Показать это фото крупно">${photoTag(p, s)}</button></li>`).join('')}</ul>` : ''}
+        <li><button class="sp-thumb" type="button" data-i="${i + 1}" aria-label="Показать это фото крупно">${photoTag(p, s, true, true)}</button></li>`).join('')}</ul>` : ''}
     </div>
     <div class="sp-side">
       <p class="sp-sub">${esc(s.sub)}</p>
@@ -282,7 +283,7 @@ function renderShowPage(el) {
     const i = +btn.dataset.i;
     [photos[0], photos[i]] = [photos[i], photos[0]];
     main.innerHTML = photoTag(photos[0], s, false);
-    btn.innerHTML = photoTag(photos[i], s);
+    btn.innerHTML = photoTag(photos[i], s, false, true);
   }));
   bindCast(el);
 }
@@ -364,6 +365,9 @@ function renderMap(el) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const q = (s) => document.querySelector(s);
+  // примерка цвета надписи на главной: ?logo=blue — фирменный синий, ?logo=light — светлый синий
+  const logo = new URLSearchParams(location.search).get('logo');
+  if (logo === 'blue' || logo === 'light') document.body.classList.add(`logo-${logo}`);
   if (q('[data-header]')) renderHeader(q('[data-header]'));
   if (q('[data-footer]')) renderFooter(q('[data-footer]'));
   if (q('[data-afisha]')) renderAfisha(q('[data-afisha]'));
