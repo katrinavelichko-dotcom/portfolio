@@ -132,8 +132,11 @@ p,li,dd,blockquote{text-wrap:pretty}
    Логотип в нижнем углу, на полу, не на лицах (конспект: текст на фото только на спокойном месте) */
 .hero-photo{display:flex;flex-direction:column;justify-content:flex-end;gap:var(--s-4)}
 .hero-img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:50% 60%}
-.hero-photo::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient( /* taste-skill-ignore: нейтральное затемнение фото по правке заказчика */to bottom,rgba(0,0,0,.78) 0%,rgba(0,0,0,.5) 34%,rgba(0,0,0,.42) 60%,rgba(0,0,0,.82) 100%)}
+.hero-photo::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient( /* taste-skill-ignore: нейтральное затемнение фото по правке заказчика */to bottom,rgba(0,0,0,.88) 0%,rgba(0,0,0,.68) 34%,rgba(0,0,0,.62) 60%,rgba(0,0,0,.9) 100%)}
 
+/* вариант 3: затемнённое фото + лента спектаклей сбоку. Справа, под лентой, фото темнее, чтобы карточки не спорили с людьми */
+.hero-mix::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,rgba(0,0,0,.88) 0%,rgba(0,0,0,.68) 34%,rgba(0,0,0,.62) 60%,rgba(0,0,0,.9) 100%),linear-gradient(to right,rgba(0,0,0,0) 55%,rgba(0,0,0,.7) 100%)} /* taste-skill-ignore: нейтральное затемнение фото */
+.hero-mix .hero-img{object-position:35% 60%}
 .home .afisha{padding-top:var(--s-10)}
 /* примерка цвета надписи на главной (?logo=blue / ?logo=light) */
 .logo-blue .hero-name{color:var(--blue)}
@@ -340,6 +343,33 @@ p,li,dd,blockquote{text-wrap:pretty}
 @media (hover:hover) and (pointer:fine){.ft-col a:hover{text-decoration-color:currentColor}.ft-partner:hover img{transform:scale(1.05)}}
 .ft-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--s-2) var(--s-6);margin-top:var(--s-12);font-size:var(--t-sm);line-height:var(--l-sm);opacity:.8}
 
+/* ---------- примерка шрифта заголовков (?font=…): заголовки, названия, логотип; основной текст остаётся Jost.
+   Логотип заглавными: у заглавных букв и цифр одна высота, «СТУДИЯ» и «505» одного размера ---------- */
+.font-try :is(.wordmark,.hero-name,.ft-name){text-transform:uppercase;letter-spacing:0}
+.font-try .num{font-size:1em;font-weight:inherit;letter-spacing:0}
+.font-try .hero-name{font-size:clamp(48px,8vw,128px)}
+.font-try .wordmark{font-size:var(--t-xl)}
+.font-dela :is(.wordmark,.hero-name,.ft-name,.page-title,.heading-2,.rep-title,.row-title,.rb-title,.card-name,.visit-addr,.sp-text blockquote p){font-family:'Dela Gothic One',var(--font);font-weight:400}
+.font-rmono :is(.wordmark,.hero-name,.ft-name,.page-title,.heading-2,.rep-title,.row-title,.rb-title,.card-name,.visit-addr,.sp-text blockquote p){font-family:'Rubik Mono One',var(--font);font-weight:400;letter-spacing:-.02em} /* taste-skill-ignore: Rubik Mono One — плакатный шрифт для примерки, выбран заказчицей, не код */
+.font-rmono :is(.page-title){font-size:clamp(40px,6vw,96px)}
+.font-rmono :is(.row-title,.rep-title){font-size:clamp(28px,3.4vw,52px)}
+.font-unbounded :is(.wordmark,.hero-name,.ft-name,.page-title,.heading-2,.rep-title,.row-title,.rb-title,.card-name,.visit-addr,.sp-text blockquote p){font-family:Unbounded,var(--font);font-weight:700;letter-spacing:-.03em}
+.font-unbounded .page-title{font-size:clamp(48px,7vw,112px)}
+.font-rubik :is(.wordmark,.hero-name,.ft-name,.page-title,.heading-2,.rep-title,.row-title,.rb-title,.card-name,.visit-addr,.sp-text blockquote p){font-family:Rubik,var(--font);font-weight:700}
+.font-onest :is(.wordmark,.hero-name,.ft-name,.page-title,.heading-2,.rep-title,.row-title,.rb-title,.card-name,.visit-addr,.sp-text blockquote p){font-family:Onest,var(--font);font-weight:700}
+.font-jost :is(.wordmark,.hero-name,.ft-name,.page-title,.heading-2,.rep-title,.row-title,.card-name,.visit-addr){font-weight:600}
+/* широкие шрифты занимают больше места: размеры подогнаны, чтобы надписи помещались в свои колонки и не наезжали на текст */
+:is(.font-dela,.font-rmono,.font-unbounded) .hero-name{font-size:clamp(40px,6.4vw,104px)}
+.font-rmono .heading-2{font-size:clamp(28px,3vw,44px);line-height:1.05}
+@media (max-width:760px){
+  .font-try .hero-name{font-size:12vw}
+  :is(.font-dela,.font-rmono,.font-unbounded) .hero-name{font-size:10.5vw}
+  .font-try .page-title{font-size:12vw}
+  :is(.font-dela,.font-rmono,.font-unbounded) .page-title{font-size:9.5vw}
+  .font-rmono .heading-2{font-size:28px}
+  .font-rmono .hero-name{font-size:10vw}
+}
+
 /* ---------- переключатель данных для проверки (break-ui, только на localhost) ---------- */
 .devbar{position:fixed;left:50%;bottom:var(--s-4);transform:translateX(-50%);z-index:95;display:flex;gap:2px;padding:3px;border-radius:999px;background:#d9d9d9;font:500 13px/1 system-ui,sans-serif}
 .devbar a{padding:8px 12px;border-radius:999px;color:#333;white-space:nowrap}
@@ -383,6 +413,9 @@ p,li,dd,blockquote{text-wrap:pretty}
   /* узкий экран: лента сразу под шапкой, «студия 505» внизу — всё в одном экране */
   .hero-night{display:flex;flex-direction:column;justify-content:space-between;gap:var(--s-6);height:max(520px,calc(100svh - var(--s-20)))}
   .hero-night .hero-name{align-self:flex-start;margin-top:auto}
+  /* вариант 3 на телефоне: лента сверху, поэтому фото темнее сверху, а не справа */
+  .hero-mix::before{background:linear-gradient(to bottom,rgba(0,0,0,.9) 0%,rgba(0,0,0,.72) 45%,rgba(0,0,0,.6) 70%,rgba(0,0,0,.9) 100%)} /* taste-skill-ignore: нейтральное затемнение фото */
+  .hero-mix .hero-img{object-position:50% 60%}
   .ribbon{order:-1;flex:none;margin:0 calc(var(--m) * -1);-webkit-mask-image:none;mask-image:none}
   .rb-track{flex-direction:row;width:max-content;animation-name:rb-left;animation-duration:40s}
   .rb-set{flex-direction:row;gap:var(--s-3);padding:0 var(--s-3) 0 0}

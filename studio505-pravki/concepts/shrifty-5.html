@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>студия 505 · шесть шрифтов на одной странице сайта</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Сравнение: одна и та же страница сайта («Вишнёвый сад») с разными шрифтами заголовков.
+   Каждый вариант — живая страница; по ссылке «открыть» её можно смотреть целиком и ходить по сайту в этом шрифте. */
+:root{--blue:#002FA7;--paper:#F7F7F4;--soft:#4A4A48}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);font-family:Jost,system-ui,sans-serif;color:#000;padding:48px 32px 96px}
+h1{font-size:30px;line-height:36px;font-weight:500}
+.lead{margin-top:12px;max-width:66ch;font-size:18px;line-height:28px;color:var(--soft)}
+.opt{margin-top:56px}
+.opt h2{font-size:24px;line-height:32px;font-weight:500}
+.opt h2 a{color:var(--blue);font-size:18px;font-weight:400;margin-left:12px;text-decoration:underline;text-underline-offset:4px}
+.frame{margin-top:16px;width:100%;height:min(86vh,900px);border:0;display:block;background:#fff}
+@media (max-width:760px){body{padding:32px 16px 64px}.frame{height:80vh}}
+</style>
+</head>
+<body>
+  <h1>Шесть шрифтов на одной странице сайта</h1>
+  <p class="lead">Везде одна и та же страница «Вишнёвого сада»: заголовок, заголовки разделов, описание, цитата, команда, роли и даты. Меняется шрифт заголовков, названий и логотипа. Основной текст везде Jost: плакатными шрифтами длинный текст не набирают. Каждую страницу можно прокрутить внутри рамки или открыть целиком по ссылке и походить по сайту в этом шрифте.</p>
+
+  <section class="opt"><h2>1 · Dela Gothic One <a href="../spektakl.html?id=sad&font=dela" target="_blank">открыть ↗</a></h2>
+    <iframe class="frame" src="../spektakl.html?id=sad&font=dela" title="Страница спектакля, шрифт Dela Gothic One" loading="lazy"></iframe></section>
+  <section class="opt"><h2>2 · Rubik Mono One <a href="../spektakl.html?id=sad&font=rmono" target="_blank">открыть ↗</a></h2>
+    <iframe class="frame" src="../spektakl.html?id=sad&font=rmono" title="Страница спектакля, шрифт Rubik Mono One" loading="lazy"></iframe></section>
+  <section class="opt"><h2>3 · Jost (сейчас на сайте) <a href="../spektakl.html?id=sad&font=jost" target="_blank">открыть ↗</a></h2>
+    <iframe class="frame" src="../spektakl.html?id=sad&font=jost" title="Страница спектакля, шрифт Jost" loading="lazy"></iframe></section>
+  <section class="opt"><h2>4 · Unbounded <a href="../spektakl.html?id=sad&font=unbounded" target="_blank">открыть ↗</a></h2>
+    <iframe class="frame" src="../spektakl.html?id=sad&font=unbounded" title="Страница спектакля, шрифт Unbounded" loading="lazy"></iframe></section>
+  <section class="opt"><h2>5 · Rubik <a href="../spektakl.html?id=sad&font=rubik" target="_blank">открыть ↗</a></h2>
+    <iframe class="frame" src="../spektakl.html?id=sad&font=rubik" title="Страница спектакля, шрифт Rubik" loading="lazy"></iframe></section>
+  <section class="opt"><h2>6 · Onest <a href="../spektakl.html?id=sad&font=onest" target="_blank">открыть ↗</a></h2>
+    <iframe class="frame" src="../spektakl.html?id=sad&font=onest" title="Страница спектакля, шрифт Onest" loading="lazy"></iframe></section>
+</body>
+</html>

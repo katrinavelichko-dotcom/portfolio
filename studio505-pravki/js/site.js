@@ -368,6 +368,19 @@ function renderMap(el) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const q = (s) => document.querySelector(s);
+  // примерка шрифта заголовков: ?font=dela | rmono | jost | unbounded | rubik | onest (основной текст остаётся Jost)
+  const FONTS = { dela: 'Dela+Gothic+One', rmono: 'Rubik+Mono+One', unbounded: 'Unbounded:wght@700', rubik: 'Rubik:wght@700', onest: 'Onest:wght@700', jost: '' };
+  const font = new URLSearchParams(location.search).get('font');
+  if (font in FONTS) {
+    if (FONTS[font]) document.head.insertAdjacentHTML('beforeend', `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${FONTS[font]}&display=swap">`);
+    document.body.classList.add('font-try', `font-${font}`);
+    // ссылки внутри сайта сохраняют выбранный шрифт, чтобы можно было походить по страницам
+    document.addEventListener('click', (e) => {
+      const l = e.target.closest('a[href]');
+      if (!l || l.target === '_blank' || /^(https?:|mailto:|#)/.test(l.getAttribute('href'))) return;
+      const u = new URL(l.href); u.searchParams.set('font', font); l.href = u.href;
+    }, true);
+  }
   // примерка цвета надписи на главной: ?logo=blue — фирменный синий, ?logo=light — светлый синий
   const logo = new URLSearchParams(location.search).get('logo');
   if (logo === 'blue' || logo === 'light') document.body.classList.add(`logo-${logo}`);

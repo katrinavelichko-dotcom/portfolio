@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>студия 505 · шрифты в духе Dela Gothic One</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Dela+Gothic+One&family=Russo+One&family=Rubik+Mono+One&family=Unbounded:wght@900&family=Rubik:wght@900&family=Climate+Crisis&family=Oi&family=Ruslan+Display&display=swap" rel="stylesheet">
+<style>
+/* Вторая примерка: плотные плакатные шрифты с кириллицей, похожие по характеру на Dela Gothic One.
+   Все бесплатные (Google Fonts, лицензия OFL: можно на коммерческом сайте). Основной текст везде Jost, как на сайте. */
+:root{--blue:#002FA7;--paper:#F7F7F4;--ink:#000;--soft:#4A4A48}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:Jost,system-ui,sans-serif;padding:48px 32px 96px}
+.wrap{max-width:1280px;margin:0 auto}
+h1{font-size:30px;line-height:36px;font-weight:500}
+.lead{margin-top:12px;max-width:62ch;font-size:18px;line-height:28px;color:var(--soft)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:48px}
+.card{background:#fff;padding:32px;display:flex;flex-direction:column;gap:24px}
+.card.ref{outline:2px solid var(--blue)}
+.tag{font-size:14px;line-height:20px;font-weight:500;color:var(--soft)}
+.tag b{color:var(--blue);font-weight:500}
+.logo{font-size:30px;line-height:1;color:var(--blue)}
+.title{font-size:56px;line-height:1;text-transform:lowercase;letter-spacing:-.01em}
+.h2{font-size:40px;line-height:1;color:var(--blue)}
+.p{font-size:18px;line-height:28px;max-width:52ch}
+.f-dela :is(.logo,.title,.h2){font-family:'Dela Gothic One'}
+.f-russo :is(.logo,.title,.h2){font-family:'Russo One'}
+.f-rmono :is(.logo,.title,.h2){font-family:'Rubik Mono One'}.f-rmono .title{font-size:44px}
+.f-unb :is(.logo,.title,.h2){font-family:Unbounded;font-weight:900;letter-spacing:-.03em}.f-unb .title{font-size:48px}
+.f-rubik :is(.logo,.title,.h2){font-family:Rubik;font-weight:900}
+.f-climate :is(.logo,.title,.h2){font-family:'Climate Crisis'}.f-climate .title{font-size:44px}
+.f-oi :is(.logo,.title,.h2){font-family:Oi}.f-oi .title{font-size:40px}
+.f-ruslan :is(.logo,.title,.h2){font-family:'Ruslan Display'}
+@media (max-width:860px){body{padding:32px 16px 64px}.grid{grid-template-columns:1fr}.title{font-size:40px!important}.h2{font-size:30px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Шрифты в духе Dela Gothic One</h1>
+  <p class="lead">Первый, в синей рамке, — сам Dela Gothic One для сравнения. Остальные семь похожи на него по характеру: плотные, плакатные, с русскими буквами. Все бесплатные.</p>
+
+  <div class="grid">
+    <section class="card ref f-dela"><p class="tag"><b>Dela Gothic One</b> · понравился, для сравнения</p><p class="logo">студия 505</p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Плотный, почти плакатный, с острыми срезами.</p></section>
+    <section class="card f-russo"><p class="tag"><b>1 · Russo One</b></p><p class="logo">студия 505</p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Жирный, с прямоугольными формами. Спокойнее Dela, современный.</p></section>
+    <section class="card f-rmono"><p class="tag"><b>2 · Rubik Mono One</b></p><p class="logo">студия 505</p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Широкий, все буквы одной ширины и только заглавные. Похоже на старую афишу или штамп.</p></section>
+    <section class="card f-unb"><p class="tag"><b>3 · Unbounded Black</b></p><p class="logo">студия 505</p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Самое жирное начертание Unbounded. Широкий и громкий, похож на пост студии.</p></section>
+    <section class="card f-rubik"><p class="tag"><b>4 · Rubik Black</b></p><p class="logo">студия 505</p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Жирный, со слегка скруглёнными углами. Мягче и дружелюбнее Dela.</p></section>
+    <section class="card f-climate"><p class="tag"><b>5 · Climate Crisis</b></p><p class="logo">студия 505</p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Очень тяжёлый и широкий. Для коротких громких заголовков.</p></section>
+    <section class="card f-oi"><p class="tag"><b>6 · Oi</b></p><p class="logo">студия 505</p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Самый жирный и хулиганский, буквы почти без просветов. Смелый выбор.</p></section>
+    <section class="card f-ruslan"><p class="tag"><b>7 · Ruslan Display</b></p><p class="logo">студия 505</p><p class="title">вишнёвый сад</p><p class="h2">афиша</p><p class="p">Декоративный, с древнерусскими формами букв, как на старых вывесках.</p></section>
+  </div>
+</div>
+</body>
+</html>
