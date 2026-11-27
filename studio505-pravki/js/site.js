@@ -381,9 +381,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const u = new URL(l.href); u.searchParams.set('font', font); l.href = u.href;
     }, true);
   }
-  // примерка цвета надписи на главной: ?logo=blue — фирменный синий, ?logo=light — светлый синий
+  // примерка цвета надписи на главной: ?logo=blue — фирменный синий
   const logo = new URLSearchParams(location.search).get('logo');
-  if (logo === 'blue' || logo === 'light') document.body.classList.add(`logo-${logo}`);
+  if (logo === 'blue') document.body.classList.add('logo-blue');
   if (q('[data-header]')) renderHeader(q('[data-header]'));
   if (q('[data-footer]')) renderFooter(q('[data-footer]'));
   if (q('[data-afisha]')) renderAfisha(q('[data-afisha]'));

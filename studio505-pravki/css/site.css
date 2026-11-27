@@ -6,7 +6,7 @@
    break-ui (длинные имена и пустые данные через ?data=), gsap-* — GSAP убран: правка «без плавных переходов». */
 
 :root{
-  --blue:#002FA7; --blue-press:#00238A; --blue-light:#9DB3EE; --blue-soft:#6F8EF0;
+  --blue:#002FA7; --blue-press:#00238A;
   /* фон: был бежевый #FFFAF0, по правке — менее бежевый и чуть холоднее */
   --paper:#F7F7F4; --paper-2:#EDEDE9; --paper-3:#DFDFD9;
   --ink:#000; --soft:#4A4A48; --night:#000; --night-soft:#B5B5B0; --line:rgba(0,0,0,.12);
@@ -93,7 +93,7 @@ p,li,dd,blockquote{text-wrap:pretty}
 .nav a[aria-current="page"]::after{transform:scaleX(1)}
 @media (hover:hover) and (pointer:fine){
   .nav a:hover{color:var(--blue)}
-  .site-header.on-dark .nav a:hover{color:var(--blue-light)}
+  .site-header.on-dark .nav a:hover{color:var(--blue)}
   /* логотип под курсором загорается фирменным синим (правка) */
   .site-header.on-dark .wordmark:hover{color:var(--blue)}
   .wordmark:hover{color:var(--blue-press)}
@@ -108,7 +108,7 @@ p,li,dd,blockquote{text-wrap:pretty}
 .hero{position:relative;isolation:isolate;overflow:hidden;min-height:max(560px,calc(100svh - var(--s-24)));padding:calc(var(--header-h) + var(--s-8)) var(--m) var(--s-10)}
 .hero-name{font-size:clamp(72px,11.5vw,184px);line-height:.9;font-weight:300;letter-spacing:-.045em;white-space:nowrap}
 .hero-down{display:inline-flex;align-items:center;min-height:48px;font-size:var(--t-xl);line-height:var(--l-xl);transition:color 200ms ease}
-@media (hover:hover) and (pointer:fine){.hero-down:hover{color:var(--blue-light)}}
+@media (hover:hover) and (pointer:fine){.hero-down:hover{color:var(--blue)}}
 
 /* вариант 1: чёрный, «студия 505» снизу слева, справа лента спектаклей */
 .hero-night{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:minmax(0,1fr) auto;column-gap:var(--col);height:max(560px,calc(100svh - var(--s-24)))}
@@ -126,7 +126,7 @@ p,li,dd,blockquote{text-wrap:pretty}
 .rb-pic{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;background:#151515}
 .rb-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
 .rb-title{font-size:var(--t-2xl);line-height:var(--l-2xl);font-weight:500;transition:color 200ms ease}
-@media (hover:hover) and (pointer:fine){.rb-card:hover .rb-title{color:var(--blue-light)}}
+@media (hover:hover) and (pointer:fine){.rb-card:hover .rb-title{color:var(--blue)}}
 
 /* вариант 2: общее фото студии, затемнено; сверху темнее, чтобы надпись на стене не спорила с логотипом.
    Логотип в нижнем углу, на полу, не на лицах (конспект: текст на фото только на спокойном месте) */
@@ -140,9 +140,7 @@ p,li,dd,blockquote{text-wrap:pretty}
 .home .afisha{padding-top:var(--s-10)}
 /* примерка цвета надписи на главной (?logo=blue / ?logo=light) */
 .logo-blue .hero-name{color:var(--blue)}
-.logo-light .hero-name{color:var(--blue-soft)}
 .logo-blue .site-header.on-hero .wordmark{color:var(--blue)}
-.logo-light .site-header.on-hero .wordmark{color:var(--blue-soft)}
 
 /* ---------- шапка внутренних страниц: только заголовок, без поясняющего текста сбоку (правка) ---------- */
 .page-head{padding:calc(var(--header-h) + var(--s-16)) var(--m) var(--s-10)}
