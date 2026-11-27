@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Мира — варианты синей палитры</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #E9ECF1; color: #141A2B; font: 16px/24px "Manrope", system-ui, sans-serif; padding: 40px 24px 80px; }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    h1 { font-size: 32px; line-height: 40px; font-weight: 600; }
+    .intro { margin: 12px 0 40px; max-width: 720px; color: #4A5468; }
+    .variant { margin-bottom: 64px; }
+    .variant h2 { font-size: 24px; line-height: 32px; font-weight: 600; }
+    .variant > p { color: #4A5468; margin: 4px 0 16px; max-width: 720px; }
+    /* Пример первого экрана: все цвета берутся из переменных варианта */
+    .hero { display: grid; grid-template-columns: 5fr 7fr; min-height: 440px; background: var(--ground); color: var(--ink); }
+    .hero__text { padding: 48px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+    .hero__logo { font-weight: 600; letter-spacing: .3em; font-size: 16px; }
+    .hero__title { font-size: 40px; line-height: 48px; font-weight: 500; }
+    .hero__lead { color: var(--muted); max-width: 400px; }
+    .hero__btn { align-self: flex-start; padding: 14px 28px; border-radius: 100px; background: var(--accent); color: var(--on-accent); font-weight: 600; }
+    .hero__photo { background: url("images/hero-interior.jpg") center / cover; }
+    .band { display: flex; gap: 24px; align-items: center; padding: 24px 48px; background: var(--field); color: var(--on-field); }
+    .band b { font-size: 20px; line-height: 28px; font-weight: 600; }
+    .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
+    .swatch { padding: 12px; background: #fff; font-size: 12px; line-height: 16px; }
+    .swatch i { display: block; height: 48px; margin-bottom: 8px; border: 1px solid rgba(0,0,0,.08); }
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero__photo { min-height: 220px; order: -1; }
+      .hero__text { padding: 24px; }
+      .hero__title { font-size: 32px; line-height: 40px; }
+      .band { flex-direction: column; align-items: flex-start; padding: 24px; }
+      .swatches { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Мира — варианты синей палитры</h1>
+  <p class="intro">Каждый вариант показан на примере первого экрана и одной цветной полосы (так будут выглядеть акция и запись). Шрифт здесь временный — его подберём вместе с направлением дизайна. Нигде нет чистого чёрного, контраст текста — не ниже уровня AA.</p>
+
+  <section class="variant" style="--ground:#F4F6FA; --ink:#0E1A33; --muted:#4A5672; --accent:#1F3A93; --on-accent:#F4F6FA; --field:#1F3A93; --on-field:#F4F6FA;">
+    <h2>А. Синий — главный цвет</h2>
+    <p>Холодный светлый фон, а целые блоки (акция, запись, подвал) залиты насыщенным кобальтово-синим. Сайт сразу узнаётся по цвету, выглядит смело и свежо.</p>
+    <div class="hero">
+      <div class="hero__text"><span class="hero__logo">МИРА</span><span class="hero__title">Красота, в которой вам спокойно</span><span class="hero__lead">Стрижки, маникюр, брови и уход за лицом в центре Казани.</span><span class="hero__btn">Записаться</span></div>
+      <div class="hero__photo"></div>
+    </div>
+    <div class="band"><b>−15% на первый визит</b><span>Промокод MIRA15</span></div>
+    <div class="swatches">
+      <div class="swatch"><i style="background:#F4F6FA"></i>Фон #F4F6FA</div>
+      <div class="swatch"><i style="background:#0E1A33"></i>Текст #0E1A33</div>
+      <div class="swatch"><i style="background:#4A5672"></i>Вторичный #4A5672</div>
+      <div class="swatch"><i style="background:#1F3A93"></i>Синий #1F3A93</div>
+      <div class="swatch"><i style="background:#DDE3EE"></i>Подложки #DDE3EE</div>
+    </div>
+  </section>
+
+  <section class="variant" style="--ground:#FFFFFF; --ink:#141A2B; --muted:#535C70; --accent:#2F55D4; --on-accent:#FFFFFF; --field:#EEF2FB; --on-field:#141A2B;">
+    <h2>Б. Светлый сайт + синий акцент</h2>
+    <p>Почти белый, много воздуха. Синий только там, где нужно действие: кнопки, ссылки, активные вкладки. Самый спокойный и «чистый» вариант, близкий к медицинской эстетике.</p>
+    <div class="hero">
+      <div class="hero__text"><span class="hero__logo">МИРА</span><span class="hero__title">Красота, в которой вам спокойно</span><span class="hero__lead">Стрижки, маникюр, брови и уход за лицом в центре Казани.</span><span class="hero__btn">Записаться</span></div>
+      <div class="hero__photo"></div>
+    </div>
+    <div class="band"><b>−15% на первый визит</b><span>Промокод MIRA15</span></div>
+    <div class="swatches">
+      <div class="swatch"><i style="background:#FFFFFF"></i>Фон #FFFFFF</div>
+      <div class="swatch"><i style="background:#141A2B"></i>Текст #141A2B</div>
+      <div class="swatch"><i style="background:#535C70"></i>Вторичный #535C70</div>
+      <div class="swatch"><i style="background:#2F55D4"></i>Синий #2F55D4</div>
+      <div class="swatch"><i style="background:#EEF2FB"></i>Подложки #EEF2FB</div>
+    </div>
+  </section>
+
+  <section class="variant" style="--ground:#0D1B33; --ink:#EEF1F7; --muted:#A9B4CA; --accent:#E3CBA8; --on-accent:#0D1B33; --field:#16294C; --on-field:#EEF1F7;">
+    <h2>В. Тёмный синий</h2>
+    <p>Весь сайт на глубоком ночном синем, фото «светятся» на нём, как в галерее. Акцент — тёплый песочный, он даёт уют. Самый дорогой и вечерний вариант; хорошо ложится на направление «Тёмная комната».</p>
+    <div class="hero">
+      <div class="hero__text"><span class="hero__logo">МИРА</span><span class="hero__title">Красота, в которой вам спокойно</span><span class="hero__lead">Стрижки, маникюр, брови и уход за лицом в центре Казани.</span><span class="hero__btn">Записаться</span></div>
+      <div class="hero__photo"></div>
+    </div>
+    <div class="band"><b>−15% на первый визит</b><span>Промокод MIRA15</span></div>
+    <div class="swatches">
+      <div class="swatch"><i style="background:#0D1B33"></i>Фон #0D1B33</div>
+      <div class="swatch"><i style="background:#EEF1F7"></i>Текст #EEF1F7</div>
+      <div class="swatch"><i style="background:#A9B4CA"></i>Вторичный #A9B4CA</div>
+      <div class="swatch"><i style="background:#E3CBA8"></i>Акцент #E3CBA8</div>
+      <div class="swatch"><i style="background:#16294C"></i>Подложки #16294C</div>
+    </div>
+  </section>
+</div>
+</body>
+</html>
